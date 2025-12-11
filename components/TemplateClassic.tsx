@@ -2,6 +2,8 @@
 
 import { useResumeStore } from "@/store/resumeStore";
 import ExperienceSection from "./ExperienceSection";
+import EducationSection from "./EducationSection";
+import SkillsSection from "./SkillsSection";
 
 export default function TemplateClassic() {
   const resume = useResumeStore((state) => state.resume);
@@ -133,8 +135,42 @@ export default function TemplateClassic() {
           )}
         </header>
 
+        {/* Summary Section - Only if summary exists */}
+        {resume.personalDetails.summary && (
+          <section>
+            <h2
+              className="mb-2 mt-6 uppercase"
+              style={{
+                fontFamily: "var(--font-merriweather)",
+                fontSize: "0.875rem",
+                fontWeight: 700,
+                borderBottom: "1px solid #000000",
+                paddingBottom: "4px",
+              }}
+            >
+              Summary
+            </h2>
+            <p
+              style={{
+                fontFamily: "var(--font-open-sans)",
+                fontSize: "0.875rem",
+                lineHeight: "1.6",
+                marginTop: "4px",
+              }}
+            >
+              {resume.personalDetails.summary}
+            </p>
+          </section>
+        )}
+
         {/* Experience Section */}
         <ExperienceSection experiences={resume.experience} />
+
+        {/* Education Section */}
+        <EducationSection education={resume.education} />
+
+        {/* Skills Section */}
+        <SkillsSection skills={resume.skills} />
 
         {/* Print styles */}
         <style jsx>{`
