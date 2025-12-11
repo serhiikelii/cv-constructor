@@ -1,6 +1,7 @@
 "use client";
 
 import { useResumeStore } from "@/store/resumeStore";
+import ExperienceSection from "./ExperienceSection";
 
 export default function TemplateClassic() {
   const resume = useResumeStore((state) => state.resume);
@@ -132,19 +133,8 @@ export default function TemplateClassic() {
           )}
         </header>
 
-        {/* Section Example - For testing typography */}
-        <h2
-          className="mb-2 mt-6 uppercase"
-          style={{
-            fontFamily: "var(--font-merriweather)",
-            fontSize: "0.875rem", // 14px ≈ 10.5pt
-            fontWeight: 700,
-            borderBottom: "1px solid #000000",
-            paddingBottom: "4px",
-          }}
-        >
-          Experience
-        </h2>
+        {/* Experience Section */}
+        <ExperienceSection experiences={resume.experience} />
 
         {/* Print styles */}
         <style jsx>{`
