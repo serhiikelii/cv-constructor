@@ -184,6 +184,7 @@ export default function TemplateClassic() {
             /* Set text color to pure black for print */
             :global(body) {
               color: #000000;
+              margin: 0;
             }
 
             /* Ensure proper font rendering in print */
@@ -191,6 +192,17 @@ export default function TemplateClassic() {
             h2,
             p {
               color: #000000;
+            }
+
+            /* Page break management */
+            h2 {
+              break-after: avoid;
+            }
+
+            /* Link styles for print */
+            a {
+              color: #000000;
+              text-decoration: none;
             }
           }
         `}</style>
