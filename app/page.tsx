@@ -1,9 +1,5 @@
-import TemplateClassic from "@/components/TemplateClassic";
+import ResumeBuilder from "@/components/ResumeBuilder";
 
 export default function Home() {
-  return (
-    <main>
-      <TemplateClassic />
-    </main>
-  );
+  return <ResumeBuilder />;
 }
