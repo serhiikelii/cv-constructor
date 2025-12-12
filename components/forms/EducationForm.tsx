@@ -6,8 +6,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { MonthYearPicker } from "@/components/ui/month-year-picker";
 import { Plus, Edit2, Trash2, Save, X } from "lucide-react";
 import type { Education } from "@/types";
+
+// Helper functions to convert between Date and YYYY-MM string format
+function stringToDate(dateStr: string | null | undefined): Date | undefined {
+  if (!dateStr) return undefined;
+  const [year, month] = dateStr.split("-");
+  return new Date(parseInt(year), parseInt(month) - 1, 1);
+}
+
+function dateToString(date: Date | undefined): string {
+  if (!date) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  return `${year}-${month}`;
+}
 
 export default function EducationForm() {
   const { resume, addEducation, updateEducation, deleteEducation } =
@@ -19,7 +34,6 @@ export default function EducationForm() {
     field: "",
     startDate: "",
     endDate: "",
-    gpa: "",
   });
 
   const handleChange = (
@@ -58,7 +72,6 @@ export default function EducationForm() {
       field: "",
       startDate: "",
       endDate: "",
-      gpa: "",
     });
   };
 
@@ -166,41 +179,33 @@ export default function EducationForm() {
         </div>
 
         {/* Date Range */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="startDate">Start Date *</Label>
-            <Input
-              id="startDate"
-              name="startDate"
-              type="month"
-              value={formData.startDate || ""}
-              onChange={handleChange}
+            <Label>Start Date *</Label>
+            <MonthYearPicker
+              date={stringToDate(formData.startDate)}
+              onDateChange={(date) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  startDate: dateToString(date),
+                }));
+              }}
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="endDate">End Date *</Label>
-            <Input
-              id="endDate"
-              name="endDate"
-              type="month"
-              value={formData.endDate || ""}
-              onChange={handleChange}
+            <Label>End Date *</Label>
+            <MonthYearPicker
+              date={stringToDate(formData.endDate)}
+              onDateChange={(date) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  endDate: dateToString(date),
+                }));
+              }}
               required
             />
           </div>
-        </div>
-
-        {/* GPA */}
-        <div className="space-y-2">
-          <Label htmlFor="gpa">GPA (optional)</Label>
-          <Input
-            id="gpa"
-            name="gpa"
-            value={formData.gpa || ""}
-            onChange={handleChange}
-            placeholder="3.8/4.0"
-          />
         </div>
 
         <Button

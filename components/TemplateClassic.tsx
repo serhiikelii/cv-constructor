@@ -52,16 +52,18 @@ export default function TemplateClassic() {
               >
                 {resume.personalDetails.fullName || "Your Name"}
               </h1>
-              <p
-                className="mt-2"
-                style={{
-                  fontFamily: "var(--font-open-sans)",
-                  fontSize: "1rem", // 16px ≈ 12pt
-                  color: "#6B7280", // gray-500 for screen
-                }}
-              >
-                {resume.personalDetails.title || "Your Professional Title"}
-              </p>
+              {resume.personalDetails.title && (
+                <p
+                  className="mt-2"
+                  style={{
+                    fontFamily: "var(--font-open-sans)",
+                    fontSize: "1rem", // 16px ≈ 12pt
+                    color: "#6B7280", // gray-500 for screen
+                  }}
+                >
+                  {resume.personalDetails.title}
+                </p>
+              )}
             </div>
 
             {/* Contact Information */}

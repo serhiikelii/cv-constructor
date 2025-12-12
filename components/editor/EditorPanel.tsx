@@ -11,6 +11,7 @@ import PersonalForm from "../forms/PersonalForm";
 import ExperienceForm from "../forms/ExperienceForm";
 import EducationForm from "../forms/EducationForm";
 import SkillsForm from "../forms/SkillsForm";
+import TemplateSelector from "../TemplateSelector";
 
 export default function EditorPanel() {
   return (
@@ -22,7 +23,11 @@ export default function EditorPanel() {
         </p>
       </div>
 
-      <div className="p-4">
+      <div className="space-y-4 p-4">
+        {/* Template Selector */}
+        <TemplateSelector />
+
+        {/* Accordion with form sections */}
         <Accordion type="single" collapsible defaultValue="personal">
           {/* Personal Details Section */}
           <AccordionItem value="personal">

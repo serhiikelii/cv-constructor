@@ -78,7 +78,6 @@ export const mockResume: Resume = {
       startDate: "2014-09",
       endDate: "2016-06",
       current: false,
-      gpa: "3.9",
       achievements: [
         "Thesis: 'Scalable Machine Learning Systems for Real-Time Data Processing'",
         "Teaching Assistant for Data Structures and Algorithms",
@@ -94,7 +93,6 @@ export const mockResume: Resume = {
       startDate: "2010-09",
       endDate: "2014-05",
       current: false,
-      gpa: "3.7",
       achievements: [
         "President of Computer Science Student Association",
         "Hackathon Winner - CalHacks 2013",

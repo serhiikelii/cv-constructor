@@ -106,19 +106,6 @@ export default function EducationSection({ education }: EducationSectionProps) {
               )}
             </div>
 
-            {/* GPA (optional) */}
-            {edu.gpa && (
-              <p
-                style={{
-                  fontFamily: "var(--font-open-sans)",
-                  fontSize: "0.875rem",
-                  marginBottom: "2px",
-                }}
-              >
-                GPA: {edu.gpa}
-              </p>
-            )}
-
             {/* Achievements (optional) */}
             {edu.achievements && edu.achievements.length > 0 && (
               <ul

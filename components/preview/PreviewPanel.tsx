@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut, Maximize2, Download } from "lucide-react";
 import { useResumeStore } from "@/store/resumeStore";
 import TemplateClassic from "../TemplateClassic";
+import TemplateModern from "../TemplateModern";
 
 export default function PreviewPanel() {
   const [zoom, setZoom] = useState(1);
@@ -150,7 +151,7 @@ export default function PreviewPanel() {
             }}
           >
             <div ref={printRef}>
-              <TemplateClassic />
+              {resume.template === "modern" ? <TemplateModern /> : <TemplateClassic />}
             </div>
           </div>
         </div>
