@@ -119,3 +119,85 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Print Styles for PDF Export */
+@media print {
+  @page {
+    margin: 0;
+    size: A4 portrait;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Hide UI elements that shouldn't be printed */
+  .no-print,
+  header.no-print,
+  nav,
+  aside,
+  button,
+  .print-hide {
+    display: none !important;
+  }
+
+  /* Remove shadows and borders from resume container */
+  .resume-preview-container,
+  div[style*="210mm"] {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    border: none !important;
+    background: white !important;
+  }
+
+  /* Ensure text is pure black for print */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  div {
+    color: black !important;
+  }
+
+  /* Make links look like regular text but keep them clickable */
+  a {
+    color: black !important;
+    text-decoration: none !important;
+  }
+
+  /* Page break management */
+  h2 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Prevent orphaned content */
+  .break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .break-after-avoid {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Ensure proper rendering */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

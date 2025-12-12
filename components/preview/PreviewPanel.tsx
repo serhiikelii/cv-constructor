@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 import { Button } from "@/components/ui/button";
-import { ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
+import { ZoomIn, ZoomOut, Maximize2, Download } from "lucide-react";
+import { useResumeStore } from "@/store/resumeStore";
 import TemplateClassic from "../TemplateClassic";
 
 export default function PreviewPanel() {
@@ -10,6 +12,28 @@ export default function PreviewPanel() {
   const [autoZoom, setAutoZoom] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const a4Ref = useRef<HTMLDivElement>(null);
+  const printRef = useRef<HTMLDivElement>(null);
+
+  const resume = useResumeStore((state) => state.resume);
+
+  // Generate filename from resume data
+  const getFileName = () => {
+    const fullName = resume.personalDetails.fullName || "Resume";
+    const sanitizedName = fullName.replace(/[^a-zA-Z0-9]/g, "_");
+    return `${sanitizedName}_Resume.pdf`;
+  };
+
+  // Configure react-to-print
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: getFileName(),
+    onBeforePrint: async () => {
+      console.log("Preparing to print...");
+    },
+    onAfterPrint: async () => {
+      console.log("Print completed");
+    },
+  });
 
   // Calculate auto-fit zoom based on container width
   useEffect(() => {
@@ -96,6 +120,17 @@ export default function PreviewPanel() {
             >
               <Maximize2 className="h-4 w-4" />
             </Button>
+
+            <div className="mx-2 h-6 w-px bg-gray-300" />
+
+            <Button
+              size="sm"
+              onClick={handlePrint}
+              className="gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Download PDF
+            </Button>
           </div>
         </div>
       </div>
@@ -114,7 +149,9 @@ export default function PreviewPanel() {
               transition: autoZoom ? "transform 0.2s ease-out" : "none",
             }}
           >
-            <TemplateClassic />
+            <div ref={printRef}>
+              <TemplateClassic />
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,10 @@
 "use client";
 
 import { useResumeStore } from "@/store/resumeStore";
+import { ContactItem } from "./resume/ContactItem";
+import { Section } from "./resume/Section";
+import { cleanUrl, ensureProtocol, getMailtoUrl, getTelUrl } from "@/lib/urlUtils";
+import { Mail, Phone, MapPin, Linkedin, Github, Globe } from "lucide-react";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import SkillsSection from "./SkillsSection";
@@ -70,45 +74,41 @@ export default function TemplateClassic() {
                   ? "flex-start"
                   : "center",
                 alignItems: "center",
-                gap: "0.5rem 0.75rem",
+                gap: "0.5rem 1rem",
                 fontFamily: "var(--font-open-sans)",
-                fontSize: "0.875rem", // 14px ≈ 10.5pt
-                color: "#374151", // gray-700
+                fontSize: "0.875rem",
+                color: "#374151",
               }}
             >
-              {resume.personalDetails.email && (
-                <span>{resume.personalDetails.email}</span>
-              )}
-              {resume.personalDetails.email && resume.personalDetails.phone && (
-                <span style={{ color: "#9CA3AF" }}>•</span>
-              )}
-              {resume.personalDetails.phone && (
-                <span>{resume.personalDetails.phone}</span>
-              )}
-              {resume.personalDetails.phone && resume.personalDetails.location && (
-                <span style={{ color: "#9CA3AF" }}>•</span>
-              )}
-              {resume.personalDetails.location && (
-                <span>{resume.personalDetails.location}</span>
-              )}
-              {resume.personalDetails.location && resume.personalDetails.linkedin && (
-                <span style={{ color: "#9CA3AF" }}>•</span>
-              )}
-              {resume.personalDetails.linkedin && (
-                <span>{resume.personalDetails.linkedin}</span>
-              )}
-              {resume.personalDetails.linkedin && resume.personalDetails.github && (
-                <span style={{ color: "#9CA3AF" }}>•</span>
-              )}
-              {resume.personalDetails.github && (
-                <span>{resume.personalDetails.github}</span>
-              )}
-              {resume.personalDetails.github && resume.personalDetails.website && (
-                <span style={{ color: "#9CA3AF" }}>•</span>
-              )}
-              {resume.personalDetails.website && (
-                <span>{resume.personalDetails.website}</span>
-              )}
+              <ContactItem
+                icon={<Mail className="w-3 h-3" />}
+                value={resume.personalDetails.email}
+                href={getMailtoUrl(resume.personalDetails.email)}
+              />
+              <ContactItem
+                icon={<Phone className="w-3 h-3" />}
+                value={resume.personalDetails.phone}
+                href={getTelUrl(resume.personalDetails.phone)}
+              />
+              <ContactItem
+                icon={<MapPin className="w-3 h-3" />}
+                value={resume.personalDetails.location || ""}
+              />
+              <ContactItem
+                icon={<Linkedin className="w-3 h-3" />}
+                value={cleanUrl(resume.personalDetails.linkedin || "")}
+                href={ensureProtocol(resume.personalDetails.linkedin || "")}
+              />
+              <ContactItem
+                icon={<Github className="w-3 h-3" />}
+                value={cleanUrl(resume.personalDetails.github || "")}
+                href={ensureProtocol(resume.personalDetails.github || "")}
+              />
+              <ContactItem
+                icon={<Globe className="w-3 h-3" />}
+                value={cleanUrl(resume.personalDetails.website || "")}
+                href={ensureProtocol(resume.personalDetails.website || "")}
+              />
             </div>
           </div>
 
