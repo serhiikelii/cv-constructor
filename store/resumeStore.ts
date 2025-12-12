@@ -9,6 +9,7 @@ import type {
   Certification,
   Project,
 } from "@/types";
+import { mockResume } from "./mockData";
 
 // Initial empty resume state
 const initialResume: Resume = {
@@ -76,6 +77,7 @@ interface ResumeStore {
   // Utility actions
   resetResume: () => void;
   loadResume: (resume: Resume) => void;
+  loadDemoData: () => void;
   clearStorage: () => void;
 }
 
@@ -353,6 +355,16 @@ export const useResumeStore = create<ResumeStore>()(
         set({
           resume: {
             ...resume,
+            updatedAt: new Date().toISOString(),
+          },
+        }),
+
+      loadDemoData: () =>
+        set({
+          resume: {
+            ...mockResume,
+            id: crypto.randomUUID(),
+            createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
           },
         }),
