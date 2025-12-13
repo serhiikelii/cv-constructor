@@ -2,91 +2,57 @@
 
 import { useResumeStore } from "@/store/resumeStore";
 import type { Resume } from "@/types";
+import TemplateClassic from "./TemplateClassic";
+import TemplateModern from "./TemplateModern";
+import TemplateMinimal from "./TemplateMinimal";
 
 interface TemplateOption {
   id: Resume["template"];
   preview: React.ReactNode;
 }
 
-// Visual preview components for each template
+// Visual preview components - scaled down real templates
 const ClassicPreview = () => (
-  <div className="h-full w-full rounded bg-white p-3 shadow-sm">
-    <div className="mb-2 h-2 w-3/4 rounded bg-gray-800" />
-    <div className="mb-3 h-1 w-1/2 rounded bg-gray-400" />
-    <div className="space-y-1 border-t border-gray-300 pt-2">
-      <div className="h-1 w-full rounded bg-gray-300" />
-      <div className="h-1 w-5/6 rounded bg-gray-300" />
-      <div className="h-1 w-4/6 rounded bg-gray-300" />
+  <div className="h-full w-full overflow-hidden bg-gray-100 flex items-center justify-center">
+    <div
+      style={{
+        transform: "scale(0.18)",
+        transformOrigin: "center center",
+        width: "793.7px", // A4 width at 96 DPI
+        height: "1122.5px", // A4 height at 96 DPI
+      }}
+    >
+      <TemplateClassic />
     </div>
   </div>
 );
 
 const ModernPreview = () => (
-  <div className="h-full w-full rounded bg-white shadow-sm">
-    <div className="flex h-full">
-      <div className="w-2/5 rounded-l bg-blue-600 p-2">
-        <div className="mb-2 h-1.5 w-3/4 rounded bg-white/90" />
-        <div className="space-y-1">
-          <div className="h-1 w-full rounded bg-white/70" />
-          <div className="h-1 w-4/5 rounded bg-white/70" />
-        </div>
-      </div>
-      <div className="w-3/5 p-2">
-        <div className="mb-2 h-1.5 w-3/4 rounded bg-blue-600" />
-        <div className="space-y-1">
-          <div className="h-1 w-full rounded bg-gray-300" />
-          <div className="h-1 w-5/6 rounded bg-gray-300" />
-        </div>
-      </div>
+  <div className="h-full w-full overflow-hidden bg-gray-100 flex items-center justify-center">
+    <div
+      style={{
+        transform: "scale(0.18)",
+        transformOrigin: "center center",
+        width: "793.7px",
+        height: "1122.5px",
+      }}
+    >
+      <TemplateModern />
     </div>
   </div>
 );
 
 const MinimalPreview = () => (
-  <div className="h-full w-full rounded bg-white p-2.5 shadow-sm">
-    {/* Header */}
-    <div className="mb-2">
-      <div className="mb-1 h-2 w-3/5 rounded bg-blue-900" />
-      <div className="h-0.5 w-4/5 rounded bg-gray-400 opacity-50" />
-    </div>
-
-    {/* Timeline sections */}
-    <div className="relative pl-2.5">
-      {/* Vertical line */}
-      <div
-        className="absolute left-0.5 top-0 bottom-0 w-0.5 bg-blue-900"
-        style={{ height: "calc(100% - 2px)" }}
-      />
-
-      {/* Section 1 */}
-      <div className="relative mb-2">
-        <div className="absolute -left-2.5 top-0.5 h-1 w-1 rounded-full border border-blue-900 bg-white" />
-        <div className="mb-0.5 h-0.5 w-3/4 rounded bg-blue-900" />
-        <div className="space-y-0.5">
-          <div className="h-0.5 w-full rounded bg-gray-300 opacity-50" />
-          <div className="h-0.5 w-4/5 rounded bg-gray-300 opacity-50" />
-        </div>
-      </div>
-
-      {/* Section 2 */}
-      <div className="relative mb-2">
-        <div className="absolute -left-2.5 top-0.5 h-1 w-1 rounded-full border border-blue-900 bg-white" />
-        <div className="mb-0.5 h-0.5 w-2/3 rounded bg-blue-900" />
-        <div className="grid grid-cols-2 gap-0.5">
-          <div className="h-0.5 rounded bg-gray-300 opacity-50" />
-          <div className="h-0.5 rounded bg-gray-300 opacity-50" />
-        </div>
-      </div>
-
-      {/* Section 3 */}
-      <div className="relative">
-        <div className="absolute -left-2.5 top-0.5 h-1 w-1 rounded-full border border-blue-900 bg-white" />
-        <div className="mb-0.5 h-0.5 w-3/4 rounded bg-blue-900" />
-        <div className="space-y-0.5">
-          <div className="h-0.5 w-full rounded bg-gray-300 opacity-50" />
-          <div className="h-0.5 w-3/4 rounded bg-gray-300 opacity-50" />
-        </div>
-      </div>
+  <div className="h-full w-full overflow-hidden bg-gray-100 flex items-center justify-center">
+    <div
+      style={{
+        transform: "scale(0.18)",
+        transformOrigin: "center center",
+        width: "793.7px",
+        height: "1122.5px",
+      }}
+    >
+      <TemplateMinimal />
     </div>
   </div>
 );
@@ -110,51 +76,75 @@ export default function TemplateSelector() {
   const template = useResumeStore((state) => state.resume.template);
   const setTemplate = useResumeStore((state) => state.setTemplate);
 
+  const templateLabels: Record<Resume["template"], string> = {
+    classic: "Classic",
+    modern: "Modern",
+    minimal: "Minimal",
+  };
+
   return (
-    <div className="rounded-lg border bg-white p-4">
-      <div className="mb-4">
-        <h3 className="text-sm font-semibold text-gray-900">Template</h3>
-        <p className="text-xs text-gray-500">Choose a layout style</p>
+    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="mb-6">
+        <h3 className="text-base font-semibold text-gray-900">Choose Template</h3>
+        <p className="mt-1 text-sm text-gray-500">Select a layout that best represents you</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-4">
         {templates.map((tmpl) => (
-          <button
-            key={tmpl.id}
-            onClick={() => setTemplate(tmpl.id)}
-            className={`group relative aspect-[3/4] overflow-hidden rounded-lg border-2 transition-all ${
-              template === tmpl.id
-                ? "border-blue-600 ring-2 ring-blue-600 ring-offset-2"
-                : "border-gray-200 hover:border-blue-400 hover:shadow-md"
-            }`}
-            aria-label={`Select ${tmpl.id} template`}
-          >
-            {tmpl.preview}
+          <div key={tmpl.id} className="flex flex-col gap-2">
+            <button
+              onClick={() => setTemplate(tmpl.id)}
+              className={`group relative aspect-[210/297] overflow-hidden transition-all duration-300 ${
+                template === tmpl.id
+                  ? "ring-2 ring-blue-500 shadow-lg scale-[1.02]"
+                  : "border border-gray-200 hover:border-blue-300 hover:shadow-md hover:scale-[1.02]"
+              }`}
+              aria-label={`Select ${tmpl.id} template`}
+            >
+              {/* Preview */}
+              <div className="relative h-full w-full">
+                {tmpl.preview}
 
-            {/* Selected indicator */}
-            {template === tmpl.id && (
-              <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-blue-600">
-                <svg
-                  className="h-3 w-3 text-white"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path d="M5 13l4 4L19 7" />
-                </svg>
+                {/* Gradient overlay on hover (non-selected) */}
+                {template !== tmpl.id && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                )}
               </div>
-            )}
-          </button>
+            </button>
+
+            {/* Template name label */}
+            <div className="text-center">
+              <span
+                className={`text-sm font-medium transition-colors ${
+                  template === tmpl.id
+                    ? "text-blue-600"
+                    : "text-gray-600"
+                }`}
+              >
+                {templateLabels[tmpl.id]}
+              </span>
+            </div>
+          </div>
         ))}
       </div>
 
-      <div className="mt-4 rounded-md bg-blue-50 p-3">
-        <p className="text-xs text-blue-800">
-          <span className="font-semibold">Tip:</span> Click a card to switch templates instantly
-        </p>
+      <div className="mt-6 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-4 border border-blue-100">
+        <div className="flex items-start gap-3">
+          <svg
+            className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p className="text-sm text-blue-900">
+            <span className="font-semibold">Tip:</span> Preview updates in real-time as you switch templates
+          </p>
+        </div>
       </div>
     </div>
   );

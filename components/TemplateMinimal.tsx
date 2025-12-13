@@ -17,7 +17,7 @@ export default function TemplateMinimal() {
         className="relative bg-white text-gray-800 shadow-lg"
         style={{
           width: "210mm",
-          minHeight: "297mm",
+          height: "297mm",
           fontFamily: "var(--font-inter)",
           fontSize: "0.875rem",
           lineHeight: "1.6",
