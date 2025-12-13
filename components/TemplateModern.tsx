@@ -191,8 +191,8 @@ export default function TemplateModern() {
             </section>
 
             {/* SKILLS Section */}
-            {resume.skills.technical.length > 0 && (
-              <section className="mb-6">
+            {resume.skills.skills.length > 0 && (
+              <section className="mb-4">
                 <h2
                   className="mb-2 text-xs font-bold uppercase tracking-wider"
                   style={{
@@ -211,7 +211,7 @@ export default function TemplateModern() {
                   }}
                 />
                 <div className="flex flex-wrap gap-2">
-                  {resume.skills.technical.map((skill, index) => (
+                  {resume.skills.skills.map((skill, index) => (
                     <span
                       key={index}
                       className="rounded px-2 py-1 text-xs font-medium"
@@ -222,6 +222,44 @@ export default function TemplateModern() {
                       }}
                     >
                       {skill}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* TOOLS Section */}
+            {resume.skills.tools.length > 0 && (
+              <section className="mb-4">
+                <h2
+                  className="mb-2 text-xs font-bold uppercase tracking-wider"
+                  style={{
+                    color: accentColor,
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Tools
+                </h2>
+                <div
+                  style={{
+                    width: "40px",
+                    height: "3px",
+                    backgroundColor: accentColor,
+                    marginBottom: "12px",
+                  }}
+                />
+                <div className="flex flex-wrap gap-2">
+                  {resume.skills.tools.map((tool, index) => (
+                    <span
+                      key={index}
+                      className="rounded px-2 py-1 text-xs font-medium"
+                      style={{
+                        backgroundColor: "#FEF3C7",
+                        color: accentColor,
+                        border: `1px solid ${accentColor}30`,
+                      }}
+                    >
+                      {tool}
                     </span>
                   ))}
                 </div>

@@ -23,7 +23,8 @@ const initialResume: Resume = {
   experience: [],
   education: [],
   skills: {
-    technical: [],
+    skills: [],
+    tools: [],
     languages: [],
   },
   certifications: [],
@@ -53,8 +54,18 @@ interface ResumeStore {
 
   // Skills actions
   updateSkills: (skills: Partial<Skills>) => void;
-  addTechnicalSkill: (skill: string) => void;
-  removeTechnicalSkill: (skill: string) => void;
+
+  // Skills
+  addSkill: (skill: string) => void;
+  removeSkill: (skill: string) => void;
+  reorderSkills: (startIndex: number, endIndex: number) => void;
+
+  // Tools
+  addTool: (tool: string) => void;
+  removeTool: (tool: string) => void;
+  reorderTools: (startIndex: number, endIndex: number) => void;
+
+  // Languages
   addLanguage: (language: Skills["languages"][0]) => void;
   removeLanguage: (language: string) => void;
 
@@ -208,31 +219,93 @@ export const useResumeStore = create<ResumeStore>()(
           },
         })),
 
-      addTechnicalSkill: (skill) =>
+      // Skills
+      addSkill: (skill) =>
         set((state) => ({
           resume: {
             ...state.resume,
             skills: {
               ...state.resume.skills,
-              technical: [...state.resume.skills.technical, skill],
+              skills: [...state.resume.skills.skills, skill],
             },
             updatedAt: new Date().toISOString(),
           },
         })),
 
-      removeTechnicalSkill: (skill) =>
+      removeSkill: (skill) =>
         set((state) => ({
           resume: {
             ...state.resume,
             skills: {
               ...state.resume.skills,
-              technical: state.resume.skills.technical.filter(
+              skills: state.resume.skills.skills.filter(
                 (s) => s !== skill
               ),
             },
             updatedAt: new Date().toISOString(),
           },
         })),
+
+      reorderSkills: (startIndex, endIndex) =>
+        set((state) => {
+          const result = Array.from(state.resume.skills.skills);
+          const [removed] = result.splice(startIndex, 1);
+          result.splice(endIndex, 0, removed);
+
+          return {
+            resume: {
+              ...state.resume,
+              skills: {
+                ...state.resume.skills,
+                skills: result,
+              },
+              updatedAt: new Date().toISOString(),
+            },
+          };
+        }),
+
+      // Tools
+      addTool: (tool) =>
+        set((state) => ({
+          resume: {
+            ...state.resume,
+            skills: {
+              ...state.resume.skills,
+              tools: [...state.resume.skills.tools, tool],
+            },
+            updatedAt: new Date().toISOString(),
+          },
+        })),
+
+      removeTool: (tool) =>
+        set((state) => ({
+          resume: {
+            ...state.resume,
+            skills: {
+              ...state.resume.skills,
+              tools: state.resume.skills.tools.filter((t) => t !== tool),
+            },
+            updatedAt: new Date().toISOString(),
+          },
+        })),
+
+      reorderTools: (startIndex, endIndex) =>
+        set((state) => {
+          const result = Array.from(state.resume.skills.tools);
+          const [removed] = result.splice(startIndex, 1);
+          result.splice(endIndex, 0, removed);
+
+          return {
+            resume: {
+              ...state.resume,
+              skills: {
+                ...state.resume.skills,
+                tools: result,
+              },
+              updatedAt: new Date().toISOString(),
+            },
+          };
+        }),
 
       addLanguage: (language) =>
         set((state) => ({

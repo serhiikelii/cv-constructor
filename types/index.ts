@@ -39,12 +39,12 @@ export interface Education {
 
 // Skills interface
 export interface Skills {
-  technical: string[];
+  skills: string[]; // Professional skills: technical, soft skills, methodologies (React, TypeScript, Team Leadership, Agile, etc.)
+  tools: string[]; // Tools and platforms: Jira, Figma, Notion, VS Code, Git, etc.
   languages: Array<{
     language: string;
     proficiency: "Native" | "Fluent" | "Professional" | "Intermediate" | "Basic";
   }>;
-  soft?: string[];
 }
 
 // Certifications interface

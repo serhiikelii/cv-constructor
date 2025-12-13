@@ -5,12 +5,12 @@ interface SkillsSectionProps {
 }
 
 export default function SkillsSection({ skills }: SkillsSectionProps) {
-  // Empty state check: hide section if no technical skills and no languages
-  const hasTechnical = skills.technical && skills.technical.length > 0;
+  // Empty state check
+  const hasSkills = skills.skills && skills.skills.length > 0;
+  const hasTools = skills.tools && skills.tools.length > 0;
   const hasLanguages = skills.languages && skills.languages.length > 0;
-  const hasSoft = skills.soft && skills.soft.length > 0;
 
-  if (!hasTechnical && !hasLanguages && !hasSoft) {
+  if (!hasSkills && !hasTools && !hasLanguages) {
     return null;
   }
 
@@ -30,9 +30,9 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
         Skills
       </h2>
 
-      {/* Technical Skills */}
-      {hasTechnical && (
-        <div style={{ marginBottom: "4px" }}>
+      {/* Skills */}
+      {hasSkills && (
+        <div style={{ marginBottom: "8px" }}>
           <h3
             style={{
               fontFamily: "var(--font-merriweather)",
@@ -41,7 +41,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
               marginBottom: "2px",
             }}
           >
-            Technical
+            SKILLS
           </h3>
           <p
             style={{
@@ -50,14 +50,14 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
               lineHeight: "1.6",
             }}
           >
-            {skills.technical.join(", ")}
+            {skills.skills.join(" • ")}
           </p>
         </div>
       )}
 
-      {/* Languages */}
-      {hasLanguages && (
-        <div style={{ marginBottom: "4px" }}>
+      {/* Tools */}
+      {hasTools && (
+        <div style={{ marginBottom: "8px" }}>
           <h3
             style={{
               fontFamily: "var(--font-merriweather)",
@@ -66,7 +66,32 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
               marginBottom: "2px",
             }}
           >
-            Languages
+            TOOLS
+          </h3>
+          <p
+            style={{
+              fontFamily: "var(--font-open-sans)",
+              fontSize: "0.875rem",
+              lineHeight: "1.6",
+            }}
+          >
+            {skills.tools.join(" • ")}
+          </p>
+        </div>
+      )}
+
+      {/* Languages */}
+      {hasLanguages && (
+        <div>
+          <h3
+            style={{
+              fontFamily: "var(--font-merriweather)",
+              fontSize: "0.875rem",
+              fontWeight: 700,
+              marginBottom: "2px",
+            }}
+          >
+            LANGUAGES
           </h3>
           <p
             style={{
@@ -77,32 +102,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
           >
             {skills.languages
               .map((lang) => `${lang.language} (${lang.proficiency})`)
-              .join(", ")}
-          </p>
-        </div>
-      )}
-
-      {/* Soft Skills (optional) */}
-      {hasSoft && (
-        <div>
-          <h3
-            style={{
-              fontFamily: "var(--font-merriweather)",
-              fontSize: "0.875rem",
-              fontWeight: 700,
-              marginBottom: "2px",
-            }}
-          >
-            Soft Skills
-          </h3>
-          <p
-            style={{
-              fontFamily: "var(--font-open-sans)",
-              fontSize: "0.875rem",
-              lineHeight: "1.6",
-            }}
-          >
-            {skills.soft!.join(", ")}
+              .join(" • ")}
           </p>
         </div>
       )}

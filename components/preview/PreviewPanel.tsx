@@ -7,6 +7,7 @@ import { ZoomIn, ZoomOut, Maximize2, Download } from "lucide-react";
 import { useResumeStore } from "@/store/resumeStore";
 import TemplateClassic from "../TemplateClassic";
 import TemplateModern from "../TemplateModern";
+import TemplateMinimal from "../TemplateMinimal";
 
 export default function PreviewPanel() {
   const [zoom, setZoom] = useState(1);
@@ -151,7 +152,13 @@ export default function PreviewPanel() {
             }}
           >
             <div ref={printRef}>
-              {resume.template === "modern" ? <TemplateModern /> : <TemplateClassic />}
+              {resume.template === "modern" ? (
+                <TemplateModern />
+              ) : resume.template === "minimal" ? (
+                <TemplateMinimal />
+              ) : (
+                <TemplateClassic />
+              )}
             </div>
           </div>
         </div>
