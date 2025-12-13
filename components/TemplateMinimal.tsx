@@ -66,10 +66,10 @@ export default function TemplateMinimal() {
             <div
               style={{
                 position: "absolute",
-                left: "12px",
-                top: "8px",
+                left: "14px",
+                top: "7px",
                 bottom: "0",
-                width: "2px",
+                width: "4px",
                 backgroundColor: accentColor,
               }}
             />
@@ -80,10 +80,10 @@ export default function TemplateMinimal() {
               <div
                 style={{
                   position: "absolute",
-                  left: "-28px",
-                  top: "4px",
-                  width: "12px",
-                  height: "12px",
+                  left: "-32px",
+                  top: "0px",
+                  width: "16px",
+                  height: "16px",
                   borderRadius: "50%",
                   backgroundColor: "white",
                   border: `3px solid ${accentColor}`,
@@ -116,10 +116,10 @@ export default function TemplateMinimal() {
               <div
                 style={{
                   position: "absolute",
-                  left: "-28px",
-                  top: "4px",
-                  width: "12px",
-                  height: "12px",
+                  left: "-32px",
+                  top: "0px",
+                  width: "16px",
+                  height: "16px",
                   borderRadius: "50%",
                   backgroundColor: "white",
                   border: `3px solid ${accentColor}`,
@@ -170,10 +170,10 @@ export default function TemplateMinimal() {
               <div
                 style={{
                   position: "absolute",
-                  left: "-28px",
-                  top: "4px",
-                  width: "12px",
-                  height: "12px",
+                  left: "-32px",
+                  top: "0px",
+                  width: "16px",
+                  height: "16px",
                   borderRadius: "50%",
                   backgroundColor: "white",
                   border: `3px solid ${accentColor}`,
@@ -270,10 +270,10 @@ export default function TemplateMinimal() {
               <div
                 style={{
                   position: "absolute",
-                  left: "-28px",
-                  top: "4px",
-                  width: "12px",
-                  height: "12px",
+                  left: "-32px",
+                  top: "0px",
+                  width: "16px",
+                  height: "16px",
                   borderRadius: "50%",
                   backgroundColor: "white",
                   border: `3px solid ${accentColor}`,
