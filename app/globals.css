@@ -144,6 +144,14 @@
     display: none !important;
   }
 
+  /* Remove padding and styling from preview wrapper */
+  .flex.min-h-screen {
+    padding: 0 !important;
+    min-height: auto !important;
+    background: transparent !important;
+    margin: 0 !important;
+  }
+
   /* Remove shadows and borders from resume container */
   .resume-preview-container,
   div[style*="210mm"] {
@@ -199,5 +207,10 @@
   * {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+
+  /* Hide placeholders in print */
+  .opacity-50 {
+    display: none !important;
   }
 }

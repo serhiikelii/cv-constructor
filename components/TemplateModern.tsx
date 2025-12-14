@@ -19,7 +19,7 @@ export default function TemplateModern() {
         className="relative bg-white text-gray-800 shadow-lg"
         style={{
           width: "210mm",
-          minHeight: "297mm",
+          height: "297mm",
           fontFamily: "var(--font-inter)",
           fontSize: "0.875rem", // 14px ≈ 10.5pt
           lineHeight: "1.6",
@@ -89,18 +89,19 @@ export default function TemplateModern() {
           </div>
         </header>
 
-        {/* Two Column Grid Layout */}
+        {/* Two Column Flex Layout */}
         <div
-          className="grid"
           style={{
-            gridTemplateColumns: "35% 65%",
-            minHeight: "calc(297mm - 140px)",
+            display: "flex",
+            height: "calc(297mm - 140px)",
           }}
         >
           {/* LEFT SIDEBAR - 35% */}
-          <aside
+          <div
             className="px-6 py-6"
             style={{
+              width: "35%",
+              flexShrink: 0,
               backgroundColor: "#F3F4F6",
             }}
           >
@@ -235,7 +236,7 @@ export default function TemplateModern() {
                     </span>
                     ))
                   ) : (
-                    <>
+                    <div className={placeholderOpacity}>
                       <span
                         className="rounded px-2 py-1 text-xs font-medium"
                         style={{
@@ -266,7 +267,7 @@ export default function TemplateModern() {
                       >
                         Skill 3
                       </span>
-                    </>
+                    </div>
                   )}
                 </div>
               </section>
@@ -402,10 +403,10 @@ export default function TemplateModern() {
                   )}
                 </div>
               </section>
-          </aside>
+          </div>
 
           {/* RIGHT MAIN CONTENT - 65% */}
-          <main className="px-8 py-6">
+          <div className="px-8 py-6" style={{ flex: 1 }}>
             {/* PROFILE/SUMMARY Section */}
             <section className="mb-6">
               <h2
@@ -502,7 +503,7 @@ export default function TemplateModern() {
                     ))
                   ) : (
                     /* Placeholder examples */
-                    <>
+                    <div className={placeholderOpacity}>
                       {/* Job 1 placeholder */}
                       <div>
                         <div className="mb-1 flex items-start justify-between">
@@ -576,7 +577,7 @@ export default function TemplateModern() {
                           </li>
                         </ul>
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
               </section>
@@ -632,7 +633,7 @@ export default function TemplateModern() {
                 </div>
               </section>
             )}
-          </main>
+          </div>
         </div>
 
         {/* Print styles */}
@@ -662,6 +663,11 @@ export default function TemplateModern() {
             a {
               color: #000000;
               text-decoration: none;
+            }
+
+            /* Hide placeholders in print */
+            .opacity-50 {
+              display: none;
             }
           }
         `}</style>

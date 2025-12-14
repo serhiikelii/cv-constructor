@@ -20,7 +20,7 @@ export default function TemplateClassic() {
         className="relative bg-white text-gray-800 shadow-lg"
         style={{
           width: "210mm",
-          minHeight: "297mm",
+          height: "297mm",
           padding: "25mm",
           fontFamily: "var(--font-merriweather)",
           fontSize: "0.875rem", // 14px ≈ 10.5pt
@@ -208,6 +208,11 @@ export default function TemplateClassic() {
             a {
               color: #000000;
               text-decoration: none;
+            }
+
+            /* Hide placeholders in print */
+            .opacity-50 {
+              display: none;
             }
           }
         `}</style>
