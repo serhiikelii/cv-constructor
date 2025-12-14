@@ -18,7 +18,7 @@ const ClassicPreview = () => (
   <div className="h-full w-full overflow-hidden bg-gray-100 flex items-center justify-center">
     <div
       style={{
-        transform: "scale(0.18)",
+        transform: "scale(0.16)",
         transformOrigin: "center center",
         width: "793.7px", // A4 width at 96 DPI
         height: "1122.5px", // A4 height at 96 DPI
@@ -33,7 +33,7 @@ const ModernPreview = () => (
   <div className="h-full w-full overflow-hidden bg-gray-100 flex items-center justify-center">
     <div
       style={{
-        transform: "scale(0.18)",
+        transform: "scale(0.16)",
         transformOrigin: "center center",
         width: "793.7px",
         height: "1122.5px",
@@ -48,7 +48,7 @@ const MinimalPreview = () => (
   <div className="h-full w-full overflow-hidden bg-gray-100 flex items-center justify-center">
     <div
       style={{
-        transform: "scale(0.18)",
+        transform: "scale(0.16)",
         transformOrigin: "center center",
         width: "793.7px",
         height: "1122.5px",
@@ -63,7 +63,7 @@ const CreativePreview = () => (
   <div className="h-full w-full overflow-hidden bg-gray-100 flex items-center justify-center">
     <div
       style={{
-        transform: "scale(0.18)",
+        transform: "scale(0.16)",
         transformOrigin: "center center",
         width: "793.7px",
         height: "1122.5px",
@@ -78,7 +78,7 @@ const SidebarPreview = () => (
   <div className="h-full w-full overflow-hidden bg-gray-100 flex items-center justify-center">
     <div
       style={{
-        transform: "scale(0.18)",
+        transform: "scale(0.16)",
         transformOrigin: "center center",
         width: "793.7px",
         height: "1122.5px",
@@ -131,7 +131,7 @@ export default function TemplateSelector() {
         <p className="mt-1 text-sm text-gray-500">Select a layout that best represents you</p>
       </div>
 
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {templates.map((tmpl) => (
           <div key={tmpl.id} className="flex flex-col gap-2">
             <button
