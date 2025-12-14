@@ -173,19 +173,6 @@ export default function PersonalForm() {
         />
       </div>
 
-      {/* Website */}
-      <div className="space-y-2">
-        <Label htmlFor="website">Website</Label>
-        <Input
-          id="website"
-          name="website"
-          type="url"
-          value={resume.personalDetails.website || ""}
-          onChange={handleChange}
-          placeholder="johndoe.com"
-        />
-      </div>
-
       {/* Summary */}
       <div className="space-y-2">
         <Label htmlFor="summary">Professional Summary</Label>

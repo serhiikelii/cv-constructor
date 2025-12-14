@@ -3,7 +3,7 @@
 import { useResumeStore } from "@/store/resumeStore";
 import { ContactItem } from "./resume/ContactItem";
 import { cleanUrl, ensureProtocol, getMailtoUrl, getTelUrl } from "@/lib/urlUtils";
-import { Mail, Phone, MapPin, Linkedin, Github, Globe } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Github } from "lucide-react";
 
 export default function TemplateCreative() {
   const resume = useResumeStore((state) => state.resume);
@@ -188,18 +188,6 @@ export default function TemplateCreative() {
                       style={{ color: "#374151" }}
                     >
                       {cleanUrl(resume.personalDetails.github)}
-                    </a>
-                  </div>
-                )}
-                {resume.personalDetails.website && (
-                  <div className="flex items-start gap-2">
-                    <Globe className="mt-0.5 h-4 w-4 flex-shrink-0" style={{ color: accentColor }} />
-                    <a
-                      href={ensureProtocol(resume.personalDetails.website)}
-                      className="break-all hover:underline"
-                      style={{ color: "#374151" }}
-                    >
-                      {cleanUrl(resume.personalDetails.website)}
                     </a>
                   </div>
                 )}

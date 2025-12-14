@@ -25,84 +25,124 @@ export default function TemplateMinimal() {
       >
         {/* Header */}
         <header className="px-16 pt-12 pb-6">
-          <h1
-            className="font-bold"
-            style={{
-              fontFamily: "var(--font-inter)",
-              fontSize: "2.5rem",
-              fontWeight: 700,
-              color: accentColor,
-              letterSpacing: "-0.02em",
-              lineHeight: "1.2",
-            }}
-          >
-            {resume.personalDetails.fullName || (
-              <span className={placeholderOpacity}>YOUR NAME</span>
-            )}
-          </h1>
-
-          {/* Contact Info */}
-          <div
-            className={`mt-3 flex flex-col gap-1 text-sm ${
-              !resume.personalDetails.email &&
-              !resume.personalDetails.location &&
-              !resume.personalDetails.phone &&
-              !resume.personalDetails.linkedin
-                ? placeholderOpacity
-                : ""
-            }`}
-            style={{ color: textColor, fontSize: "0.875rem" }}
-          >
-            {resume.personalDetails.location ||
-             resume.personalDetails.email ||
-             resume.personalDetails.phone ||
-             resume.personalDetails.linkedin ? (
-              <>
-                {/* Line 1: City */}
-                {resume.personalDetails.location && (
-                  <div>{resume.personalDetails.location}</div>
+          <div className="flex items-start gap-6">
+            {/* Text Content */}
+            <div className="flex-1">
+              <h1
+                className="font-bold"
+                style={{
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "2.5rem",
+                  fontWeight: 700,
+                  color: accentColor,
+                  letterSpacing: "-0.02em",
+                  lineHeight: "1.2",
+                }}
+              >
+                {resume.personalDetails.fullName || (
+                  <span className={placeholderOpacity}>YOUR NAME</span>
                 )}
+              </h1>
 
-                {/* Line 2: Email | Phone */}
-                {(resume.personalDetails.email || resume.personalDetails.phone) && (
-                  <div className="flex items-center gap-2">
-                    {[
-                      resume.personalDetails.email,
-                      resume.personalDetails.phone,
-                    ]
-                      .filter(Boolean)
-                      .map((item, index, arr) => (
-                        <span key={index}>
-                          {item}
-                          {index < arr.length - 1 && (
-                            <span className="mx-2" style={{ color: textColor }}>|</span>
-                          )}
-                        </span>
-                      ))}
-                  </div>
-                )}
+              {/* Contact Info */}
+              <div
+                className={`mt-3 flex flex-col gap-1 text-sm ${
+                  !resume.personalDetails.email &&
+                  !resume.personalDetails.location &&
+                  !resume.personalDetails.phone &&
+                  !resume.personalDetails.linkedin
+                    ? placeholderOpacity
+                    : ""
+                }`}
+                style={{ color: textColor, fontSize: "0.875rem" }}
+              >
+                {resume.personalDetails.location ||
+                 resume.personalDetails.email ||
+                 resume.personalDetails.phone ||
+                 resume.personalDetails.linkedin ? (
+                  <>
+                    {/* Line 1: City */}
+                    {resume.personalDetails.location && (
+                      <div>{resume.personalDetails.location}</div>
+                    )}
 
-                {/* Line 3: LinkedIn */}
-                {resume.personalDetails.linkedin && (
-                  <div>{resume.personalDetails.linkedin}</div>
-                )}
+                    {/* Line 2: Email | Phone */}
+                    {(resume.personalDetails.email || resume.personalDetails.phone) && (
+                      <div className="flex items-center gap-2">
+                        {[
+                          resume.personalDetails.email,
+                          resume.personalDetails.phone,
+                        ]
+                          .filter(Boolean)
+                          .map((item, index, arr) => (
+                            <span key={index}>
+                              {item}
+                              {index < arr.length - 1 && (
+                                <span className="mx-2" style={{ color: textColor }}>|</span>
+                              )}
+                            </span>
+                          ))}
+                      </div>
+                    )}
 
-                {/* Line 4: GitHub */}
-                {resume.personalDetails.github && (
-                  <div>{resume.personalDetails.github}</div>
+                    {/* Line 3: LinkedIn */}
+                    {resume.personalDetails.linkedin && (
+                      <div>{resume.personalDetails.linkedin}</div>
+                    )}
+
+                    {/* Line 4: GitHub */}
+                    {resume.personalDetails.github && (
+                      <div>{resume.personalDetails.github}</div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div>City, Country</div>
+                    <div className="flex items-center gap-2">
+                      <span>email@example.com</span>
+                      <span className="mx-2">|</span>
+                      <span>+1 234 567 890</span>
+                    </div>
+                    <div>LinkedIn</div>
+                    <div>GitHub</div>
+                  </>
                 )}
-              </>
+              </div>
+            </div>
+
+            {/* Photo - Circular */}
+            {resume.personalDetails.photo ? (
+              <div
+                className="overflow-hidden rounded-full"
+                style={{
+                  flexShrink: 0,
+                  width: "100px",
+                  height: "100px",
+                  border: `3px solid ${accentColor}`,
+                }}
+              >
+                <img
+                  src={resume.personalDetails.photo}
+                  alt={resume.personalDetails.fullName || "Profile photo"}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
             ) : (
-              <>
-                <div>City, Country</div>
-                <div className="flex items-center gap-2">
-                  <span>email@example.com</span>
-                  <span className="mx-2">|</span>
-                  <span>+1 234 567 890</span>
-                </div>
-                <div>LinkedIn</div>
-                <div>GitHub</div>
-              </>
+              <div
+                className={`flex items-center justify-center overflow-hidden rounded-full bg-gray-100 ${placeholderOpacity}`}
+                style={{
+                  flexShrink: 0,
+                  width: "100px",
+                  height: "100px",
+                  border: `3px solid ${accentColor}`,
+                }}
+              >
+                <span className="text-xs text-gray-400">Photo</span>
+              </div>
             )}
           </div>
         </header>
@@ -175,42 +215,122 @@ export default function TemplateMinimal() {
                 }}
               />
 
-              <h2
-                className="mb-2 font-bold uppercase tracking-wider"
-                style={{
-                  color: accentColor,
-                  fontSize: "0.875rem",
-                  fontWeight: 700,
-                }}
-              >
-                Skills
-              </h2>
-
               <p
-                className={`mb-3 text-sm ${resume.skills.skills.length === 0 ? placeholderOpacity : ""}`}
+                className={`mb-3 text-sm ${resume.skills.skills.length === 0 && resume.skills.tools.length === 0 && resume.skills.languages.length === 0 ? placeholderOpacity : ""}`}
                 style={{ color: textColor }}
               >
-                {resume.skills.skills.length > 0
-                  ? ""
-                  : "List your professional skills in bullet points so they're easy for recruiters to read."}
+                {resume.skills.skills.length === 0 && resume.skills.tools.length === 0 && resume.skills.languages.length === 0
+                  ? "List your professional skills, tools and languages in bullet points so they're easy for recruiters to read."
+                  : ""}
               </p>
 
-              {resume.skills.skills.length > 0 ? (
-                <div className="grid grid-cols-2 gap-x-8 gap-y-1">
-                  {resume.skills.skills.map((skill, index) => (
-                    <div key={index} className="text-sm" style={{ color: textColor }}>
-                      {skill}
+              {/* Three column layout */}
+              <div className="grid grid-cols-3 gap-x-6">
+                {/* SKILLS Column */}
+                <div>
+                  <h2
+                    className="mb-2 font-bold uppercase tracking-wider"
+                    style={{
+                      color: accentColor,
+                      fontSize: "0.875rem",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Skills
+                  </h2>
+                  {resume.skills.skills.length > 0 ? (
+                    <div className="space-y-1">
+                      {resume.skills.skills.map((skill, index) => (
+                        <div key={index} className="flex gap-2 text-sm" style={{ color: textColor }}>
+                          <span>•</span>
+                          <span>{skill}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  ) : (
+                    <div className={`space-y-1 ${placeholderOpacity}`}>
+                      <div className="flex gap-2 text-sm" style={{ color: textColor }}>
+                        <span>•</span>
+                        <span>Skill 1</span>
+                      </div>
+                      <div className="flex gap-2 text-sm" style={{ color: textColor }}>
+                        <span>•</span>
+                        <span>Skill 2</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className={`grid grid-cols-2 gap-x-8 gap-y-1 ${placeholderOpacity}`}>
-                  <div className="text-sm" style={{ color: textColor }}>Skill 1</div>
-                  <div className="text-sm" style={{ color: textColor }}>Skill 2</div>
-                  <div className="text-sm" style={{ color: textColor }}>Skill 3</div>
-                  <div className="text-sm" style={{ color: textColor }}>Skill 4</div>
+
+                {/* TOOLS Column */}
+                <div>
+                  <h2
+                    className="mb-2 font-bold uppercase tracking-wider"
+                    style={{
+                      color: accentColor,
+                      fontSize: "0.875rem",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Tools
+                  </h2>
+                  {resume.skills.tools.length > 0 ? (
+                    <div className="space-y-1">
+                      {resume.skills.tools.map((tool, index) => (
+                        <div key={index} className="flex gap-2 text-sm" style={{ color: textColor }}>
+                          <span>•</span>
+                          <span>{tool}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className={`space-y-1 ${placeholderOpacity}`}>
+                      <div className="flex gap-2 text-sm" style={{ color: textColor }}>
+                        <span>•</span>
+                        <span>Tool 1</span>
+                      </div>
+                      <div className="flex gap-2 text-sm" style={{ color: textColor }}>
+                        <span>•</span>
+                        <span>Tool 2</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
+
+                {/* LANGUAGES Column */}
+                <div>
+                  <h2
+                    className="mb-2 font-bold uppercase tracking-wider"
+                    style={{
+                      color: accentColor,
+                      fontSize: "0.875rem",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Languages
+                  </h2>
+                  {resume.skills.languages.length > 0 ? (
+                    <div className="space-y-1">
+                      {resume.skills.languages.map((lang, index) => (
+                        <div key={index} className="flex gap-2 text-sm" style={{ color: textColor }}>
+                          <span>•</span>
+                          <span>{lang.language} ({lang.proficiency})</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className={`space-y-1 ${placeholderOpacity}`}>
+                      <div className="flex gap-2 text-sm" style={{ color: textColor }}>
+                        <span>•</span>
+                        <span>Language 1 (Level)</span>
+                      </div>
+                      <div className="flex gap-2 text-sm" style={{ color: textColor }}>
+                        <span>•</span>
+                        <span>Language 2 (Level)</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </section>
 
             {/* PROFESSIONAL EXPERIENCE */}
@@ -356,7 +476,7 @@ export default function TemplateMinimal() {
                       <div className="flex items-start justify-between">
                         <div>
                           <p className="text-sm font-medium" style={{ color: textColor }}>
-                            {edu.institution} - {edu.location || "City"} - Mention (if applicable)
+                            {edu.institution}
                           </p>
                           <p className="text-sm font-bold" style={{ color: textColor }}>
                             Degree: {edu.degree} in {edu.field}
@@ -374,7 +494,7 @@ export default function TemplateMinimal() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm" style={{ color: textColor }}>
-                        Institution - City - Mention (if applicable)
+                        Institution
                       </p>
                       <p className="text-sm font-bold" style={{ color: textColor }}>
                         Degree: Field of study
@@ -388,7 +508,7 @@ export default function TemplateMinimal() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm" style={{ color: textColor }}>
-                        Institution - City - Mention (if applicable)
+                        Institution
                       </p>
                       <p className="text-sm font-bold" style={{ color: textColor }}>
                         Degree: Field of study
