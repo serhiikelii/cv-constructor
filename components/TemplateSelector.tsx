@@ -6,6 +6,7 @@ import TemplateClassic from "./TemplateClassic";
 import TemplateModern from "./TemplateModern";
 import TemplateMinimal from "./TemplateMinimal";
 import TemplateCreative from "./TemplateCreative";
+import TemplateSidebar from "./TemplateSidebar";
 
 interface TemplateOption {
   id: Resume["template"];
@@ -73,6 +74,21 @@ const CreativePreview = () => (
   </div>
 );
 
+const SidebarPreview = () => (
+  <div className="h-full w-full overflow-hidden bg-gray-100 flex items-center justify-center">
+    <div
+      style={{
+        transform: "scale(0.18)",
+        transformOrigin: "center center",
+        width: "793.7px",
+        height: "1122.5px",
+      }}
+    >
+      <TemplateSidebar />
+    </div>
+  </div>
+);
+
 const templates: TemplateOption[] = [
   {
     id: "classic",
@@ -90,6 +106,10 @@ const templates: TemplateOption[] = [
     id: "creative",
     preview: <CreativePreview />,
   },
+  {
+    id: "sidebar",
+    preview: <SidebarPreview />,
+  },
 ];
 
 export default function TemplateSelector() {
@@ -101,6 +121,7 @@ export default function TemplateSelector() {
     modern: "Modern",
     minimal: "Minimal",
     creative: "Creative",
+    sidebar: "Sidebar",
   };
 
   return (
@@ -110,7 +131,7 @@ export default function TemplateSelector() {
         <p className="mt-1 text-sm text-gray-500">Select a layout that best represents you</p>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-5 gap-4">
         {templates.map((tmpl) => (
           <div key={tmpl.id} className="flex flex-col gap-2">
             <button

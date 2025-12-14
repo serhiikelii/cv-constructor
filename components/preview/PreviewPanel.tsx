@@ -9,6 +9,7 @@ import TemplateClassic from "../TemplateClassic";
 import TemplateModern from "../TemplateModern";
 import TemplateMinimal from "../TemplateMinimal";
 import TemplateCreative from "../TemplateCreative";
+import TemplateSidebar from "../TemplateSidebar";
 
 export default function PreviewPanel() {
   const [zoom, setZoom] = useState(1);
@@ -159,6 +160,8 @@ export default function PreviewPanel() {
                 <TemplateMinimal />
               ) : resume.template === "creative" ? (
                 <TemplateCreative />
+              ) : resume.template === "sidebar" ? (
+                <TemplateSidebar />
               ) : (
                 <TemplateClassic />
               )}
