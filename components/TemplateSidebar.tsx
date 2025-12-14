@@ -26,11 +26,15 @@ export default function TemplateSidebar() {
         <aside
           className="col-span-4 p-8 pt-12 flex flex-col gap-10 border-r border-gray-200"
           style={{
-            backgroundColor: "#F3F4F6",
+            backgroundColor: "#DBEAFE",
           }}
         >
           {/* PHOTO */}
-          <div className="w-full aspect-square bg-gray-300 rounded-lg overflow-hidden mb-2 relative">
+          <div className="w-full aspect-square rounded-lg overflow-hidden mb-2 relative flex items-center justify-center"
+            style={{
+              backgroundColor: resume.personalDetails.photo ? "transparent" : "#E5E7EB",
+            }}
+          >
             {resume.personalDetails.photo ? (
               <img
                 src={resume.personalDetails.photo}
@@ -38,21 +42,27 @@ export default function TemplateSidebar() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className={`flex items-center justify-center h-full text-gray-500 ${placeholderOpacity}`}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-20 w-20"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1}
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
+              <div
+                className={`flex items-center justify-center bg-white ${placeholderOpacity}`}
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  border: "2px solid #1e3a5f",
+                  fontSize: "1.25rem",
+                  fontWeight: 300,
+                  letterSpacing: "0.05em",
+                  color: "#1e3a5f",
+                }}
+              >
+                {resume.personalDetails.fullName
+                  ? (() => {
+                      const parts = resume.personalDetails.fullName.trim().split(" ");
+                      if (parts.length >= 2) {
+                        return `${parts[0].charAt(0)}${parts[parts.length - 1].charAt(0)}`.toUpperCase();
+                      }
+                      return resume.personalDetails.fullName.substring(0, 2).toUpperCase();
+                    })()
+                  : "YN"}
               </div>
             )}
           </div>
@@ -306,6 +316,7 @@ export default function TemplateSidebar() {
             div[style*="210mm"] {
               box-shadow: none;
               margin: 0;
+              page-break-inside: avoid;
             }
 
             :global(body) {
@@ -329,15 +340,18 @@ export default function TemplateSidebar() {
               text-decoration: none;
             }
 
-            /* Hide placeholders in print */
-            .opacity-50 {
-              display: none;
+            /* Show all content in print */
+            aside,
+            main,
+            section,
+            div {
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
             }
 
-            /* Ensure sidebar background prints */
-            aside {
-              -webkit-print-color-adjust: exact;
-              print-color-adjust: exact;
+            /* Hide only placeholder opacity in print */
+            .opacity-50 {
+              opacity: 0 !important;
             }
           }
         `}</style>
