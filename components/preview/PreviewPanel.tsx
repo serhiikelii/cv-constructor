@@ -8,6 +8,7 @@ import { useResumeStore } from "@/store/resumeStore";
 import TemplateClassic from "../TemplateClassic";
 import TemplateModern from "../TemplateModern";
 import TemplateMinimal from "../TemplateMinimal";
+import TemplateCreative from "../TemplateCreative";
 
 export default function PreviewPanel() {
   const [zoom, setZoom] = useState(1);
@@ -156,6 +157,8 @@ export default function PreviewPanel() {
                 <TemplateModern />
               ) : resume.template === "minimal" ? (
                 <TemplateMinimal />
+              ) : resume.template === "creative" ? (
+                <TemplateCreative />
               ) : (
                 <TemplateClassic />
               )}

@@ -11,6 +11,7 @@ import SkillsSection from "./SkillsSection";
 
 export default function TemplateClassic() {
   const resume = useResumeStore((state) => state.resume);
+  const placeholderOpacity = "opacity-50";
 
   return (
     <div className="flex min-h-screen items-start justify-center bg-gray-100 p-8">
@@ -50,7 +51,9 @@ export default function TemplateClassic() {
                   fontWeight: 700,
                 }}
               >
-                {resume.personalDetails.fullName || "Your Name"}
+                {resume.personalDetails.fullName || (
+                  <span className={placeholderOpacity}>Your Name</span>
+                )}
               </h1>
               {resume.personalDetails.title && (
                 <p
@@ -137,42 +140,42 @@ export default function TemplateClassic() {
           )}
         </header>
 
-        {/* Summary Section - Only if summary exists */}
-        {resume.personalDetails.summary && (
-          <section>
-            <h2
-              className="mb-2 mt-6 uppercase"
-              style={{
-                fontFamily: "var(--font-merriweather)",
-                fontSize: "0.875rem",
-                fontWeight: 700,
-                borderBottom: "1px solid #000000",
-                paddingBottom: "4px",
-              }}
-            >
-              Summary
-            </h2>
-            <p
-              style={{
-                fontFamily: "var(--font-open-sans)",
-                fontSize: "0.875rem",
-                lineHeight: "1.6",
-                marginTop: "4px",
-              }}
-            >
-              {resume.personalDetails.summary}
-            </p>
-          </section>
-        )}
+        {/* Summary Section */}
+        <section>
+          <h2
+            className="mb-2 mt-6 uppercase"
+            style={{
+              fontFamily: "var(--font-merriweather)",
+              fontSize: "0.875rem",
+              fontWeight: 700,
+              borderBottom: "1px solid #000000",
+              paddingBottom: "4px",
+            }}
+          >
+            Summary
+          </h2>
+          <p
+            className={!resume.personalDetails.summary ? placeholderOpacity : ""}
+            style={{
+              fontFamily: "var(--font-open-sans)",
+              fontSize: "0.875rem",
+              lineHeight: "1.6",
+              marginTop: "4px",
+            }}
+          >
+            {resume.personalDetails.summary ||
+              "Use this section to give recruiters a quick glimpse of your professional profile. In just 3-4 lines, highlight your background, education and main skills."}
+          </p>
+        </section>
+
+        {/* Skills Section */}
+        <SkillsSection skills={resume.skills} />
 
         {/* Experience Section */}
         <ExperienceSection experiences={resume.experience} />
 
         {/* Education Section */}
         <EducationSection education={resume.education} />
-
-        {/* Skills Section */}
-        <SkillsSection skills={resume.skills} />
 
         {/* Print styles */}
         <style jsx>{`

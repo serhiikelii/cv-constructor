@@ -5,6 +5,7 @@ import type { Resume } from "@/types";
 import TemplateClassic from "./TemplateClassic";
 import TemplateModern from "./TemplateModern";
 import TemplateMinimal from "./TemplateMinimal";
+import TemplateCreative from "./TemplateCreative";
 
 interface TemplateOption {
   id: Resume["template"];
@@ -57,6 +58,21 @@ const MinimalPreview = () => (
   </div>
 );
 
+const CreativePreview = () => (
+  <div className="h-full w-full overflow-hidden bg-gray-100 flex items-center justify-center">
+    <div
+      style={{
+        transform: "scale(0.18)",
+        transformOrigin: "center center",
+        width: "793.7px",
+        height: "1122.5px",
+      }}
+    >
+      <TemplateCreative />
+    </div>
+  </div>
+);
+
 const templates: TemplateOption[] = [
   {
     id: "classic",
@@ -70,6 +86,10 @@ const templates: TemplateOption[] = [
     id: "minimal",
     preview: <MinimalPreview />,
   },
+  {
+    id: "creative",
+    preview: <CreativePreview />,
+  },
 ];
 
 export default function TemplateSelector() {
@@ -80,6 +100,7 @@ export default function TemplateSelector() {
     classic: "Classic",
     modern: "Modern",
     minimal: "Minimal",
+    creative: "Creative",
   };
 
   return (
@@ -89,7 +110,7 @@ export default function TemplateSelector() {
         <p className="mt-1 text-sm text-gray-500">Select a layout that best represents you</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {templates.map((tmpl) => (
           <div key={tmpl.id} className="flex flex-col gap-2">
             <button

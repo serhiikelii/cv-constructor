@@ -7,6 +7,7 @@ import { Mail, Phone, MapPin, Linkedin, Github, Globe } from "lucide-react";
 
 export default function TemplateModern() {
   const resume = useResumeStore((state) => state.resume);
+  const placeholderOpacity = "opacity-50";
 
   // Accent color - Electric Blue
   const accentColor = "#2563EB";
@@ -44,7 +45,9 @@ export default function TemplateModern() {
                   letterSpacing: "-0.02em",
                 }}
               >
-                {resume.personalDetails.fullName || "Your Name"}
+                {resume.personalDetails.fullName || (
+                  <span className={placeholderOpacity}>Your Name</span>
+                )}
               </h1>
               {resume.personalDetails.title && (
                 <p
@@ -191,8 +194,7 @@ export default function TemplateModern() {
             </section>
 
             {/* SKILLS Section */}
-            {resume.skills.skills.length > 0 && (
-              <section className="mb-4">
+            <section className="mb-4">
                 <h2
                   className="mb-2 text-xs font-bold uppercase tracking-wider"
                   style={{
@@ -210,8 +212,16 @@ export default function TemplateModern() {
                     marginBottom: "12px",
                   }}
                 />
+
+                {resume.skills.skills.length === 0 && (
+                  <p className={`text-sm mb-2 ${placeholderOpacity}`} style={{ color: "#374151" }}>
+                    List your professional skills
+                  </p>
+                )}
+
                 <div className="flex flex-wrap gap-2">
-                  {resume.skills.skills.map((skill, index) => (
+                  {resume.skills.skills.length > 0 ? (
+                    resume.skills.skills.map((skill, index) => (
                     <span
                       key={index}
                       className="rounded px-2 py-1 text-xs font-medium"
@@ -223,10 +233,43 @@ export default function TemplateModern() {
                     >
                       {skill}
                     </span>
-                  ))}
+                    ))
+                  ) : (
+                    <>
+                      <span
+                        className="rounded px-2 py-1 text-xs font-medium"
+                        style={{
+                          backgroundColor: "#E0E7FF",
+                          color: accentColor,
+                          border: `1px solid ${accentColor}30`,
+                        }}
+                      >
+                        Skill 1
+                      </span>
+                      <span
+                        className="rounded px-2 py-1 text-xs font-medium"
+                        style={{
+                          backgroundColor: "#E0E7FF",
+                          color: accentColor,
+                          border: `1px solid ${accentColor}30`,
+                        }}
+                      >
+                        Skill 2
+                      </span>
+                      <span
+                        className="rounded px-2 py-1 text-xs font-medium"
+                        style={{
+                          backgroundColor: "#E0E7FF",
+                          color: accentColor,
+                          border: `1px solid ${accentColor}30`,
+                        }}
+                      >
+                        Skill 3
+                      </span>
+                    </>
+                  )}
                 </div>
               </section>
-            )}
 
             {/* TOOLS Section */}
             {resume.skills.tools.length > 0 && (
@@ -304,8 +347,7 @@ export default function TemplateModern() {
             )}
 
             {/* EDUCATION Section */}
-            {resume.education.length > 0 && (
-              <section>
+            <section>
                 <h2
                   className="mb-2 text-xs font-bold uppercase tracking-wider"
                   style={{
@@ -323,8 +365,16 @@ export default function TemplateModern() {
                     marginBottom: "12px",
                   }}
                 />
+
+                {resume.education.length === 0 && (
+                  <p className={`text-sm mb-2 ${placeholderOpacity}`} style={{ color: "#374151" }}>
+                    Include your degree and school name
+                  </p>
+                )}
+
                 <div className="space-y-4">
-                  {resume.education.map((edu) => (
+                  {resume.education.length > 0 ? (
+                    resume.education.map((edu) => (
                     <div key={edu.id}>
                       <p className="text-sm font-semibold" style={{ color: "#374151" }}>
                         {edu.institution}
@@ -336,48 +386,59 @@ export default function TemplateModern() {
                         {edu.startDate} - {edu.current ? "Present" : edu.endDate}
                       </p>
                     </div>
-                  ))}
+                    ))
+                  ) : (
+                    <div className={placeholderOpacity}>
+                      <p className="text-sm font-semibold" style={{ color: "#374151" }}>
+                        Institution Name
+                      </p>
+                      <p className="text-xs" style={{ color: "#6B7280" }}>
+                        Degree in Field
+                      </p>
+                      <p className="text-xs" style={{ color: "#9CA3AF" }}>
+                        09/2017 - 07/2020
+                      </p>
+                    </div>
+                  )}
                 </div>
               </section>
-            )}
           </aside>
 
           {/* RIGHT MAIN CONTENT - 65% */}
           <main className="px-8 py-6">
             {/* PROFILE/SUMMARY Section */}
-            {resume.personalDetails.summary && (
-              <section className="mb-6">
-                <h2
-                  className="mb-2 text-xs font-bold uppercase tracking-wider"
-                  style={{
-                    color: accentColor,
-                    fontSize: "0.75rem",
-                  }}
-                >
-                  Profile
-                </h2>
-                <div
-                  style={{
-                    width: "40px",
-                    height: "3px",
-                    backgroundColor: accentColor,
-                    marginBottom: "12px",
-                  }}
-                />
-                <p
-                  className="text-sm"
-                  style={{
-                    color: "#374151",
-                    lineHeight: "1.6",
-                  }}
-                >
-                  {resume.personalDetails.summary}
-                </p>
-              </section>
-            )}
+            <section className="mb-6">
+              <h2
+                className="mb-2 text-xs font-bold uppercase tracking-wider"
+                style={{
+                  color: accentColor,
+                  fontSize: "0.75rem",
+                }}
+              >
+                Profile
+              </h2>
+              <div
+                style={{
+                  width: "40px",
+                  height: "3px",
+                  backgroundColor: accentColor,
+                  marginBottom: "12px",
+                }}
+              />
+              <p
+                className={`text-sm ${!resume.personalDetails.summary ? placeholderOpacity : ""}`}
+                style={{
+                  color: "#374151",
+                  lineHeight: "1.6",
+                }}
+              >
+                {resume.personalDetails.summary ||
+                  "Use this section to give recruiters a quick glimpse of your professional profile. In just 3-4 lines, highlight your background, education and main skills."}
+              </p>
+            </section>
 
             {/* EXPERIENCE Section */}
-            {resume.experience.length > 0 && (
+            {(
               <section className="mb-6">
                 <h2
                   className="mb-2 text-xs font-bold uppercase tracking-wider"
@@ -396,8 +457,19 @@ export default function TemplateModern() {
                     marginBottom: "12px",
                   }}
                 />
+
+                {resume.experience.length === 0 && (
+                  <p
+                    className={`text-sm mb-4 ${placeholderOpacity}`}
+                    style={{ color: "#374151" }}
+                  >
+                    Summarize your work experience by listing each job and your responsibilities in 2-3 lines. Start with your most recent job and work backwards using the format below.
+                  </p>
+                )}
+
                 <div className="space-y-5">
-                  {resume.experience.map((exp) => (
+                  {resume.experience.length > 0 ? (
+                    resume.experience.map((exp) => (
                     <div key={exp.id}>
                       <div className="mb-1 flex items-start justify-between">
                         <div>
@@ -427,7 +499,85 @@ export default function TemplateModern() {
                         ))}
                       </ul>
                     </div>
-                  ))}
+                    ))
+                  ) : (
+                    /* Placeholder examples */
+                    <>
+                      {/* Job 1 placeholder */}
+                      <div>
+                        <div className="mb-1 flex items-start justify-between">
+                          <div>
+                            <h3
+                              className="font-bold"
+                              style={{
+                                color: accentColor,
+                                fontSize: "0.9375rem",
+                              }}
+                            >
+                              Company Name
+                            </h3>
+                            <p className="text-sm font-semibold italic" style={{ color: "#374151" }}>
+                              Job Title 1
+                            </p>
+                          </div>
+                          <p className="text-xs" style={{ color: "#9CA3AF" }}>
+                            Month/year - Month/year
+                          </p>
+                        </div>
+                        <ul className="ml-4 mt-2 space-y-1 text-sm" style={{ color: "#374151" }}>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      {/* Job 2 placeholder */}
+                      <div>
+                        <div className="mb-1 flex items-start justify-between">
+                          <div>
+                            <h3
+                              className="font-bold"
+                              style={{
+                                color: accentColor,
+                                fontSize: "0.9375rem",
+                              }}
+                            >
+                              Company Name
+                            </h3>
+                            <p className="text-sm font-semibold italic" style={{ color: "#374151" }}>
+                              Job Title 2
+                            </p>
+                          </div>
+                          <p className="text-xs" style={{ color: "#9CA3AF" }}>
+                            Month/year - Month/year
+                          </p>
+                        </div>
+                        <ul className="ml-4 mt-2 space-y-1 text-sm" style={{ color: "#374151" }}>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </>
+                  )}
                 </div>
               </section>
             )}

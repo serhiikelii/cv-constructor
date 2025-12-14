@@ -5,9 +5,8 @@ interface EducationSectionProps {
 }
 
 export default function EducationSection({ education }: EducationSectionProps) {
-  if (!education || education.length === 0) {
-    return null;
-  }
+  const placeholderOpacity = "opacity-50";
+  const hasEducation = education && education.length > 0;
 
   const formatDate = (date: string | null, isCurrent: boolean): string => {
     if (isCurrent) return "Present";
@@ -31,9 +30,25 @@ export default function EducationSection({ education }: EducationSectionProps) {
         Education
       </h2>
 
+      {/* Instructional text when no education */}
+      {!hasEducation && (
+        <p
+          className={placeholderOpacity}
+          style={{
+            fontFamily: "var(--font-open-sans)",
+            fontSize: "0.875rem",
+            marginTop: "8px",
+            marginBottom: "12px",
+          }}
+        >
+          Include your degree, school name and the year you graduated. If you don&apos;t have a degree, list coursework or training that&apos;s relevant to the job you&apos;re applying for.
+        </p>
+      )}
+
       {/* Education Items */}
       <div>
-        {education.map((edu) => (
+        {hasEducation ? (
+          education.map((edu) => (
           <article
             key={edu.id}
             style={{
@@ -127,7 +142,137 @@ export default function EducationSection({ education }: EducationSectionProps) {
               </ul>
             )}
           </article>
-        ))}
+        ))
+        ) : (
+          /* Placeholder examples */
+          <div className={placeholderOpacity}>
+            {/* Education 1 */}
+            <article style={{ marginBottom: "4mm" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "0.5rem",
+                  marginBottom: "2px",
+                }}
+              >
+                <h3
+                  style={{
+                    fontFamily: "var(--font-merriweather)",
+                    fontSize: "0.875rem",
+                    fontWeight: 700,
+                    flex: 1,
+                  }}
+                >
+                  Degree in Field of Study
+                </h3>
+                <span
+                  style={{
+                    fontFamily: "var(--font-open-sans)",
+                    fontSize: "0.875rem",
+                    whiteSpace: "nowrap",
+                    flexShrink: 0,
+                  }}
+                >
+                  09/2017 — 07/2020
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "0.5rem",
+                  marginBottom: "4px",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-open-sans)",
+                    fontSize: "0.875rem",
+                    fontStyle: "italic",
+                    flex: 1,
+                  }}
+                >
+                  Institution Name
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-open-sans)",
+                    fontSize: "0.875rem",
+                    flexShrink: 0,
+                  }}
+                >
+                  City, Country
+                </span>
+              </div>
+            </article>
+
+            {/* Education 2 */}
+            <article style={{ marginBottom: "4mm" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "0.5rem",
+                  marginBottom: "2px",
+                }}
+              >
+                <h3
+                  style={{
+                    fontFamily: "var(--font-merriweather)",
+                    fontSize: "0.875rem",
+                    fontWeight: 700,
+                    flex: 1,
+                  }}
+                >
+                  Degree in Field of Study
+                </h3>
+                <span
+                  style={{
+                    fontFamily: "var(--font-open-sans)",
+                    fontSize: "0.875rem",
+                    whiteSpace: "nowrap",
+                    flexShrink: 0,
+                  }}
+                >
+                  09/2015 — 07/2017
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "0.5rem",
+                  marginBottom: "4px",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-open-sans)",
+                    fontSize: "0.875rem",
+                    fontStyle: "italic",
+                    flex: 1,
+                  }}
+                >
+                  Institution Name
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-open-sans)",
+                    fontSize: "0.875rem",
+                    flexShrink: 0,
+                  }}
+                >
+                  City, Country
+                </span>
+              </div>
+            </article>
+          </div>
+        )}
       </div>
 
       {/* Print styles for page breaks */}
