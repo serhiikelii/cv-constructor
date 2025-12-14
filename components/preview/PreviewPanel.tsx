@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { Button } from "@/components/ui/button";
-import { ZoomIn, ZoomOut, Maximize2, Download } from "lucide-react";
+import { ZoomIn, ZoomOut, Maximize2, Download, Printer } from "lucide-react";
 import { useResumeStore } from "@/store/resumeStore";
 import TemplateClassic from "../TemplateClassic";
 import TemplateModern from "../TemplateModern";
@@ -38,6 +38,49 @@ export default function PreviewPanel() {
       console.log("Print completed");
     },
   });
+
+  // Download as PDF
+  const handleDownloadPDF = async () => {
+    if (!printRef.current) return;
+
+    try {
+      const html2pdf = (await import("html2pdf.js")).default;
+
+      const element = printRef.current;
+      const opt = {
+        margin: 0,
+        filename: getFileName(),
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          backgroundColor: "#ffffff",
+          onclone: (clonedDoc: Document) => {
+            // Remove or replace problematic styles
+            const allElements = clonedDoc.querySelectorAll("*");
+            allElements.forEach((el) => {
+              const htmlEl = el as HTMLElement;
+              const computedStyle = window.getComputedStyle(el);
+
+              // Fix lab() colors by converting to fallback
+              ["color", "backgroundColor", "borderColor"].forEach((prop) => {
+                const value = computedStyle.getPropertyValue(prop);
+                if (value && value.includes("lab(")) {
+                  htmlEl.style.setProperty(prop, "transparent");
+                }
+              });
+            });
+          }
+        },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      };
+
+      await html2pdf().set(opt).from(element).save();
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
+  };
 
   // Calculate auto-fit zoom based on container width
   useEffect(() => {
@@ -128,8 +171,18 @@ export default function PreviewPanel() {
             <div className="mx-2 h-6 w-px bg-gray-300" />
 
             <Button
+              variant="outline"
               size="sm"
               onClick={handlePrint}
+              className="gap-2"
+            >
+              <Printer className="h-4 w-4" />
+              Print
+            </Button>
+
+            <Button
+              size="sm"
+              onClick={handleDownloadPDF}
               className="gap-2"
             >
               <Download className="h-4 w-4" />
