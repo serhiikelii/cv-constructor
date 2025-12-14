@@ -1,25 +1,16 @@
 "use client";
 
 import { useResumeStore } from "@/store/resumeStore";
+import { ContactItem } from "./resume/ContactItem";
 import { cleanUrl, ensureProtocol, getMailtoUrl, getTelUrl } from "@/lib/urlUtils";
+import { Mail, Phone, MapPin, Linkedin, Github, Globe } from "lucide-react";
 
 export default function TemplateCreative() {
   const resume = useResumeStore((state) => state.resume);
   const placeholderOpacity = "opacity-50";
 
-  // Accent color - Professional Navy
-  const accentColor = "#1e3a5f";
-  const textColor = "#374151";
-
-  // Function to get initials from fullName
-  const getInitials = (fullName: string) => {
-    if (!fullName) return "YN";
-    const parts = fullName.trim().split(" ");
-    if (parts.length >= 2) {
-      return `${parts[0].charAt(0)}${parts[parts.length - 1].charAt(0)}`.toUpperCase();
-    }
-    return fullName.substring(0, 2).toUpperCase();
-  };
+  // Accent color - Electric Blue
+  const accentColor = "#2563EB";
 
   return (
     <div className="flex min-h-screen items-start justify-center bg-gray-100 p-8">
@@ -30,305 +21,600 @@ export default function TemplateCreative() {
           width: "210mm",
           height: "297mm",
           fontFamily: "var(--font-inter)",
-          fontSize: "0.875rem",
+          fontSize: "0.875rem", // 14px ≈ 10.5pt
           lineHeight: "1.6",
         }}
       >
-        {/* Decorative Left Stripe */}
-        <div
-          className="absolute left-6 top-0 bottom-0 h-full"
+        {/* Header Banner - Full Width */}
+        <header
+          className="px-10 py-8"
           style={{
-            width: "12px",
-            backgroundColor: "#DBEAFE",
+            borderBottom: `2px solid ${accentColor}`,
           }}
-        />
-
-        {/* Main Content with left padding */}
-        <div className="pl-14 pr-10 pt-10">
-          {/* Header Block (Gray Background) */}
-          <header
-            className="-mr-10 -ml-4 mb-8 p-8"
-            style={{
-              backgroundColor: "#F1F5F9",
-            }}
-          >
-            {/* Name and Initials Block */}
-            <div className="flex items-center gap-6 mb-6">
-              {/* Initials Square */}
-              <div
-                className="flex items-center justify-center bg-white"
+        >
+          <div className="flex items-start gap-6">
+            {/* Text Content */}
+            <div className="flex-1">
+              <h1
+                className="font-extrabold"
                 style={{
-                  width: "96px",
-                  height: "96px",
-                  border: `4px solid ${accentColor}`,
-                  fontSize: "2.25rem",
-                  fontWeight: 300,
-                  letterSpacing: "0.1em",
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "2rem", // 32px ≈ 24pt
+                  fontWeight: 800,
                   color: accentColor,
+                  letterSpacing: "-0.02em",
                 }}
               >
-                {resume.personalDetails.fullName ? (
-                  getInitials(resume.personalDetails.fullName)
-                ) : (
-                  <span className={placeholderOpacity}>YN</span>
+                {resume.personalDetails.fullName || (
+                  <span className={placeholderOpacity}>Your Name</span>
                 )}
-              </div>
-
-              {/* Name */}
-              <div className="flex-1">
-                <h1
-                  className="font-bold uppercase tracking-widest mb-2"
+              </h1>
+              {resume.personalDetails.title && (
+                <p
+                  className="mt-1"
                   style={{
                     fontFamily: "var(--font-inter)",
-                    fontSize: "2.25rem",
-                    fontWeight: 700,
-                    color: "#475569",
-                    letterSpacing: "0.15em",
+                    fontSize: "1.125rem", // 18px ≈ 13.5pt
+                    color: "#6B7280",
+                    fontWeight: 500,
                   }}
                 >
-                  {resume.personalDetails.fullName || (
-                    <span className={placeholderOpacity}>YOUR NAME</span>
-                  )}
-                </h1>
-                {/* Line under name */}
-                <div
-                  style={{
-                    width: "64px",
-                    height: "4px",
-                    backgroundColor: "#64748B",
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Contact Info */}
-            <div className="text-sm mb-6 pl-1" style={{ marginLeft: "96px", color: "#64748B" }}>
-              {resume.personalDetails.location ||
-              resume.personalDetails.email ||
-              resume.personalDetails.phone ||
-              resume.personalDetails.linkedin ? (
-                <div className="max-w-md space-y-1">
-                  {resume.personalDetails.location && <p>{resume.personalDetails.location}</p>}
-                  <p>
-                    {resume.personalDetails.email}
-                    {resume.personalDetails.email && resume.personalDetails.phone && " • "}
-                    {resume.personalDetails.phone}
-                  </p>
-                  {resume.personalDetails.linkedin && (
-                    <p>{cleanUrl(resume.personalDetails.linkedin)}</p>
-                  )}
-                </div>
-              ) : (
-                <p className={`max-w-md ${placeholderOpacity}`}>
-                  City, Country
-                  <br />
-                  email@example.com • +1 234 567 890
-                  <br />
-                  linkedin.com/in/yourprofile
+                  {resume.personalDetails.title}
                 </p>
               )}
-            </div>
 
-            {/* Professional Summary */}
-            <div className="ml-1">
-              <h2
-                className="font-bold uppercase tracking-widest mb-2"
-                style={{
-                  fontSize: "1rem",
-                  color: accentColor,
-                  letterSpacing: "0.15em",
-                }}
-              >
-                Professional Summary
-              </h2>
+              {/* PROFILE/SUMMARY */}
               <p
-                className={`text-sm leading-relaxed text-justify ${!resume.personalDetails.summary ? placeholderOpacity : ""}`}
-                style={{ color: textColor }}
+                className={`mt-4 text-sm ${!resume.personalDetails.summary ? placeholderOpacity : ""}`}
+                style={{
+                  color: "#374151",
+                  lineHeight: "1.6",
+                }}
               >
                 {resume.personalDetails.summary ||
                   "Use this section to give recruiters a quick glimpse of your professional profile. In just 3-4 lines, highlight your background, education and main skills."}
               </p>
             </div>
-          </header>
 
-          {/* Main Body (White Background) */}
-          <main className="space-y-8">
-            {/* Skills (3 column grid) */}
-            <section>
-              <h2
-                className="font-bold uppercase tracking-widest mb-4"
+            {/* Photo - Circular */}
+            {resume.personalDetails.photo && (
+              <div
+                className="overflow-hidden rounded-full"
                 style={{
-                  fontSize: "1rem",
-                  color: accentColor,
-                  letterSpacing: "0.15em",
+                  flexShrink: 0,
+                  width: "100px",
+                  height: "100px",
+                  border: `3px solid ${accentColor}`,
                 }}
               >
-                Skills
+                <img
+                  src={resume.personalDetails.photo}
+                  alt={resume.personalDetails.fullName || "Profile photo"}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* Two Column Flex Layout */}
+        <div
+          style={{
+            display: "flex",
+            height: "calc(297mm - 200px)",
+          }}
+        >
+          {/* LEFT SIDEBAR - 35% */}
+          <div
+            className="px-6 py-6"
+            style={{
+              width: "35%",
+              flexShrink: 0,
+              backgroundColor: "#F3F4F6",
+            }}
+          >
+            {/* CONTACTS Section */}
+            <section className="mb-6">
+              <h2
+                className="mb-2 text-xs font-bold uppercase tracking-wider"
+                style={{
+                  color: accentColor,
+                  fontSize: "0.75rem",
+                }}
+              >
+                Contacts
               </h2>
-
-              {resume.skills.skills.length === 0 && (
-                <p className={`text-sm mb-3 ${placeholderOpacity}`} style={{ color: textColor }}>
-                  List your professional skills in a clear, organized manner
-                </p>
-              )}
-
-              {resume.skills.skills.length > 0 ? (
-                <div className="grid grid-cols-3 gap-x-4 gap-y-2 text-sm font-medium" style={{ color: textColor }}>
-                  {resume.skills.skills.map((skill, index) => (
-                    <div key={index}>{skill}</div>
-                  ))}
-                </div>
-              ) : (
-                <div className={`grid grid-cols-3 gap-x-4 gap-y-2 text-sm font-medium ${placeholderOpacity}`} style={{ color: textColor }}>
-                  <div>Skill 1</div>
-                  <div>Skill 2</div>
-                  <div>Skill 3</div>
-                  <div>Skill 4</div>
-                  <div>Skill 5</div>
-                  <div>Skill 6</div>
-                </div>
-              )}
+              <div
+                style={{
+                  width: "40px",
+                  height: "3px",
+                  backgroundColor: accentColor,
+                  marginBottom: "12px",
+                }}
+              />
+              <div className="space-y-2 text-sm">
+                {resume.personalDetails.email && (
+                  <div className="flex items-start gap-2">
+                    <Mail className="mt-0.5 h-4 w-4 flex-shrink-0" style={{ color: accentColor }} />
+                    <a
+                      href={getMailtoUrl(resume.personalDetails.email)}
+                      className="break-all hover:underline"
+                      style={{ color: "#374151" }}
+                    >
+                      {resume.personalDetails.email}
+                    </a>
+                  </div>
+                )}
+                {resume.personalDetails.phone && (
+                  <div className="flex items-start gap-2">
+                    <Phone className="mt-0.5 h-4 w-4 flex-shrink-0" style={{ color: accentColor }} />
+                    <a
+                      href={getTelUrl(resume.personalDetails.phone)}
+                      className="hover:underline"
+                      style={{ color: "#374151" }}
+                    >
+                      {resume.personalDetails.phone}
+                    </a>
+                  </div>
+                )}
+                {resume.personalDetails.location && (
+                  <div className="flex items-start gap-2">
+                    <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0" style={{ color: accentColor }} />
+                    <span style={{ color: "#374151" }}>{resume.personalDetails.location}</span>
+                  </div>
+                )}
+                {resume.personalDetails.linkedin && (
+                  <div className="flex items-start gap-2">
+                    <Linkedin className="mt-0.5 h-4 w-4 flex-shrink-0" style={{ color: accentColor }} />
+                    <a
+                      href={ensureProtocol(resume.personalDetails.linkedin)}
+                      className="break-all hover:underline"
+                      style={{ color: "#374151" }}
+                    >
+                      {cleanUrl(resume.personalDetails.linkedin)}
+                    </a>
+                  </div>
+                )}
+                {resume.personalDetails.github && (
+                  <div className="flex items-start gap-2">
+                    <Github className="mt-0.5 h-4 w-4 flex-shrink-0" style={{ color: accentColor }} />
+                    <a
+                      href={ensureProtocol(resume.personalDetails.github)}
+                      className="break-all hover:underline"
+                      style={{ color: "#374151" }}
+                    >
+                      {cleanUrl(resume.personalDetails.github)}
+                    </a>
+                  </div>
+                )}
+                {resume.personalDetails.website && (
+                  <div className="flex items-start gap-2">
+                    <Globe className="mt-0.5 h-4 w-4 flex-shrink-0" style={{ color: accentColor }} />
+                    <a
+                      href={ensureProtocol(resume.personalDetails.website)}
+                      className="break-all hover:underline"
+                      style={{ color: "#374151" }}
+                    >
+                      {cleanUrl(resume.personalDetails.website)}
+                    </a>
+                  </div>
+                )}
+              </div>
             </section>
 
-            {/* Work History */}
+            {/* SKILLS Section */}
+            <section className="mb-4">
+                <h2
+                  className="mb-2 text-xs font-bold uppercase tracking-wider"
+                  style={{
+                    color: accentColor,
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Skills
+                </h2>
+                <div
+                  style={{
+                    width: "40px",
+                    height: "3px",
+                    backgroundColor: accentColor,
+                    marginBottom: "12px",
+                  }}
+                />
+
+                {resume.skills.skills.length === 0 && (
+                  <p className={`text-sm mb-2 ${placeholderOpacity}`} style={{ color: "#374151" }}>
+                    List your professional skills
+                  </p>
+                )}
+
+                <div className="flex flex-wrap gap-2">
+                  {resume.skills.skills.length > 0 ? (
+                    resume.skills.skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="rounded px-2 py-1 text-xs font-medium"
+                      style={{
+                        backgroundColor: "#E0E7FF",
+                        color: accentColor,
+                        border: `1px solid ${accentColor}30`,
+                      }}
+                    >
+                      {skill}
+                    </span>
+                    ))
+                  ) : (
+                    <div className={placeholderOpacity}>
+                      <span
+                        className="rounded px-2 py-1 text-xs font-medium"
+                        style={{
+                          backgroundColor: "#E0E7FF",
+                          color: accentColor,
+                          border: `1px solid ${accentColor}30`,
+                        }}
+                      >
+                        Skill 1
+                      </span>
+                      <span
+                        className="rounded px-2 py-1 text-xs font-medium"
+                        style={{
+                          backgroundColor: "#E0E7FF",
+                          color: accentColor,
+                          border: `1px solid ${accentColor}30`,
+                        }}
+                      >
+                        Skill 2
+                      </span>
+                      <span
+                        className="rounded px-2 py-1 text-xs font-medium"
+                        style={{
+                          backgroundColor: "#E0E7FF",
+                          color: accentColor,
+                          border: `1px solid ${accentColor}30`,
+                        }}
+                      >
+                        Skill 3
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </section>
+
+            {/* TOOLS Section */}
+            {resume.skills.tools.length > 0 && (
+              <section className="mb-4">
+                <h2
+                  className="mb-2 text-xs font-bold uppercase tracking-wider"
+                  style={{
+                    color: accentColor,
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Tools
+                </h2>
+                <div
+                  style={{
+                    width: "40px",
+                    height: "3px",
+                    backgroundColor: accentColor,
+                    marginBottom: "12px",
+                  }}
+                />
+                <div className="flex flex-wrap gap-2">
+                  {resume.skills.tools.map((tool, index) => (
+                    <span
+                      key={index}
+                      className="rounded px-2 py-1 text-xs font-medium"
+                      style={{
+                        backgroundColor: "#FEF3C7",
+                        color: accentColor,
+                        border: `1px solid ${accentColor}30`,
+                      }}
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* LANGUAGES Section */}
+            {resume.skills.languages.length > 0 && (
+              <section className="mb-6">
+                <h2
+                  className="mb-2 text-xs font-bold uppercase tracking-wider"
+                  style={{
+                    color: accentColor,
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Languages
+                </h2>
+                <div
+                  style={{
+                    width: "40px",
+                    height: "3px",
+                    backgroundColor: accentColor,
+                    marginBottom: "12px",
+                  }}
+                />
+                <div className="space-y-1">
+                  {resume.skills.languages.map((lang, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <div
+                        className="h-1.5 w-1.5 rounded-full"
+                        style={{ backgroundColor: accentColor }}
+                      />
+                      <span className="text-sm" style={{ color: "#374151" }}>
+                        <span className="font-semibold">{lang.language}</span>
+                        <span className="text-gray-500"> — {lang.proficiency}</span>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* EDUCATION Section */}
             <section>
-              <h2
-                className="font-bold uppercase tracking-widest mb-4"
-                style={{
-                  fontSize: "1rem",
-                  color: accentColor,
-                  letterSpacing: "0.15em",
-                }}
-              >
-                Work History
-              </h2>
+                <h2
+                  className="mb-2 text-xs font-bold uppercase tracking-wider"
+                  style={{
+                    color: accentColor,
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Education
+                </h2>
+                <div
+                  style={{
+                    width: "40px",
+                    height: "3px",
+                    backgroundColor: accentColor,
+                    marginBottom: "12px",
+                  }}
+                />
 
-              {resume.experience.length === 0 && (
-                <p className={`text-sm mb-4 ${placeholderOpacity}`} style={{ color: textColor }}>
-                  Summarize your work experience by listing each job and your responsibilities in 2-3 lines. Start with your most recent job and work backwards.
-                </p>
-              )}
+                {resume.education.length === 0 && (
+                  <p className={`text-sm mb-2 ${placeholderOpacity}`} style={{ color: "#374151" }}>
+                    Include your degree and school name
+                  </p>
+                )}
 
-              {resume.experience.length > 0 ? (
-                <div className="space-y-6">
-                  {resume.experience.map((job) => (
-                    <div key={job.id} className="break-inside-avoid">
-                      {/* Company - Position */}
-                      <div className="font-bold text-base" style={{ color: accentColor }}>
-                        {job.company}{" "}
-                        <span className="font-normal" style={{ color: "#64748B" }}>
-                          – {job.position}
-                        </span>
+                <div className="space-y-4">
+                  {resume.education.length > 0 ? (
+                    resume.education.map((edu) => (
+                    <div key={edu.id}>
+                      <p className="text-sm font-semibold" style={{ color: "#374151" }}>
+                        {edu.institution}
+                      </p>
+                      <p className="text-xs" style={{ color: "#6B7280" }}>
+                        {edu.degree} in {edu.field}
+                      </p>
+                      <p className="text-xs" style={{ color: "#9CA3AF" }}>
+                        {edu.startDate} - {edu.current ? "Present" : edu.endDate}
+                      </p>
+                    </div>
+                    ))
+                  ) : (
+                    <div className={placeholderOpacity}>
+                      <p className="text-sm font-semibold" style={{ color: "#374151" }}>
+                        Institution Name
+                      </p>
+                      <p className="text-xs" style={{ color: "#6B7280" }}>
+                        Degree in Field
+                      </p>
+                      <p className="text-xs" style={{ color: "#9CA3AF" }}>
+                        09/2017 - 07/2020
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </section>
+          </div>
+
+          {/* RIGHT MAIN CONTENT - 65% */}
+          <div className="px-8 py-6" style={{ flex: 1 }}>
+            {/* EXPERIENCE Section */}
+            {(
+              <section className="mb-6">
+                <h2
+                  className="mb-2 text-xs font-bold uppercase tracking-wider"
+                  style={{
+                    color: accentColor,
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Experience
+                </h2>
+                <div
+                  style={{
+                    width: "40px",
+                    height: "3px",
+                    backgroundColor: accentColor,
+                    marginBottom: "12px",
+                  }}
+                />
+
+                {resume.experience.length === 0 && (
+                  <p
+                    className={`text-sm mb-4 ${placeholderOpacity}`}
+                    style={{ color: "#374151" }}
+                  >
+                    Summarize your work experience by listing each job and your responsibilities in 2-3 lines. Start with your most recent job and work backwards using the format below.
+                  </p>
+                )}
+
+                <div className="space-y-5">
+                  {resume.experience.length > 0 ? (
+                    resume.experience.map((exp) => (
+                    <div key={exp.id}>
+                      <div className="mb-1 flex items-start justify-between">
+                        <div>
+                          <h3
+                            className="font-bold"
+                            style={{
+                              color: accentColor,
+                              fontSize: "0.9375rem",
+                            }}
+                          >
+                            {exp.company}
+                          </h3>
+                          <p className="text-sm font-semibold italic" style={{ color: "#374151" }}>
+                            {exp.position}
+                          </p>
+                        </div>
+                        <p className="text-xs" style={{ color: "#9CA3AF" }}>
+                          {exp.startDate} - {exp.current ? "Present" : exp.endDate}
+                        </p>
                       </div>
-
-                      {/* Dates */}
-                      <div className="text-xs italic uppercase mb-2" style={{ color: "#94A3B8" }}>
-                        {job.startDate} - {job.current ? "Present" : job.endDate}
-                      </div>
-
-                      {/* Bullet points */}
-                      <ul className="list-disc list-outside ml-5 text-sm space-y-1" style={{ color: textColor }}>
-                        {job.description.map((point, i) => (
-                          <li key={i}>{point}</li>
+                      <ul className="ml-4 mt-2 space-y-1 text-sm" style={{ color: "#374151" }}>
+                        {exp.description.map((item, index) => (
+                          <li key={index} className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>{item}</span>
+                          </li>
                         ))}
                       </ul>
                     </div>
-                  ))}
+                    ))
+                  ) : (
+                    /* Placeholder examples */
+                    <div className={placeholderOpacity}>
+                      {/* Job 1 placeholder */}
+                      <div>
+                        <div className="mb-1 flex items-start justify-between">
+                          <div>
+                            <h3
+                              className="font-bold"
+                              style={{
+                                color: accentColor,
+                                fontSize: "0.9375rem",
+                              }}
+                            >
+                              Company Name
+                            </h3>
+                            <p className="text-sm font-semibold italic" style={{ color: "#374151" }}>
+                              Job Title 1
+                            </p>
+                          </div>
+                          <p className="text-xs" style={{ color: "#9CA3AF" }}>
+                            Month/year - Month/year
+                          </p>
+                        </div>
+                        <ul className="ml-4 mt-2 space-y-1 text-sm" style={{ color: "#374151" }}>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      {/* Job 2 placeholder */}
+                      <div>
+                        <div className="mb-1 flex items-start justify-between">
+                          <div>
+                            <h3
+                              className="font-bold"
+                              style={{
+                                color: accentColor,
+                                fontSize: "0.9375rem",
+                              }}
+                            >
+                              Company Name
+                            </h3>
+                            <p className="text-sm font-semibold italic" style={{ color: "#374151" }}>
+                              Job Title 2
+                            </p>
+                          </div>
+                          <p className="text-xs" style={{ color: "#9CA3AF" }}>
+                            Month/year - Month/year
+                          </p>
+                        </div>
+                        <ul className="ml-4 mt-2 space-y-1 text-sm" style={{ color: "#374151" }}>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                          <li className="flex gap-2">
+                            <span style={{ color: accentColor }}>•</span>
+                            <span>Responsibilities</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className={`space-y-6 ${placeholderOpacity}`}>
-                  {/* Job 1 Placeholder */}
-                  <div className="break-inside-avoid">
-                    <div className="font-bold text-base" style={{ color: accentColor }}>
-                      Company Name{" "}
-                      <span className="font-normal" style={{ color: "#64748B" }}>
-                        – Job Title 1
-                      </span>
-                    </div>
-                    <div className="text-xs italic uppercase mb-2" style={{ color: "#94A3B8" }}>
-                      Month/Year - Month/Year
-                    </div>
-                    <ul className="list-disc list-outside ml-5 text-sm space-y-1" style={{ color: textColor }}>
-                      <li>Responsibilities</li>
-                      <li>Responsibilities</li>
-                      <li>Responsibilities</li>
-                    </ul>
-                  </div>
+              </section>
+            )}
 
-                  {/* Job 2 Placeholder */}
-                  <div className="break-inside-avoid">
-                    <div className="font-bold text-base" style={{ color: accentColor }}>
-                      Company Name{" "}
-                      <span className="font-normal" style={{ color: "#64748B" }}>
-                        – Job Title 2
-                      </span>
-                    </div>
-                    <div className="text-xs italic uppercase mb-2" style={{ color: "#94A3B8" }}>
-                      Month/Year - Month/Year
-                    </div>
-                    <ul className="list-disc list-outside ml-5 text-sm space-y-1" style={{ color: textColor }}>
-                      <li>Responsibilities</li>
-                      <li>Responsibilities</li>
-                      <li>Responsibilities</li>
-                    </ul>
-                  </div>
-                </div>
-              )}
-            </section>
-
-            {/* Education */}
-            <section>
-              <h2
-                className="font-bold uppercase tracking-widest mb-4"
-                style={{
-                  fontSize: "1rem",
-                  color: accentColor,
-                  letterSpacing: "0.15em",
-                }}
-              >
-                Education
-              </h2>
-
-              {resume.education.length === 0 && (
-                <p className={`text-sm mb-4 ${placeholderOpacity}`} style={{ color: textColor }}>
-                  Include your degree, school name and the year you graduated. If you don't have a degree, list coursework or training that's relevant.
-                </p>
-              )}
-
-              {resume.education.length > 0 ? (
+            {/* PROJECTS Section */}
+            {resume.projects && resume.projects.length > 0 && (
+              <section>
+                <h2
+                  className="mb-2 text-xs font-bold uppercase tracking-wider"
+                  style={{
+                    color: accentColor,
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  Projects
+                </h2>
+                <div
+                  style={{
+                    width: "40px",
+                    height: "3px",
+                    backgroundColor: accentColor,
+                    marginBottom: "12px",
+                  }}
+                />
                 <div className="space-y-4">
-                  {resume.education.map((edu) => (
-                    <div key={edu.id} className="break-inside-avoid">
-                      <div className="font-bold text-base" style={{ color: accentColor }}>
-                        {edu.institution}
-                      </div>
-                      <div className="text-sm" style={{ color: textColor }}>
-                        {edu.location && `${edu.location} • `}
-                        {edu.startDate} - {edu.current ? "Present" : edu.endDate}
-                      </div>
-                      <div className="text-sm font-semibold mt-1" style={{ color: "#64748B" }}>
-                        Degree: {edu.degree} in {edu.field}
-                      </div>
+                  {resume.projects.map((project) => (
+                    <div key={project.id}>
+                      <h3 className="font-bold" style={{ color: accentColor, fontSize: "0.9375rem" }}>
+                        {project.name}
+                      </h3>
+                      <p className="mt-1 text-sm" style={{ color: "#374151" }}>
+                        {project.description}
+                      </p>
+                      {project.technologies.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {project.technologies.map((tech, index) => (
+                            <span
+                              key={index}
+                              className="rounded px-2 py-0.5 text-xs"
+                              style={{
+                                backgroundColor: "#F3F4F6",
+                                color: "#6B7280",
+                              }}
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
-              ) : (
-                <div className={`space-y-4 ${placeholderOpacity}`}>
-                  <div className="break-inside-avoid">
-                    <div className="font-bold text-base" style={{ color: accentColor }}>
-                      Institution Name
-                    </div>
-                    <div className="text-sm" style={{ color: textColor }}>
-                      City • 09/2017 - 07/2020
-                    </div>
-                    <div className="text-sm font-semibold mt-1" style={{ color: "#64748B" }}>
-                      Degree: Field of Study
-                    </div>
-                  </div>
-                </div>
-              )}
-            </section>
-          </main>
+              </section>
+            )}
+          </div>
         </div>
 
         {/* Print styles */}
@@ -337,6 +623,7 @@ export default function TemplateCreative() {
             div[style*="210mm"] {
               box-shadow: none;
               margin: 0;
+              page-break-inside: avoid;
             }
 
             :global(body) {

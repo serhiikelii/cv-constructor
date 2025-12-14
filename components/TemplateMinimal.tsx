@@ -41,21 +41,70 @@ export default function TemplateMinimal() {
             )}
           </h1>
 
-          {/* Contact Info Placeholder */}
-          <p
-            className={`mt-3 text-sm ${!resume.personalDetails.email && !resume.personalDetails.location ? placeholderOpacity : ""}`}
+          {/* Contact Info */}
+          <div
+            className={`mt-3 flex flex-col gap-1 text-sm ${
+              !resume.personalDetails.email &&
+              !resume.personalDetails.location &&
+              !resume.personalDetails.phone &&
+              !resume.personalDetails.linkedin
+                ? placeholderOpacity
+                : ""
+            }`}
             style={{ color: textColor, fontSize: "0.875rem" }}
           >
-            {resume.personalDetails.location || resume.personalDetails.email ? (
+            {resume.personalDetails.location ||
+             resume.personalDetails.email ||
+             resume.personalDetails.phone ||
+             resume.personalDetails.linkedin ? (
               <>
-                {resume.personalDetails.location}
-                {resume.personalDetails.location && resume.personalDetails.email && ", "}
-                {resume.personalDetails.email}
+                {/* Line 1: City */}
+                {resume.personalDetails.location && (
+                  <div>{resume.personalDetails.location}</div>
+                )}
+
+                {/* Line 2: Email | Phone */}
+                {(resume.personalDetails.email || resume.personalDetails.phone) && (
+                  <div className="flex items-center gap-2">
+                    {[
+                      resume.personalDetails.email,
+                      resume.personalDetails.phone,
+                    ]
+                      .filter(Boolean)
+                      .map((item, index, arr) => (
+                        <span key={index}>
+                          {item}
+                          {index < arr.length - 1 && (
+                            <span className="mx-2" style={{ color: textColor }}>|</span>
+                          )}
+                        </span>
+                      ))}
+                  </div>
+                )}
+
+                {/* Line 3: LinkedIn */}
+                {resume.personalDetails.linkedin && (
+                  <div>{resume.personalDetails.linkedin}</div>
+                )}
+
+                {/* Line 4: GitHub */}
+                {resume.personalDetails.github && (
+                  <div>{resume.personalDetails.github}</div>
+                )}
               </>
             ) : (
-              "Enter your your city, country, ZIP Code and professional email address. If you work remotely, specify that here."
+              <>
+                <div>City, Country</div>
+                <div className="flex items-center gap-2">
+                  <span>email@example.com</span>
+                  <span className="mx-2">|</span>
+                  <span>+1 234 567 890</span>
+                </div>
+                <div>LinkedIn</div>
+                <div>GitHub</div>
+              </>
             )}
-          </p>
+          </div>
         </header>
 
         {/* Main Content with Timeline */}

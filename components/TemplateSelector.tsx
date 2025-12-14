@@ -95,12 +95,12 @@ const templates: TemplateOption[] = [
     preview: <ClassicPreview />,
   },
   {
-    id: "modern",
-    preview: <ModernPreview />,
-  },
-  {
     id: "minimal",
     preview: <MinimalPreview />,
+  },
+  {
+    id: "modern",
+    preview: <ModernPreview />,
   },
   {
     id: "creative",

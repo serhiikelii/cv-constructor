@@ -317,6 +317,9 @@ export default function TemplateSidebar() {
               box-shadow: none;
               margin: 0;
               page-break-inside: avoid;
+              /* Force grid to display properly */
+              display: grid !important;
+              grid-template-columns: repeat(12, 1fr) !important;
             }
 
             :global(body) {
@@ -340,18 +343,26 @@ export default function TemplateSidebar() {
               text-decoration: none;
             }
 
-            /* Show all content in print */
-            aside,
-            main,
-            section,
-            div {
+            /* Force sidebar to be visible and preserve background */
+            aside {
+              display: block !important;
+              grid-column: span 4 !important;
+              background-color: #DBEAFE !important;
               -webkit-print-color-adjust: exact !important;
               print-color-adjust: exact !important;
             }
 
-            /* Hide only placeholder opacity in print */
+            /* Force main content to be visible */
+            main {
+              display: block !important;
+              grid-column: span 8 !important;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+
+            /* Hide placeholders in print */
             .opacity-50 {
-              opacity: 0 !important;
+              display: none;
             }
           }
         `}</style>

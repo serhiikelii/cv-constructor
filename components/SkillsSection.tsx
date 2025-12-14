@@ -61,16 +61,6 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
       {/* Skills */}
       {hasSkills && (
         <div style={{ marginBottom: "8px" }}>
-          <h3
-            style={{
-              fontFamily: "var(--font-merriweather)",
-              fontSize: "0.875rem",
-              fontWeight: 700,
-              marginBottom: "2px",
-            }}
-          >
-            SKILLS
-          </h3>
           <p
             style={{
               fontFamily: "var(--font-open-sans)",

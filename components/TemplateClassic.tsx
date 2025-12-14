@@ -21,7 +21,10 @@ export default function TemplateClassic() {
         style={{
           width: "210mm",
           height: "297mm",
-          padding: "25mm",
+          paddingTop: "15mm",
+          paddingRight: "25mm",
+          paddingBottom: "25mm",
+          paddingLeft: "25mm",
           fontFamily: "var(--font-merriweather)",
           fontSize: "0.875rem", // 14px ≈ 10.5pt
           lineHeight: "1.6",
@@ -33,87 +36,77 @@ export default function TemplateClassic() {
           style={resume.personalDetails.photo ? { gap: "1.5rem" } : {}}
         >
           {/* Text Content Block */}
-          <div
-            className={resume.personalDetails.photo ? "flex-1" : ""}
-            style={
-              resume.personalDetails.photo
-                ? { display: "flex", flexDirection: "column" }
-                : {}
-            }
-          >
-            {/* Name and Title */}
-            <div>
-              <h1
-                className="font-bold"
-                style={{
-                  fontFamily: "var(--font-merriweather)",
-                  fontSize: "1.75rem", // 28px ≈ 21pt
-                  fontWeight: 700,
-                }}
-              >
-                {resume.personalDetails.fullName || (
-                  <span className={placeholderOpacity}>Your Name</span>
-                )}
-              </h1>
-              {resume.personalDetails.title && (
-                <p
-                  className="mt-2"
-                  style={{
-                    fontFamily: "var(--font-open-sans)",
-                    fontSize: "1rem", // 16px ≈ 12pt
-                    color: "#6B7280", // gray-500 for screen
-                  }}
-                >
-                  {resume.personalDetails.title}
-                </p>
-              )}
-            </div>
-
-            {/* Contact Information */}
-            <div
-              className="mt-4"
+          <div className="flex-1 space-y-1" style={{ fontSize: "0.75rem" }}>
+            {/* Name */}
+            <h1
+              className="font-bold"
               style={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: resume.personalDetails.photo
-                  ? "flex-start"
-                  : "center",
-                alignItems: "center",
-                gap: "0.5rem 1rem",
-                fontFamily: "var(--font-open-sans)",
-                fontSize: "0.875rem",
-                color: "#374151",
+                fontFamily: "var(--font-merriweather)",
+                fontSize: "1.75rem",
+                fontWeight: 700,
               }}
             >
-              <ContactItem
-                icon={<Mail className="w-3 h-3" />}
-                value={resume.personalDetails.email}
-                href={getMailtoUrl(resume.personalDetails.email)}
-              />
-              <ContactItem
-                icon={<Phone className="w-3 h-3" />}
-                value={resume.personalDetails.phone}
-                href={getTelUrl(resume.personalDetails.phone)}
-              />
-              <ContactItem
-                icon={<MapPin className="w-3 h-3" />}
-                value={resume.personalDetails.location || ""}
-              />
-              <ContactItem
-                icon={<Linkedin className="w-3 h-3" />}
-                value={cleanUrl(resume.personalDetails.linkedin || "")}
-                href={ensureProtocol(resume.personalDetails.linkedin || "")}
-              />
-              <ContactItem
-                icon={<Github className="w-3 h-3" />}
-                value={cleanUrl(resume.personalDetails.github || "")}
-                href={ensureProtocol(resume.personalDetails.github || "")}
-              />
-              <ContactItem
-                icon={<Globe className="w-3 h-3" />}
-                value={cleanUrl(resume.personalDetails.website || "")}
-                href={ensureProtocol(resume.personalDetails.website || "")}
-              />
+              {resume.personalDetails.fullName || (
+                <span className={placeholderOpacity}>Your Name</span>
+              )}
+            </h1>
+
+            {/* City */}
+            {resume.personalDetails.location && (
+              <div style={{ fontFamily: "var(--font-open-sans)", color: "#374151" }}>
+                {resume.personalDetails.location}
+              </div>
+            )}
+
+            {/* Email, Phone */}
+            {(resume.personalDetails.email || resume.personalDetails.phone) && (
+              <div style={{ fontFamily: "var(--font-open-sans)", color: "#374151" }}>
+                {[resume.personalDetails.email, resume.personalDetails.phone]
+                  .filter(Boolean)
+                  .join(" | ")}
+              </div>
+            )}
+
+            {/* LinkedIn */}
+            {resume.personalDetails.linkedin && (
+              <div style={{ fontFamily: "var(--font-open-sans)", color: "#374151" }}>
+                {cleanUrl(resume.personalDetails.linkedin)}
+              </div>
+            )}
+
+            {/* GitHub */}
+            {resume.personalDetails.github && (
+              <div style={{ fontFamily: "var(--font-open-sans)", color: "#374151" }}>
+                {cleanUrl(resume.personalDetails.github)}
+              </div>
+            )}
+
+            {/* Professional Summary */}
+            <div className="mt-2">
+              <h2
+                className="mb-1 uppercase"
+                style={{
+                  fontFamily: "var(--font-merriweather)",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  borderBottom: "1px solid #000000",
+                  paddingBottom: "2px",
+                }}
+              >
+                Professional Summary
+              </h2>
+              <p
+                className={!resume.personalDetails.summary ? placeholderOpacity : ""}
+                style={{
+                  fontFamily: "var(--font-open-sans)",
+                  fontSize: "0.75rem",
+                  lineHeight: "1.5",
+                  marginTop: "4px",
+                }}
+              >
+                {resume.personalDetails.summary ||
+                  "Use this section to give recruiters a quick glimpse of your professional profile."}
+              </p>
             </div>
           </div>
 
@@ -139,34 +132,6 @@ export default function TemplateClassic() {
             </div>
           )}
         </header>
-
-        {/* Summary Section */}
-        <section>
-          <h2
-            className="mb-2 mt-6 uppercase"
-            style={{
-              fontFamily: "var(--font-merriweather)",
-              fontSize: "0.875rem",
-              fontWeight: 700,
-              borderBottom: "1px solid #000000",
-              paddingBottom: "4px",
-            }}
-          >
-            Summary
-          </h2>
-          <p
-            className={!resume.personalDetails.summary ? placeholderOpacity : ""}
-            style={{
-              fontFamily: "var(--font-open-sans)",
-              fontSize: "0.875rem",
-              lineHeight: "1.6",
-              marginTop: "4px",
-            }}
-          >
-            {resume.personalDetails.summary ||
-              "Use this section to give recruiters a quick glimpse of your professional profile. In just 3-4 lines, highlight your background, education and main skills."}
-          </p>
-        </section>
 
         {/* Skills Section */}
         <SkillsSection skills={resume.skills} />
