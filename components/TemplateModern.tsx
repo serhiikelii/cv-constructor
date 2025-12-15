@@ -135,7 +135,8 @@ export default function TemplateModern() {
               {resume.personalDetails.location ||
               resume.personalDetails.email ||
               resume.personalDetails.phone ||
-              resume.personalDetails.linkedin ? (
+              resume.personalDetails.linkedin ||
+              resume.personalDetails.github ? (
                 <div className="max-w-md space-y-1">
                   {resume.personalDetails.location && <p>{resume.personalDetails.location}</p>}
                   <p>
@@ -145,6 +146,9 @@ export default function TemplateModern() {
                   </p>
                   {resume.personalDetails.linkedin && (
                     <p>{cleanUrl(resume.personalDetails.linkedin)}</p>
+                  )}
+                  {resume.personalDetails.github && (
+                    <p>{cleanUrl(resume.personalDetails.github)}</p>
                   )}
                 </div>
               ) : (

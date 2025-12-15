@@ -7,6 +7,16 @@ export default function TemplateSidebar() {
   const resume = useResumeStore((state) => state.resume);
   const placeholderOpacity = "opacity-50";
 
+  // Function to get initials from fullName
+  const getInitials = (fullName: string) => {
+    if (!fullName) return "YN";
+    const parts = fullName.trim().split(" ");
+    if (parts.length >= 2) {
+      return `${parts[0].charAt(0)}${parts[parts.length - 1].charAt(0)}`.toUpperCase();
+    }
+    return fullName.substring(0, 2).toUpperCase();
+  };
+
   return (
     <div className="flex min-h-screen items-start justify-center bg-gray-100 p-8">
       {/* A4 Container */}
@@ -29,12 +39,8 @@ export default function TemplateSidebar() {
             backgroundColor: "#DBEAFE",
           }}
         >
-          {/* PHOTO */}
-          <div className="w-full aspect-square rounded-lg overflow-hidden mb-2 relative flex items-center justify-center"
-            style={{
-              backgroundColor: resume.personalDetails.photo ? "transparent" : "#E5E7EB",
-            }}
-          >
+          {/* PHOTO OR INITIALS */}
+          <div className="w-2/3 aspect-square rounded-lg overflow-hidden mb-2">
             {resume.personalDetails.photo ? (
               <img
                 src={resume.personalDetails.photo}
@@ -43,26 +49,16 @@ export default function TemplateSidebar() {
               />
             ) : (
               <div
-                className={`flex items-center justify-center bg-white ${placeholderOpacity}`}
+                className="initials-placeholder w-full h-full flex items-center justify-center text-white text-4xl font-light tracking-wider"
                 style={{
-                  width: "48px",
-                  height: "48px",
-                  border: "2px solid #1e3a5f",
-                  fontSize: "1.25rem",
-                  fontWeight: 300,
-                  letterSpacing: "0.05em",
-                  color: "#1e3a5f",
+                  border: '4px solid white'
                 }}
               >
-                {resume.personalDetails.fullName
-                  ? (() => {
-                      const parts = resume.personalDetails.fullName.trim().split(" ");
-                      if (parts.length >= 2) {
-                        return `${parts[0].charAt(0)}${parts[parts.length - 1].charAt(0)}`.toUpperCase();
-                      }
-                      return resume.personalDetails.fullName.substring(0, 2).toUpperCase();
-                    })()
-                  : "YN"}
+                {resume.personalDetails.fullName ? (
+                  getInitials(resume.personalDetails.fullName)
+                ) : (
+                  <span className={placeholderOpacity}>YN</span>
+                )}
               </div>
             )}
           </div>
@@ -121,6 +117,19 @@ export default function TemplateSidebar() {
                     className="text-blue-700 hover:underline break-all"
                   >
                     {cleanUrl(resume.personalDetails.linkedin)}
+                  </a>
+                </div>
+              )}
+
+              {/* GitHub */}
+              {resume.personalDetails.github && (
+                <div>
+                  <span className="font-bold block text-gray-900">GitHub</span>
+                  <a
+                    href={ensureProtocol(resume.personalDetails.github)}
+                    className="text-blue-700 hover:underline break-all"
+                  >
+                    {cleanUrl(resume.personalDetails.github)}
                   </a>
                 </div>
               )}
@@ -363,6 +372,12 @@ export default function TemplateSidebar() {
             /* Hide placeholders in print */
             .opacity-50 {
               display: none;
+            }
+
+            /* Preserve white color for initials placeholder */
+            .initials-placeholder {
+              color: white !important;
+              border-color: white !important;
             }
           }
         `}</style>
