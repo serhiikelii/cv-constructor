@@ -435,15 +435,30 @@ export default function TemplateModern() {
             }
 
             :global(body) {
-              color: #000000;
               margin: 0;
             }
 
-            h1,
-            h2,
-            h3,
-            p {
-              color: inherit;
+            /* Force color preservation */
+            * {
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+              color-adjust: exact !important;
+            }
+
+            /* Preserve background colors */
+            div[style*="backgroundColor"] {
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+
+            /* Preserve text colors - override browser defaults */
+            h1[style*="color"],
+            h2[style*="color"],
+            h3[style*="color"],
+            p[style*="color"],
+            div[style*="color"],
+            span[style*="color"] {
+              color: inherit !important;
             }
 
             h2 {
@@ -451,7 +466,6 @@ export default function TemplateModern() {
             }
 
             a {
-              color: #000000;
               text-decoration: none;
             }
 
