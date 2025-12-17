@@ -65,16 +65,17 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: COLORS.minimalAccent,
     backgroundColor: COLORS.minimalLight,
+    flexShrink: 0,
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    flexShrink: 0,
   },
   initials: {
     fontSize: 32,
-    fontWeight: 300,
     color: COLORS.minimalAccent,
     letterSpacing: 1,
+    textAlign: 'center',
   },
   // Main content with timeline
   content: {
