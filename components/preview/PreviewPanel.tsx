@@ -10,6 +10,7 @@ import TemplateModern from "../TemplateModern";
 import TemplateMinimal from "../TemplateMinimal";
 import TemplateCreative from "../TemplateCreative";
 import TemplateSidebar from "../TemplateSidebar";
+import PDFDownloadButton from "../PDFDownloadButton";
 
 export default function PreviewPanel() {
   const [zoom, setZoom] = useState(1);
@@ -132,10 +133,13 @@ export default function PreviewPanel() {
               size="sm"
               onClick={handlePrint}
               className="gap-2"
+              variant="outline"
             >
               <Printer className="h-4 w-4" />
               Print
             </Button>
+
+            <PDFDownloadButton resume={resume} />
           </div>
         </div>
       </div>

@@ -1,0 +1,376 @@
+import React from 'react';
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { Resume } from '@/types';
+import { getInitials, cleanPDFUrl } from '@/lib/pdf/pdfHelpers';
+import { COLORS, FONT_SIZES } from '@/lib/pdf/pdfStyles';
+
+const styles = StyleSheet.create({
+  page: {
+    backgroundColor: COLORS.white,
+    fontFamily: 'Helvetica',
+    fontSize: FONT_SIZES.body,
+    lineHeight: 1.6,
+    padding: 0,
+  },
+  // Header section
+  header: {
+    paddingTop: 48,
+    paddingBottom: 24,
+    paddingLeft: 64,
+    paddingRight: 64,
+  },
+  headerContent: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 24,
+  },
+  headerText: {
+    flex: 1,
+  },
+  name: {
+    fontSize: FONT_SIZES.h1,
+    fontFamily: 'Helvetica-Bold',
+    color: COLORS.minimalAccent,
+    letterSpacing: -0.5,
+    lineHeight: 1.2,
+    marginBottom: 12,
+  },
+  contactInfo: {
+    fontSize: 11,
+    color: COLORS.minimalText,
+    lineHeight: 1.6,
+  },
+  contactLine: {
+    marginBottom: 4,
+  },
+  // Photo (circular)
+  photoContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: COLORS.minimalAccent,
+    overflow: 'hidden',
+    flexShrink: 0,
+  },
+  photo: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+  initialsContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: COLORS.minimalAccent,
+    backgroundColor: COLORS.minimalLight,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  },
+  initials: {
+    fontSize: 32,
+    fontWeight: 300,
+    color: COLORS.minimalAccent,
+    letterSpacing: 1,
+  },
+  // Main content with timeline
+  content: {
+    paddingLeft: 64,
+    paddingRight: 64,
+    paddingBottom: 48,
+  },
+  timelineContainer: {
+    position: 'relative',
+    paddingLeft: 40,
+  },
+  // Timeline vertical line
+  timelineLine: {
+    position: 'absolute',
+    left: 14,
+    top: 7,
+    bottom: 0,
+    width: 4,
+    backgroundColor: COLORS.minimalAccent,
+  },
+  // Section with timeline dot
+  section: {
+    position: 'relative',
+    marginBottom: 24,
+  },
+  timelineDot: {
+    position: 'absolute',
+    left: -32,
+    top: 0,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: COLORS.white,
+    borderWidth: 3,
+    borderColor: COLORS.minimalAccent,
+  },
+  sectionTitle: {
+    fontSize: FONT_SIZES.h2,
+    fontFamily: 'Helvetica-Bold',
+    color: COLORS.minimalAccent,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+  summaryText: {
+    fontSize: 11,
+    color: COLORS.minimalText,
+    lineHeight: 1.6,
+  },
+  // Skills - 3 columns
+  skillsGrid: {
+    flexDirection: 'row',
+    gap: 24,
+  },
+  skillColumn: {
+    flex: 1,
+  },
+  skillsList: {
+    marginTop: 8,
+  },
+  skillItem: {
+    flexDirection: 'row',
+    fontSize: 11,
+    color: COLORS.minimalText,
+    marginBottom: 4,
+  },
+  bullet: {
+    marginRight: 8,
+  },
+  // Experience/Education items
+  itemContainer: {
+    marginBottom: 16,
+  },
+  itemHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+  },
+  itemTitle: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    color: COLORS.minimalText,
+    flex: 1,
+  },
+  itemDate: {
+    fontSize: 11,
+    color: COLORS.minimalText,
+  },
+  itemDescription: {
+    marginTop: 8,
+    marginLeft: 16,
+  },
+  descriptionItem: {
+    flexDirection: 'row',
+    fontSize: 11,
+    color: COLORS.minimalText,
+    lineHeight: 1.5,
+    marginBottom: 4,
+  },
+  descriptionBullet: {
+    marginRight: 8,
+  },
+  descriptionText: {
+    flex: 1,
+  },
+  // Education specific
+  eduInstitution: {
+    fontSize: 11,
+    color: COLORS.minimalText,
+    marginBottom: 2,
+  },
+  eduDegree: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    color: COLORS.minimalText,
+  },
+});
+
+interface TemplateMinimalPDFProps {
+  resume: Resume;
+}
+
+export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }) => {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.headerContent}>
+            {/* Text Content */}
+            <View style={styles.headerText}>
+              <Text style={styles.name}>
+                {resume.personalDetails.fullName || 'YOUR NAME'}
+              </Text>
+
+              {/* Contact Info */}
+              <View style={styles.contactInfo}>
+                {resume.personalDetails.location && (
+                  <Text style={styles.contactLine}>{resume.personalDetails.location}</Text>
+                )}
+                {(resume.personalDetails.email || resume.personalDetails.phone) && (
+                  <Text style={styles.contactLine}>
+                    {resume.personalDetails.email}
+                    {resume.personalDetails.email && resume.personalDetails.phone && ' | '}
+                    {resume.personalDetails.phone}
+                  </Text>
+                )}
+                {resume.personalDetails.linkedin && (
+                  <Text style={styles.contactLine}>
+                    {cleanPDFUrl(resume.personalDetails.linkedin)}
+                  </Text>
+                )}
+                {resume.personalDetails.github && (
+                  <Text style={styles.contactLine}>
+                    {cleanPDFUrl(resume.personalDetails.github)}
+                  </Text>
+                )}
+              </View>
+            </View>
+
+            {/* Photo - Circular */}
+            {resume.personalDetails.photo ? (
+              <View style={styles.photoContainer}>
+                <Image src={resume.personalDetails.photo} style={styles.photo} />
+              </View>
+            ) : (
+              <View style={styles.initialsContainer}>
+                <Text style={styles.initials}>
+                  {getInitials(resume.personalDetails.fullName || 'YN')}
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        {/* Main Content with Timeline */}
+        <View style={styles.content}>
+          <View style={styles.timelineContainer}>
+            {/* Timeline vertical line */}
+            <View style={styles.timelineLine} />
+
+            {/* Professional Summary */}
+            {resume.personalDetails.summary && (
+              <View style={styles.section}>
+                <View style={styles.timelineDot} />
+                <Text style={styles.sectionTitle}>Professional Summary</Text>
+                <Text style={styles.summaryText}>{resume.personalDetails.summary}</Text>
+              </View>
+            )}
+
+            {/* Skills - 3 columns */}
+            {(resume.skills.skills.length > 0 ||
+              resume.skills.tools.length > 0 ||
+              resume.skills.languages.length > 0) && (
+              <View style={styles.section}>
+                <View style={styles.timelineDot} />
+                <View style={styles.skillsGrid}>
+                  {/* Skills Column */}
+                  <View style={styles.skillColumn}>
+                    <Text style={styles.sectionTitle}>Skills</Text>
+                    <View style={styles.skillsList}>
+                      {resume.skills.skills.map((skill, index) => (
+                        <View key={index} style={styles.skillItem}>
+                          <Text style={styles.bullet}>•</Text>
+                          <Text>{skill}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+
+                  {/* Tools Column */}
+                  <View style={styles.skillColumn}>
+                    <Text style={styles.sectionTitle}>Tools</Text>
+                    <View style={styles.skillsList}>
+                      {resume.skills.tools.map((tool, index) => (
+                        <View key={index} style={styles.skillItem}>
+                          <Text style={styles.bullet}>•</Text>
+                          <Text>{tool}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+
+                  {/* Languages Column */}
+                  <View style={styles.skillColumn}>
+                    <Text style={styles.sectionTitle}>Languages</Text>
+                    <View style={styles.skillsList}>
+                      {resume.skills.languages.map((lang, index) => (
+                        <View key={index} style={styles.skillItem}>
+                          <Text style={styles.bullet}>•</Text>
+                          <Text>
+                            {lang.language} ({lang.proficiency})
+                          </Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              </View>
+            )}
+
+            {/* Professional Experience */}
+            {resume.experience.length > 0 && (
+              <View style={styles.section}>
+                <View style={styles.timelineDot} />
+                <Text style={styles.sectionTitle}>Professional Experience</Text>
+                {resume.experience.map((exp) => (
+                  <View key={exp.id} style={styles.itemContainer}>
+                    <View style={styles.itemHeader}>
+                      <Text style={styles.itemTitle}>
+                        {exp.position} | {exp.company}
+                      </Text>
+                      <Text style={styles.itemDate}>
+                        {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                      </Text>
+                    </View>
+                    {exp.description && exp.description.length > 0 && (
+                      <View style={styles.itemDescription}>
+                        {exp.description.map((item, index) => (
+                          <View key={index} style={styles.descriptionItem}>
+                            <Text style={styles.descriptionBullet}>•</Text>
+                            <Text style={styles.descriptionText}>{item}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {/* Education */}
+            {resume.education.length > 0 && (
+              <View style={styles.section}>
+                <View style={styles.timelineDot} />
+                <Text style={styles.sectionTitle}>Education</Text>
+                {resume.education.map((edu) => (
+                  <View key={edu.id} style={styles.itemContainer}>
+                    <View style={styles.itemHeader}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.eduInstitution}>{edu.institution}</Text>
+                        <Text style={styles.eduDegree}>
+                          Degree: {edu.degree} in {edu.field}
+                        </Text>
+                      </View>
+                      <Text style={styles.itemDate}>
+                        {edu.startDate} - {edu.current ? 'Present' : edu.endDate}
+                      </Text>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+        </View>
+      </Page>
+    </Document>
+  );
+};
