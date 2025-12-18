@@ -155,6 +155,34 @@ export default function TemplateSidebar() {
               </ul>
             )}
           </div>
+
+          {/* TOOLS SECTION */}
+          {resume.skills.tools.length > 0 && (
+            <div>
+              <h3 className="text-xl font-bold text-gray-800 uppercase tracking-wide border-b-2 border-gray-300 pb-2 mb-4">
+                Tools
+              </h3>
+              <ul className="list-disc list-outside ml-4 space-y-2 text-sm text-gray-700">
+                {resume.skills.tools.map((tool, index) => (
+                  <li key={index}>{tool}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* LANGUAGES SECTION */}
+          {resume.skills.languages.length > 0 && (
+            <div>
+              <h3 className="text-xl font-bold text-gray-800 uppercase tracking-wide border-b-2 border-gray-300 pb-2 mb-4">
+                Languages
+              </h3>
+              <ul className="list-disc list-outside ml-4 space-y-2 text-sm text-gray-700">
+                {resume.skills.languages.map((lang, index) => (
+                  <li key={index}>{lang.language} ({lang.proficiency})</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </aside>
 
         {/* RIGHT MAIN CONTENT - 8 columns (66%) */}
@@ -162,20 +190,18 @@ export default function TemplateSidebar() {
           {/* HEADER: NAME & SUMMARY */}
           <div className="mb-10">
             <h1
-              className="font-extrabold uppercase tracking-wide mb-6 leading-none"
+              className="font-extrabold tracking-wide mb-6 leading-tight"
               style={{
                 fontSize: "3rem",
                 color: "#1E3A8A",
+                wordSpacing: "0.75rem",
               }}
             >
               {resume.personalDetails.fullName ? (
-                <>
-                  {resume.personalDetails.fullName.split(" ")[0]} <br />
-                  {resume.personalDetails.fullName.split(" ").slice(1).join(" ")}
-                </>
+                resume.personalDetails.fullName
               ) : (
                 <span className={placeholderOpacity}>
-                  YOUR <br /> NAME
+                  Your Name
                 </span>
               )}
             </h1>
@@ -201,69 +227,61 @@ export default function TemplateSidebar() {
             {resume.experience.length > 0 ? (
               <div className="flex flex-col gap-6">
                 {resume.experience.map((job) => (
-                  <div key={job.id} className="grid grid-cols-12 gap-4 break-inside-avoid">
-                    {/* Left: Dates */}
-                    <div className="col-span-3 text-xs font-bold text-gray-600 pt-1">
-                      <div className="whitespace-pre-line">
-                        {job.startDate} - <br /> {job.current ? "Present" : job.endDate}
-                      </div>
-                    </div>
-
-                    {/* Right: Description */}
-                    <div className="col-span-9">
+                  <div key={job.id} className="break-inside-avoid">
+                    <div className="flex justify-between items-start mb-1">
                       <h3 className="text-lg font-bold text-gray-800 leading-tight">
                         {job.position}
                       </h3>
-                      <div className="text-sm font-semibold text-gray-600 mb-2">
-                        {job.company}
-                        {job.location && `, ${job.location}`}
+                      <div className="text-xs font-semibold text-gray-600 whitespace-nowrap ml-4">
+                        {job.startDate} - {job.current ? "Present" : job.endDate}
                       </div>
-
-                      <ul className="list-disc list-outside ml-4 space-y-1 text-sm text-gray-600">
-                        {job.description.map((point, i) => (
-                          <li key={i}>{point}</li>
-                        ))}
-                      </ul>
                     </div>
+
+                    <div className="text-sm font-semibold text-gray-600 mb-2">
+                      {job.company}
+                      {job.location && `, ${job.location}`}
+                    </div>
+
+                    <ul className="list-disc list-outside ml-4 space-y-1 text-sm text-gray-600">
+                      {job.description.map((point, i) => (
+                        <li key={i}>{point}</li>
+                      ))}
+                    </ul>
                   </div>
                 ))}
               </div>
             ) : (
               <div className={`flex flex-col gap-6 ${placeholderOpacity}`}>
                 {/* Job 1 Placeholder */}
-                <div className="grid grid-cols-12 gap-4">
-                  <div className="col-span-3 text-xs font-bold text-gray-600 pt-1">
-                    <div className="whitespace-pre-line">
-                      Month/Year - <br /> Month/Year
+                <div>
+                  <div className="flex justify-between items-start mb-1">
+                    <h3 className="text-lg font-bold text-gray-800 leading-tight">Job Title</h3>
+                    <div className="text-xs font-semibold text-gray-600 whitespace-nowrap ml-4">
+                      Month/Year - Month/Year
                     </div>
                   </div>
-                  <div className="col-span-9">
-                    <h3 className="text-lg font-bold text-gray-800 leading-tight">Job Title</h3>
-                    <div className="text-sm font-semibold text-gray-600 mb-2">Company Name, City</div>
-                    <ul className="list-disc list-outside ml-4 space-y-1 text-sm text-gray-600">
-                      <li>Responsibilities</li>
-                      <li>Responsibilities</li>
-                      <li>Responsibilities</li>
-                    </ul>
-                  </div>
+                  <div className="text-sm font-semibold text-gray-600 mb-2">Company Name, City</div>
+                  <ul className="list-disc list-outside ml-4 space-y-1 text-sm text-gray-600">
+                    <li>Responsibilities</li>
+                    <li>Responsibilities</li>
+                    <li>Responsibilities</li>
+                  </ul>
                 </div>
 
                 {/* Job 2 Placeholder */}
-                <div className="grid grid-cols-12 gap-4">
-                  <div className="col-span-3 text-xs font-bold text-gray-600 pt-1">
-                    <div className="whitespace-pre-line">
-                      Month/Year - <br /> Month/Year
+                <div>
+                  <div className="flex justify-between items-start mb-1">
+                    <h3 className="text-lg font-bold text-gray-800 leading-tight">Job Title</h3>
+                    <div className="text-xs font-semibold text-gray-600 whitespace-nowrap ml-4">
+                      Month/Year - Month/Year
                     </div>
                   </div>
-                  <div className="col-span-9">
-                    <h3 className="text-lg font-bold text-gray-800 leading-tight">Job Title</h3>
-                    <div className="text-sm font-semibold text-gray-600 mb-2">Company Name, City</div>
-                    <ul className="list-disc list-outside ml-4 space-y-1 text-sm text-gray-600">
-                      <li>Responsibilities</li>
-                      <li>Responsibilities</li>
-                      <li>Responsibilities</li>
-                    </ul>
-                  </div>
+                  <div className="text-sm font-semibold text-gray-600 mb-2">Company Name, City</div>
+                  <ul className="list-disc list-outside ml-4 space-y-1 text-sm text-gray-600">
+                    <li>Responsibilities</li>
+                    <li>Responsibilities</li>
+                    <li>Responsibilities</li>
+                  </ul>
                 </div>
               </div>
             )}
@@ -278,41 +296,34 @@ export default function TemplateSidebar() {
             {resume.education.length > 0 ? (
               <div className="flex flex-col gap-6">
                 {resume.education.map((edu) => (
-                  <div key={edu.id} className="grid grid-cols-12 gap-4 break-inside-avoid">
-                    {/* Left: Dates */}
-                    <div className="col-span-3 text-xs font-bold text-gray-600 pt-1">
-                      <div className="whitespace-pre-line">
-                        {edu.startDate} - <br /> {edu.current ? "Present" : edu.endDate}
+                  <div key={edu.id} className="break-inside-avoid">
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="text-base font-bold text-gray-800 leading-tight">
+                        Degree: {edu.degree} in {edu.field}
+                      </h3>
+                      <div className="text-xs font-semibold text-gray-600 whitespace-nowrap ml-4">
+                        {edu.startDate} - {edu.current ? "Present" : edu.endDate}
                       </div>
                     </div>
-
-                    {/* Right: Description */}
-                    <div className="col-span-9">
-                      <h3 className="text-base font-bold text-gray-800 leading-tight">
-                        {edu.degree} in {edu.field}
-                      </h3>
-                      <div className="text-sm text-gray-600">
-                        {edu.institution}
-                        {edu.location && `, ${edu.location}`}
-                      </div>
+                    <div className="text-sm text-gray-600">
+                      {edu.institution}
+                      {edu.location && `, ${edu.location}`}
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
               <div className={`flex flex-col gap-6 ${placeholderOpacity}`}>
-                <div className="grid grid-cols-12 gap-4">
-                  <div className="col-span-3 text-xs font-bold text-gray-600 pt-1">
-                    <div className="whitespace-pre-line">
-                      09/2017 - <br /> 07/2020
+                <div>
+                  <div className="flex justify-between items-start mb-1">
+                    <h3 className="text-base font-bold text-gray-800 leading-tight">
+                      Degree: Field of Study
+                    </h3>
+                    <div className="text-xs font-semibold text-gray-600 whitespace-nowrap ml-4">
+                      09/2017 - 07/2020
                     </div>
                   </div>
-                  <div className="col-span-9">
-                    <h3 className="text-base font-bold text-gray-800 leading-tight">
-                      Degree in Field of Study
-                    </h3>
-                    <div className="text-sm text-gray-600">Institution Name, City</div>
-                  </div>
+                  <div className="text-sm text-gray-600">Institution Name, City</div>
                 </div>
               </div>
             )}

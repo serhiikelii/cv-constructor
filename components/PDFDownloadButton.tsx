@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { pdf } from '@react-pdf/renderer';
 import { Resume } from '@/types';
 import { TemplateMinimalPDF } from './pdf/templates/TemplateMinimalPDF';
+import { TemplateSidebarPDF } from './pdf/templates/TemplateSidebarPDF';
 import { generatePDFFilename } from '@/lib/pdf/pdfHelpers';
 import { Download, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -28,12 +29,12 @@ const PDFDownloadButton: React.FC<PDFDownloadButtonProps> = ({ resume, className
         case 'minimal':
           PDFComponent = TemplateMinimalPDF;
           break;
+        case 'sidebar':
+          PDFComponent = TemplateSidebarPDF;
+          break;
         // TODO: Add other templates when ready
         // case 'modern':
         //   PDFComponent = TemplateModernPDF;
-        //   break;
-        // case 'sidebar':
-        //   PDFComponent = TemplateSidebarPDF;
         //   break;
         default:
           PDFComponent = TemplateMinimalPDF;
