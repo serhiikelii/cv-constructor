@@ -313,8 +313,8 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
           <View style={styles.mainHeader}>
             <Text style={styles.name}>
               {resume.personalDetails.fullName
-                ? resume.personalDetails.fullName.split(' ').join('   ')
-                : 'Your   Name'}
+                ? resume.personalDetails.fullName.split(' ').join('  ')
+                : 'Your  Name'}
             </Text>
             {resume.personalDetails.summary && (
               <Text style={styles.tagline}>{resume.personalDetails.summary}</Text>

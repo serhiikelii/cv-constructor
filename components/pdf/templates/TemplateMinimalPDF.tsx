@@ -1,7 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { Resume } from '@/types';
-import { getInitials, cleanPDFUrl } from '@/lib/pdf/pdfHelpers';
+import { cleanPDFUrl } from '@/lib/pdf/pdfHelpers';
 import { COLORS, FONT_SIZES } from '@/lib/pdf/pdfStyles';
 
 const styles = StyleSheet.create({
@@ -57,25 +57,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-  },
-  initialsContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderWidth: 3,
-    borderColor: COLORS.minimalAccent,
-    backgroundColor: COLORS.minimalLight,
-    flexShrink: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  initials: {
-    fontSize: 32,
-    color: COLORS.minimalAccent,
-    letterSpacing: 1,
-    textAlign: 'center',
   },
   // Main content with timeline
   content: {
@@ -237,15 +218,9 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
             </View>
 
             {/* Photo - Circular */}
-            {resume.personalDetails.photo ? (
+            {resume.personalDetails.photo && (
               <View style={styles.photoContainer}>
                 <Image src={resume.personalDetails.photo} style={styles.photo} />
-              </View>
-            ) : (
-              <View style={styles.initialsContainer}>
-                <Text style={styles.initials}>
-                  {getInitials(resume.personalDetails.fullName || 'YN')}
-                </Text>
               </View>
             )}
           </View>
