@@ -15,29 +15,29 @@ const styles = StyleSheet.create({
   sidebar: {
     width: '30%',
     backgroundColor: '#DBEAFE', // Light blue to match HTML
-    padding: SPACING.lg,
-    paddingTop: 40,
+    padding: 24, // HTML: p-8 (2rem = 32px → 24pt)
+    paddingTop: 36, // HTML: pt-12 (3rem = 48px → 36pt)
     borderRight: '1pt solid #E5E7EB', // Gray-200 border to match HTML
   },
   // Right main content (70%)
   mainContent: {
     width: '70%',
     backgroundColor: COLORS.white,
-    padding: SPACING.lg,
-    paddingTop: 40,
-    paddingLeft: 32,
+    padding: 30, // HTML: p-10 (2.5rem = 40px → 30pt)
+    paddingTop: 36, // HTML: pt-12 (3rem = 48px → 36pt)
+    paddingLeft: 30,
   },
 
   // ===== SIDEBAR STYLES =====
 
   // Photo
   photoContainer: {
-    width: 120,
-    height: 120,
+    width: 100, // HTML: w-2/3 of sidebar content (≈ 66.67% of ~150pt = 100pt)
+    height: 100,
     borderRadius: 4,
     overflow: 'hidden',
-    marginBottom: SPACING.lg,
-    alignSelf: 'center',
+    marginBottom: 36, // HTML: gap-10 (40px) + mb-2 (8px) = 48px → 36pt
+    alignSelf: 'flex-start', // Left-aligned to match HTML preview
     backgroundColor: COLORS.white,
   },
   photo: {
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
   },
   photoInitials: {
-    fontSize: 48,
+    fontSize: 40, // Reduced proportionally (48 * 100/120 = 40)
     fontFamily: 'Helvetica', // Light font to match HTML
     color: COLORS.white,
     letterSpacing: 2, // tracking-wider equivalent
@@ -64,22 +64,22 @@ const styles = StyleSheet.create({
 
   // Sidebar sections
   sidebarSection: {
-    marginBottom: SPACING.lg,
+    marginBottom: 30, // HTML: gap-10 (2.5rem = 40px → 30pt)
   },
   sidebarTitle: {
     fontSize: FONT_SIZES.h3,
     fontFamily: 'Helvetica-Bold',
     color: '#374151', // Gray-800 to match HTML
     textTransform: 'uppercase',
-    marginBottom: SPACING.sm,
+    marginBottom: 12, // HTML: mb-4 (1rem = 16px → 12pt)
     letterSpacing: 0.5,
     borderBottom: '2pt solid #D1D5DB', // Gray-300 border to match HTML
-    paddingBottom: 2,
+    paddingBottom: 6, // HTML: pb-2 (0.5rem = 8px → 6pt)
   },
 
   // Contact info
   contactItem: {
-    marginBottom: SPACING.md,
+    marginBottom: 6, // Reduced from SPACING.md (16) to 6pt for compactness (gap-2 = 8px → 6pt)
   },
   contactLabel: {
     fontSize: 10,
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.h2,
     fontFamily: 'Helvetica-Bold',
     color: '#374151', // Gray-800 to match HTML
-    marginBottom: SPACING.lg,
-    paddingBottom: 2,
+    marginBottom: 18, // HTML: mb-6 (1.5rem = 24px → 18pt)
+    paddingBottom: 6, // HTML: pb-2 (0.5rem = 8px → 6pt)
     borderBottom: '2pt solid #E5E7EB', // Gray-200 border to match HTML
   },
 

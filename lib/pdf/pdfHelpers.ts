@@ -28,13 +28,20 @@ export function formatPDFDate(date: string): string {
 
 /**
  * Format date range for PDF display
- * @param startDate - Start date string
- * @param endDate - End date string or "Present"
+ * @param startDate - Start date string or null
+ * @param endDate - End date string, "Present", or null
  * @returns Formatted range like "01/2020 - 03/2024"
  */
-export function formatPDFDateRange(startDate: string, endDate: string): string {
-  const start = formatPDFDate(startDate);
-  const end = endDate === 'Present' ? 'Present' : formatPDFDate(endDate);
+export function formatPDFDateRange(startDate: string | null, endDate: string | null): string {
+  if (!startDate && !endDate) return '';
+
+  const start = startDate ? formatPDFDate(startDate) : '';
+  const end = endDate === 'Present' ? 'Present' : (endDate ? formatPDFDate(endDate) : '');
+
+  if (!start && !end) return '';
+  if (!start) return end;
+  if (!end) return start;
+
   return `${start} - ${end}`;
 }
 

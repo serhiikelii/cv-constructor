@@ -68,7 +68,7 @@ export default function TemplateSidebar() {
             <h3 className="text-xl font-bold text-gray-800 uppercase tracking-wide border-b-2 border-gray-300 pb-2 mb-4">
               Contact
             </h3>
-            <div className="flex flex-col gap-4 text-sm text-gray-700">
+            <div className="flex flex-col gap-2 text-sm text-gray-700">
               {/* Address */}
               {resume.personalDetails.location ? (
                 <div>

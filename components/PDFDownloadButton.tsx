@@ -5,6 +5,7 @@ import { pdf } from '@react-pdf/renderer';
 import { Resume } from '@/types';
 import { TemplateMinimalPDF } from './pdf/templates/TemplateMinimalPDF';
 import { TemplateSidebarPDF } from './pdf/templates/TemplateSidebarPDF';
+import { TemplateClassicPDF } from './pdf/templates/TemplateClassicPDF';
 import { generatePDFFilename } from '@/lib/pdf/pdfHelpers';
 import { Download, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -31,6 +32,9 @@ const PDFDownloadButton: React.FC<PDFDownloadButtonProps> = ({ resume, className
           break;
         case 'sidebar':
           PDFComponent = TemplateSidebarPDF;
+          break;
+        case 'classic':
+          PDFComponent = TemplateClassicPDF;
           break;
         // TODO: Add other templates when ready
         // case 'modern':

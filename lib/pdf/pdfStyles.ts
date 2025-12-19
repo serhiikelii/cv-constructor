@@ -8,6 +8,10 @@ export const COLORS = {
   minimalAccent: '#1e3a5f', // Dark Navy Blue
   minimalText: '#374151',   // Dark Gray
   minimalLight: '#F3F4F6',  // Light Gray
+
+  // Classic template colors
+  classicText: '#374151',   // Dark Gray (same as minimal)
+  classicBorder: '#000000', // Black for section borders
 };
 
 // PDF Font Sizes

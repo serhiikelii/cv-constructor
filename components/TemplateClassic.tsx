@@ -30,13 +30,10 @@ export default function TemplateClassic() {
           lineHeight: "1.6",
         }}
       >
-        {/* Header - Profile with Photo */}
-        <header
-          className={resume.personalDetails.photo ? "flex" : "text-center"}
-          style={resume.personalDetails.photo ? { gap: "1.5rem" } : {}}
-        >
-          {/* Text Content Block */}
-          <div className="flex-1 space-y-1" style={{ fontSize: "0.75rem" }}>
+        {/* Header - Always centered, no photo support */}
+        <header className="text-center">
+          {/* Text Content */}
+          <div className="space-y-1" style={{ fontSize: "0.75rem" }}>
             {/* Name */}
             <h1
               className="font-bold"
@@ -109,28 +106,6 @@ export default function TemplateClassic() {
               </p>
             </div>
           </div>
-
-          {/* Photo Block - Only if photo exists */}
-          {resume.personalDetails.photo && (
-            <div
-              style={{
-                flexShrink: 0,
-                width: "3.5cm", // 35mm
-                height: "4.5cm", // 45mm
-                overflow: "hidden",
-              }}
-            >
-              <img
-                src={resume.personalDetails.photo}
-                alt={resume.personalDetails.fullName || "Profile photo"}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
-            </div>
-          )}
         </header>
 
         {/* Skills Section */}
