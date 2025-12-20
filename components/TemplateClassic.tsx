@@ -115,7 +115,7 @@ export default function TemplateClassic() {
         <ExperienceSection experiences={resume.experience} />
 
         {/* Education Section */}
-        <EducationSection education={resume.education} />
+        <EducationSection education={resume.education} certifications={resume.certifications} />
 
         {/* Print styles */}
         <style jsx>{`

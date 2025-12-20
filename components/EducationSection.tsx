@@ -1,12 +1,14 @@
-import { Education } from "@/types";
+import { Education, Certification } from "@/types";
 
 interface EducationSectionProps {
   education: Education[];
+  certifications?: Certification[];
 }
 
-export default function EducationSection({ education }: EducationSectionProps) {
+export default function EducationSection({ education, certifications = [] }: EducationSectionProps) {
   const placeholderOpacity = "opacity-50";
   const hasEducation = education && education.length > 0;
+  const hasCertifications = certifications && certifications.length > 0;
 
   const formatDate = (date: string | null, isCurrent: boolean): string => {
     if (isCurrent) return "Present";
@@ -143,7 +145,84 @@ export default function EducationSection({ education }: EducationSectionProps) {
             )}
           </article>
         ))
-        ) : (
+        ) : null}
+
+        {/* Certifications Items */}
+        {hasCertifications && certifications.map((cert) => (
+          <article
+            key={cert.id}
+            style={{
+              marginBottom: "4mm",
+            }}
+          >
+            {/* Row 1: Course Name (left, bold) and Date (right) */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                gap: "0.5rem",
+                marginBottom: "2px",
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: "var(--font-merriweather)",
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  flex: 1,
+                }}
+              >
+                {cert.name}
+              </h3>
+              <span
+                style={{
+                  fontFamily: "var(--font-open-sans)",
+                  fontSize: "0.875rem",
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
+                }}
+              >
+                {cert.date}
+              </span>
+            </div>
+
+            {/* Row 2: Issuer (left, italic) and Credential ID (right) */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                gap: "0.5rem",
+                marginBottom: "4px",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "var(--font-open-sans)",
+                  fontSize: "0.875rem",
+                  fontStyle: "italic",
+                  flex: 1,
+                }}
+              >
+                {cert.issuer}
+              </span>
+              {cert.credentialId && (
+                <span
+                  style={{
+                    fontFamily: "var(--font-open-sans)",
+                    fontSize: "0.875rem",
+                    flexShrink: 0,
+                  }}
+                >
+                  ID: {cert.credentialId}
+                </span>
+              )}
+            </div>
+          </article>
+        ))}
+
+        {!hasEducation && !hasCertifications && (
           /* Placeholder examples */
           <div className={placeholderOpacity}>
             {/* Education 1 */}

@@ -6,10 +6,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { User, Briefcase, GraduationCap, Award } from "lucide-react";
+import { User, Briefcase, GraduationCap, Award, Medal } from "lucide-react";
 import PersonalForm from "../forms/PersonalForm";
 import ExperienceForm from "../forms/ExperienceForm";
 import EducationForm from "../forms/EducationForm";
+import CertificationForm from "../forms/CertificationForm";
 import SkillsForm from "../forms/SkillsForm";
 import TemplateSelector from "../TemplateSelector";
 
@@ -65,6 +66,19 @@ export default function EditorPanel() {
             </AccordionTrigger>
             <AccordionContent>
               <EducationForm />
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* Courses & Certifications Section */}
+          <AccordionItem value="certifications">
+            <AccordionTrigger className="text-base font-medium hover:no-underline">
+              <div className="flex items-center gap-2">
+                <Medal className="h-5 w-5" />
+                <span>Courses & Certifications</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <CertificationForm />
             </AccordionContent>
           </AccordionItem>
 
