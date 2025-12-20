@@ -293,8 +293,9 @@ export default function TemplateSidebar() {
               Education
             </h2>
 
-            {resume.education.length > 0 ? (
+            {resume.education.length > 0 || (resume.certifications && resume.certifications.length > 0) ? (
               <div className="flex flex-col gap-6">
+                {/* Education Items */}
                 {resume.education.map((edu) => (
                   <div key={edu.id} className="break-inside-avoid">
                     <div className="flex justify-between items-start mb-1">
@@ -309,6 +310,37 @@ export default function TemplateSidebar() {
                       {edu.institution}
                       {edu.location && `, ${edu.location}`}
                     </div>
+
+                    {/* Achievements */}
+                    {edu.achievements && edu.achievements.length > 0 && (
+                      <ul className="mt-2 ml-4 space-y-1" style={{ listStyleType: 'disc', listStylePosition: 'outside' }}>
+                        {edu.achievements.map((achievement, idx) => (
+                          <li key={idx} className="text-sm text-gray-700">{achievement}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
+
+                {/* Certifications Items */}
+                {resume.certifications && resume.certifications.map((cert) => (
+                  <div key={cert.id} className="break-inside-avoid">
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="text-base font-bold text-gray-800 leading-tight">
+                        {cert.name}
+                      </h3>
+                      <div className="text-xs font-semibold text-gray-600 whitespace-nowrap ml-4">
+                        {cert.date}
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      {cert.issuer}
+                    </div>
+                    {cert.credentialId && (
+                      <div className="text-sm text-gray-600">
+                        ID: {cert.credentialId}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

@@ -469,8 +469,9 @@ export default function TemplateMinimal() {
                   : "Include your degree, school name and the year you graduated. If you don't have a degree, list counerwork or training that's relevant to the job you're applying for"}
               </p>
 
-              {resume.education.length > 0 ? (
+              {resume.education.length > 0 || (resume.certifications && resume.certifications.length > 0) ? (
                 <div className="space-y-4">
+                  {/* Education Items */}
                   {resume.education.map((edu) => (
                     <div key={edu.id}>
                       <div className="flex items-start justify-between">
@@ -481,9 +482,47 @@ export default function TemplateMinimal() {
                           <p className="text-sm font-bold" style={{ color: textColor }}>
                             Degree: {edu.degree} in {edu.field}
                           </p>
+                          {edu.location && (
+                            <p className="text-sm" style={{ color: textColor }}>
+                              {edu.location}
+                            </p>
+                          )}
                         </div>
                         <p className="text-sm" style={{ color: textColor }}>
                           {edu.startDate} - {edu.current ? "Present" : edu.endDate}
+                        </p>
+                      </div>
+
+                      {/* Achievements */}
+                      {edu.achievements && edu.achievements.length > 0 && (
+                        <ul className="mt-2 ml-4 space-y-1" style={{ listStyleType: 'disc', listStylePosition: 'outside' }}>
+                          {edu.achievements.map((achievement, idx) => (
+                            <li key={idx} className="text-sm" style={{ color: textColor }}>{achievement}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+
+                  {/* Certifications Items */}
+                  {resume.certifications && resume.certifications.map((cert) => (
+                    <div key={cert.id}>
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p className="text-sm font-bold" style={{ color: textColor }}>
+                            {cert.name}
+                          </p>
+                          <p className="text-sm font-medium" style={{ color: textColor }}>
+                            {cert.issuer}
+                          </p>
+                          {cert.credentialId && (
+                            <p className="text-sm" style={{ color: textColor }}>
+                              ID: {cert.credentialId}
+                            </p>
+                          )}
+                        </div>
+                        <p className="text-sm" style={{ color: textColor }}>
+                          {cert.date}
                         </p>
                       </div>
                     </div>

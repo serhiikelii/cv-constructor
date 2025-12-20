@@ -196,6 +196,34 @@ const styles = StyleSheet.create({
     flex: 1,
     lineHeight: 1.5,
   },
+  // Achievements list (for education)
+  achievementsList: {
+    marginTop: 6,
+    paddingLeft: SPACING.md,
+  },
+  achievementItem: {
+    flexDirection: 'row',
+    marginBottom: 4,
+    alignItems: 'flex-start',
+  },
+  achievementBullet: {
+    fontSize: 10,
+    color: COLORS.minimalAccent,
+    marginRight: 6,
+    marginTop: 1,
+  },
+  achievementText: {
+    fontSize: 10,
+    color: COLORS.minimalText,
+    flex: 1,
+    lineHeight: 1.4,
+  },
+  // Item location (for education)
+  itemLocation: {
+    fontSize: 10,
+    color: COLORS.minimalText,
+    marginBottom: 4,
+  },
 });
 
 interface TemplateSidebarPDFProps {
@@ -351,9 +379,11 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
           )}
 
           {/* Education */}
-          {resume.education.length > 0 && (
+          {(resume.education.length > 0 || (resume.certifications && resume.certifications.length > 0)) && (
             <View style={styles.mainSection}>
               <Text style={styles.mainSectionTitle}>Education</Text>
+
+              {/* Education Items */}
               {resume.education.map((edu) => (
                 <View key={edu.id} style={styles.itemContainer}>
                   <View style={styles.itemHeader}>
@@ -367,6 +397,35 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
                   <Text style={styles.itemSubtitle}>
                     {edu.institution}
                   </Text>
+                  {edu.location && (
+                    <Text style={styles.itemLocation}>{edu.location}</Text>
+                  )}
+
+                  {/* Achievements: Bulleted List */}
+                  {edu.achievements && edu.achievements.length > 0 && (
+                    <View style={styles.achievementsList}>
+                      {edu.achievements.map((achievement, index) => (
+                        <View key={index} style={styles.achievementItem}>
+                          <Text style={styles.achievementBullet}>•</Text>
+                          <Text style={styles.achievementText}>{achievement}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  )}
+                </View>
+              ))}
+
+              {/* Certifications Items */}
+              {resume.certifications && resume.certifications.map((cert) => (
+                <View key={cert.id} style={styles.itemContainer}>
+                  <View style={styles.itemHeader}>
+                    <Text style={styles.itemTitle}>{cert.name}</Text>
+                    <Text style={styles.itemDate}>{cert.date}</Text>
+                  </View>
+                  <Text style={styles.itemSubtitle}>{cert.issuer}</Text>
+                  {cert.credentialId && (
+                    <Text style={styles.itemLocation}>ID: {cert.credentialId}</Text>
+                  )}
                 </View>
               ))}
             </View>

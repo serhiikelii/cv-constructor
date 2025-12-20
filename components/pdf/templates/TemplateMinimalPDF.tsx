@@ -173,6 +173,34 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica-Bold',
     color: COLORS.minimalText,
   },
+  // Education location
+  eduLocation: {
+    fontSize: 10,
+    color: COLORS.minimalText,
+    marginTop: 2,
+  },
+  // Achievements list (for education)
+  achievementsList: {
+    marginTop: 6,
+    paddingLeft: 16,
+  },
+  achievementItem: {
+    flexDirection: 'row',
+    marginBottom: 4,
+    alignItems: 'flex-start',
+  },
+  achievementBullet: {
+    fontSize: 10,
+    color: COLORS.minimalAccent,
+    marginRight: 6,
+    marginTop: 1,
+  },
+  achievementText: {
+    fontSize: 10,
+    color: COLORS.minimalText,
+    flex: 1,
+    lineHeight: 1.4,
+  },
 });
 
 interface TemplateMinimalPDFProps {
@@ -323,10 +351,12 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
             )}
 
             {/* Education */}
-            {resume.education.length > 0 && (
+            {(resume.education.length > 0 || (resume.certifications && resume.certifications.length > 0)) && (
               <View style={styles.section}>
                 <View style={styles.timelineDot} />
                 <Text style={styles.sectionTitle}>Education</Text>
+
+                {/* Education Items */}
                 {resume.education.map((edu) => (
                   <View key={edu.id} style={styles.itemContainer}>
                     <View style={styles.itemHeader}>
@@ -335,11 +365,41 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
                         <Text style={styles.eduDegree}>
                           Degree: {edu.degree} in {edu.field}
                         </Text>
+                        {edu.location && (
+                          <Text style={styles.eduLocation}>{edu.location}</Text>
+                        )}
                       </View>
                       <Text style={styles.itemDate}>
                         {edu.startDate} - {edu.current ? 'Present' : edu.endDate}
                       </Text>
                     </View>
+
+                    {/* Achievements: Bulleted List */}
+                    {edu.achievements && edu.achievements.length > 0 && (
+                      <View style={styles.achievementsList}>
+                        {edu.achievements.map((achievement, index) => (
+                          <View key={index} style={styles.achievementItem}>
+                            <Text style={styles.achievementBullet}>•</Text>
+                            <Text style={styles.achievementText}>{achievement}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                ))}
+
+                {/* Certifications Items */}
+                {resume.certifications && resume.certifications.map((cert) => (
+                  <View key={cert.id} style={styles.itemContainer}>
+                    <View style={styles.itemHeader}>
+                      <Text style={styles.itemTitle}>
+                        {cert.name} | {cert.issuer}
+                      </Text>
+                      <Text style={styles.itemDate}>{cert.date}</Text>
+                    </View>
+                    {cert.credentialId && (
+                      <Text style={styles.eduLocation}>ID: {cert.credentialId}</Text>
+                    )}
                   </View>
                 ))}
               </View>

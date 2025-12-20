@@ -142,6 +142,24 @@ const styles = StyleSheet.create({
   descriptionText: {
     flex: 1,
   },
+  // Achievements list (for education)
+  achievementsList: {
+    marginTop: 4.5, // HTML: 6px → 4.5pt
+    marginLeft: 18, // HTML: 1.5em ≈ 18pt
+  },
+  achievementItem: {
+    flexDirection: 'row',
+    fontSize: 10.5,
+    color: COLORS.classicText,
+    lineHeight: 1.6,
+    marginBottom: 1.5, // HTML: 2px → 1.5pt
+  },
+  achievementBullet: {
+    marginRight: 4.5, // HTML: 6px → 4.5pt
+  },
+  achievementText: {
+    flex: 1,
+  },
 });
 
 interface TemplateClassicPDFProps {
@@ -272,9 +290,11 @@ export const TemplateClassicPDF: React.FC<TemplateClassicPDFProps> = ({ resume }
         )}
 
         {/* Education */}
-        {resume.education.length > 0 && (
+        {(resume.education.length > 0 || (resume.certifications && resume.certifications.length > 0)) && (
           <View>
             <Text style={styles.sectionTitle}>Education</Text>
+
+            {/* Education Items */}
             {resume.education.map((edu) => (
               <View key={edu.id} style={styles.itemContainer}>
                 {/* Row 1: Degree (left, bold) + Dates (right, nowrap) */}
@@ -291,6 +311,35 @@ export const TemplateClassicPDF: React.FC<TemplateClassicPDFProps> = ({ resume }
                 <View style={[styles.itemRow, styles.itemRowLast]}>
                   <Text style={styles.itemCompany}>{edu.institution}</Text>
                   {edu.location && <Text style={styles.itemLocation}>{edu.location}</Text>}
+                </View>
+
+                {/* Achievements: Bulleted List */}
+                {edu.achievements && edu.achievements.length > 0 && (
+                  <View style={styles.achievementsList}>
+                    {edu.achievements.map((achievement, index) => (
+                      <View key={index} style={styles.achievementItem}>
+                        <Text style={styles.achievementBullet}>•</Text>
+                        <Text style={styles.achievementText}>{achievement}</Text>
+                      </View>
+                    ))}
+                  </View>
+                )}
+              </View>
+            ))}
+
+            {/* Certifications Items */}
+            {resume.certifications && resume.certifications.map((cert) => (
+              <View key={cert.id} style={styles.itemContainer}>
+                {/* Row 1: Certification Name (left, bold) + Date (right) */}
+                <View style={styles.itemRow}>
+                  <Text style={styles.itemPosition}>{cert.name}</Text>
+                  <Text style={styles.itemDate}>{cert.date}</Text>
+                </View>
+
+                {/* Row 2: Issuer (italic) + Credential ID (right) */}
+                <View style={[styles.itemRow, styles.itemRowLast]}>
+                  <Text style={styles.itemCompany}>{cert.issuer}</Text>
+                  {cert.credentialId && <Text style={styles.itemLocation}>ID: {cert.credentialId}</Text>}
                 </View>
               </View>
             ))}

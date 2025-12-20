@@ -32,8 +32,10 @@ export default function EducationForm() {
     institution: "",
     degree: "",
     field: "",
+    location: "",
     startDate: "",
     endDate: "",
+    achievements: [],
   });
 
   const handleChange = (
@@ -70,8 +72,10 @@ export default function EducationForm() {
       institution: "",
       degree: "",
       field: "",
+      location: "",
       startDate: "",
       endDate: "",
+      achievements: [],
     });
   };
 
@@ -175,6 +179,39 @@ export default function EducationForm() {
             value={formData.field || ""}
             onChange={handleChange}
             placeholder="Computer Science"
+          />
+        </div>
+
+        {/* Location */}
+        <div className="space-y-2">
+          <Label htmlFor="location">Location</Label>
+          <Input
+            id="location"
+            name="location"
+            value={formData.location || ""}
+            onChange={handleChange}
+            placeholder="Boston, MA"
+          />
+        </div>
+
+        {/* Achievements / Courses & Certifications */}
+        <div className="space-y-2">
+          <Label htmlFor="achievements">Courses & Certifications</Label>
+          <Textarea
+            id="achievements"
+            name="achievements"
+            value={formData.achievements?.join("\n") || ""}
+            onChange={(e) => {
+              const lines = e.target.value
+                .split("\n")
+                .filter((line) => line.trim());
+              setFormData((prev) => ({
+                ...prev,
+                achievements: lines,
+              }));
+            }}
+            placeholder="Advanced React Patterns&#10;AWS Solutions Architect Certification"
+            rows={4}
           />
         </div>
 
