@@ -3,9 +3,16 @@ import { Education, Certification } from "@/types";
 interface EducationSectionProps {
   education: Education[];
   certifications?: Certification[];
+  spacingScale?: number;
+  fontScale?: number;
 }
 
-export default function EducationSection({ education, certifications = [] }: EducationSectionProps) {
+export default function EducationSection({
+  education,
+  certifications = [],
+  spacingScale = 1.0,
+  fontScale = 1.0,
+}: EducationSectionProps) {
   const placeholderOpacity = "opacity-50";
   const hasEducation = education && education.length > 0;
   const hasCertifications = certifications && certifications.length > 0;
@@ -16,33 +23,87 @@ export default function EducationSection({ education, certifications = [] }: Edu
     return date;
   };
 
+  // Scaled style values
+  const styles = {
+    sectionTitle: {
+      fontFamily: "var(--font-merriweather)",
+      fontSize: `calc(0.875rem * ${fontScale})`,
+      fontWeight: 700,
+      borderBottom: "1px solid #000000",
+      paddingBottom: `calc(4px * ${spacingScale})`,
+      marginTop: `calc(24px * ${spacingScale})`,
+      marginBottom: `calc(8px * ${spacingScale})`,
+    },
+    placeholderText: {
+      fontFamily: "var(--font-open-sans)",
+      fontSize: `calc(0.875rem * ${fontScale})`,
+      marginTop: `calc(8px * ${spacingScale})`,
+      marginBottom: `calc(12px * ${spacingScale})`,
+    },
+    article: {
+      marginBottom: `calc(4mm * ${spacingScale})`,
+    },
+    row: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      gap: `calc(0.5rem * ${spacingScale})`,
+      marginBottom: `calc(2px * ${spacingScale})`,
+    },
+    rowLast: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      gap: `calc(0.5rem * ${spacingScale})`,
+      marginBottom: `calc(4px * ${spacingScale})`,
+    },
+    degree: {
+      fontFamily: "var(--font-merriweather)",
+      fontSize: `calc(0.875rem * ${fontScale})`,
+      fontWeight: 700,
+      flex: 1,
+    },
+    date: {
+      fontFamily: "var(--font-open-sans)",
+      fontSize: `calc(0.875rem * ${fontScale})`,
+      whiteSpace: "nowrap" as const,
+      flexShrink: 0,
+    },
+    institution: {
+      fontFamily: "var(--font-open-sans)",
+      fontSize: `calc(0.875rem * ${fontScale})`,
+      fontStyle: "italic",
+      flex: 1,
+    },
+    location: {
+      fontFamily: "var(--font-open-sans)",
+      fontSize: `calc(0.875rem * ${fontScale})`,
+      flexShrink: 0,
+    },
+    achievements: {
+      listStyleType: "disc" as const,
+      listStylePosition: "outside" as const,
+      paddingLeft: `calc(1.5em * ${spacingScale})`,
+      margin: 0,
+      fontFamily: "var(--font-open-sans)",
+      fontSize: `calc(0.875rem * ${fontScale})`,
+      lineHeight: "1.6",
+    },
+    achievementItem: {
+      marginBottom: `calc(2px * ${spacingScale})`,
+    },
+  };
+
   return (
     <section>
       {/* Section Header */}
-      <h2
-        className="mb-2 mt-6 uppercase"
-        style={{
-          fontFamily: "var(--font-merriweather)",
-          fontSize: "0.875rem",
-          fontWeight: 700,
-          borderBottom: "1px solid #000000",
-          paddingBottom: "4px",
-        }}
-      >
+      <h2 className="uppercase" style={styles.sectionTitle}>
         Education
       </h2>
 
       {/* Instructional text when no education */}
       {!hasEducation && (
-        <p
-          className={placeholderOpacity}
-          style={{
-            fontFamily: "var(--font-open-sans)",
-            fontSize: "0.875rem",
-            marginTop: "8px",
-            marginBottom: "12px",
-          }}
-        >
+        <p className={placeholderOpacity} style={styles.placeholderText}>
           Include your degree, school name and the year you graduated. If you don&apos;t have a degree, list coursework or training that&apos;s relevant to the job you&apos;re applying for.
         </p>
       )}
@@ -51,303 +112,82 @@ export default function EducationSection({ education, certifications = [] }: Edu
       <div>
         {hasEducation ? (
           education.map((edu) => (
-          <article
-            key={edu.id}
-            style={{
-              marginBottom: "4mm",
-            }}
-          >
-            {/* Row 1: Degree (left, bold) and Dates (right, nowrap) */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                gap: "0.5rem",
-                marginBottom: "2px",
-              }}
-            >
-              <h3
-                style={{
-                  fontFamily: "var(--font-merriweather)",
-                  fontSize: "0.875rem",
-                  fontWeight: 700,
-                  flex: 1,
-                }}
-              >
-                {edu.degree} in {edu.field}
-              </h3>
-              <span
-                style={{
-                  fontFamily: "var(--font-open-sans)",
-                  fontSize: "0.875rem",
-                  whiteSpace: "nowrap",
-                  flexShrink: 0,
-                }}
-              >
-                {formatDate(edu.startDate, false)} —{" "}
-                {formatDate(edu.endDate, edu.current)}
-              </span>
-            </div>
-
-            {/* Row 2: Institution (left, italic) and Location (right) */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                gap: "0.5rem",
-                marginBottom: "4px",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "var(--font-open-sans)",
-                  fontSize: "0.875rem",
-                  fontStyle: "italic",
-                  flex: 1,
-                }}
-              >
-                {edu.institution}
-              </span>
-              {edu.location && (
-                <span
-                  style={{
-                    fontFamily: "var(--font-open-sans)",
-                    fontSize: "0.875rem",
-                    flexShrink: 0,
-                  }}
-                >
-                  {edu.location}
+            <article key={edu.id} style={styles.article}>
+              {/* Row 1: Degree (left, bold) and Dates (right, nowrap) */}
+              <div style={styles.row}>
+                <h3 style={styles.degree}>
+                  {edu.degree} in {edu.field}
+                </h3>
+                <span style={styles.date}>
+                  {formatDate(edu.startDate, false)} —{" "}
+                  {formatDate(edu.endDate, edu.current)}
                 </span>
-              )}
-            </div>
+              </div>
 
-            {/* Achievements (optional) */}
-            {edu.achievements && edu.achievements.length > 0 && (
-              <ul
-                style={{
-                  listStyleType: "disc",
-                  listStylePosition: "outside",
-                  paddingLeft: "1.5em",
-                  margin: 0,
-                  fontFamily: "var(--font-open-sans)",
-                  fontSize: "0.875rem",
-                  lineHeight: "1.6",
-                }}
-              >
-                {edu.achievements.map((achievement, index) => (
-                  <li key={index} style={{ marginBottom: "2px" }}>
-                    {achievement}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </article>
-        ))
+              {/* Row 2: Institution (left, italic) and Location (right) */}
+              <div style={styles.rowLast}>
+                <span style={styles.institution}>{edu.institution}</span>
+                {edu.location && <span style={styles.location}>{edu.location}</span>}
+              </div>
+
+              {/* Achievements (optional) */}
+              {edu.achievements && edu.achievements.length > 0 && (
+                <ul style={styles.achievements}>
+                  {edu.achievements.map((achievement, index) => (
+                    <li key={index} style={styles.achievementItem}>
+                      {achievement}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          ))
         ) : null}
 
         {/* Certifications Items */}
-        {hasCertifications && certifications.map((cert) => (
-          <article
-            key={cert.id}
-            style={{
-              marginBottom: "4mm",
-            }}
-          >
-            {/* Row 1: Course Name (left, bold) and Date (right) */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                gap: "0.5rem",
-                marginBottom: "2px",
-              }}
-            >
-              <h3
-                style={{
-                  fontFamily: "var(--font-merriweather)",
-                  fontSize: "0.875rem",
-                  fontWeight: 700,
-                  flex: 1,
-                }}
-              >
-                {cert.name}
-              </h3>
-              <span
-                style={{
-                  fontFamily: "var(--font-open-sans)",
-                  fontSize: "0.875rem",
-                  whiteSpace: "nowrap",
-                  flexShrink: 0,
-                }}
-              >
-                {cert.date}
-              </span>
-            </div>
+        {hasCertifications &&
+          certifications.map((cert) => (
+            <article key={cert.id} style={styles.article}>
+              {/* Row 1: Course Name (left, bold) and Date (right) */}
+              <div style={styles.row}>
+                <h3 style={styles.degree}>{cert.name}</h3>
+                <span style={styles.date}>{cert.date}</span>
+              </div>
 
-            {/* Row 2: Issuer (left, italic) and Credential ID (right) */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                gap: "0.5rem",
-                marginBottom: "4px",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "var(--font-open-sans)",
-                  fontSize: "0.875rem",
-                  fontStyle: "italic",
-                  flex: 1,
-                }}
-              >
-                {cert.issuer}
-              </span>
-              {cert.credentialId && (
-                <span
-                  style={{
-                    fontFamily: "var(--font-open-sans)",
-                    fontSize: "0.875rem",
-                    flexShrink: 0,
-                  }}
-                >
-                  ID: {cert.credentialId}
-                </span>
-              )}
-            </div>
-          </article>
-        ))}
+              {/* Row 2: Issuer (left, italic) and Credential ID (right) */}
+              <div style={styles.rowLast}>
+                <span style={styles.institution}>{cert.issuer}</span>
+                {cert.credentialId && (
+                  <span style={styles.location}>ID: {cert.credentialId}</span>
+                )}
+              </div>
+            </article>
+          ))}
 
         {!hasEducation && !hasCertifications && (
           /* Placeholder examples */
           <div className={placeholderOpacity}>
             {/* Education 1 */}
-            <article style={{ marginBottom: "4mm" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  gap: "0.5rem",
-                  marginBottom: "2px",
-                }}
-              >
-                <h3
-                  style={{
-                    fontFamily: "var(--font-merriweather)",
-                    fontSize: "0.875rem",
-                    fontWeight: 700,
-                    flex: 1,
-                  }}
-                >
-                  Degree in Field of Study
-                </h3>
-                <span
-                  style={{
-                    fontFamily: "var(--font-open-sans)",
-                    fontSize: "0.875rem",
-                    whiteSpace: "nowrap",
-                    flexShrink: 0,
-                  }}
-                >
-                  09/2017 — 07/2020
-                </span>
+            <article style={styles.article}>
+              <div style={styles.row}>
+                <h3 style={styles.degree}>Degree in Field of Study</h3>
+                <span style={styles.date}>09/2017 — 07/2020</span>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  gap: "0.5rem",
-                  marginBottom: "4px",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-open-sans)",
-                    fontSize: "0.875rem",
-                    fontStyle: "italic",
-                    flex: 1,
-                  }}
-                >
-                  Institution Name
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-open-sans)",
-                    fontSize: "0.875rem",
-                    flexShrink: 0,
-                  }}
-                >
-                  City, Country
-                </span>
+              <div style={styles.rowLast}>
+                <span style={styles.institution}>Institution Name</span>
+                <span style={styles.location}>City, Country</span>
               </div>
             </article>
 
             {/* Education 2 */}
-            <article style={{ marginBottom: "4mm" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  gap: "0.5rem",
-                  marginBottom: "2px",
-                }}
-              >
-                <h3
-                  style={{
-                    fontFamily: "var(--font-merriweather)",
-                    fontSize: "0.875rem",
-                    fontWeight: 700,
-                    flex: 1,
-                  }}
-                >
-                  Degree in Field of Study
-                </h3>
-                <span
-                  style={{
-                    fontFamily: "var(--font-open-sans)",
-                    fontSize: "0.875rem",
-                    whiteSpace: "nowrap",
-                    flexShrink: 0,
-                  }}
-                >
-                  09/2015 — 07/2017
-                </span>
+            <article style={styles.article}>
+              <div style={styles.row}>
+                <h3 style={styles.degree}>Degree in Field of Study</h3>
+                <span style={styles.date}>09/2015 — 07/2017</span>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  gap: "0.5rem",
-                  marginBottom: "4px",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-open-sans)",
-                    fontSize: "0.875rem",
-                    fontStyle: "italic",
-                    flex: 1,
-                  }}
-                >
-                  Institution Name
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-open-sans)",
-                    fontSize: "0.875rem",
-                    flexShrink: 0,
-                  }}
-                >
-                  City, Country
-                </span>
+              <div style={styles.rowLast}>
+                <span style={styles.institution}>Institution Name</span>
+                <span style={styles.location}>City, Country</span>
               </div>
             </article>
           </div>

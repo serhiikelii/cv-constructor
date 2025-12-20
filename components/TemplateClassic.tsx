@@ -8,10 +8,14 @@ import { Mail, Phone, MapPin, Linkedin, Github, Globe } from "lucide-react";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import SkillsSection from "./SkillsSection";
+import { getAdaptiveHTMLStyles } from "@/lib/adaptiveScaling";
 
 export default function TemplateClassic() {
   const resume = useResumeStore((state) => state.resume);
   const placeholderOpacity = "opacity-50";
+
+  // Calculate adaptive styles based on content density
+  const adaptiveStyles = getAdaptiveHTMLStyles(resume);
 
   return (
     <div className="flex min-h-screen items-start justify-center bg-gray-100 p-8">
@@ -21,25 +25,25 @@ export default function TemplateClassic() {
         style={{
           width: "210mm",
           height: "297mm",
-          paddingTop: "15mm",
-          paddingRight: "25mm",
-          paddingBottom: "25mm",
-          paddingLeft: "25mm",
+          paddingTop: adaptiveStyles.paddingTop,
+          paddingRight: adaptiveStyles.paddingSide,
+          paddingBottom: adaptiveStyles.paddingBottom,
+          paddingLeft: adaptiveStyles.paddingSide,
           fontFamily: "var(--font-merriweather)",
-          fontSize: "0.875rem", // 14px ≈ 10.5pt
-          lineHeight: "1.6",
+          fontSize: adaptiveStyles.fontSize,
+          lineHeight: adaptiveStyles.lineHeight,
         }}
       >
         {/* Header - Always centered, no photo support */}
         <header className="text-center">
           {/* Text Content */}
-          <div className="space-y-1" style={{ fontSize: "0.75rem" }}>
+          <div className="space-y-1">
             {/* Name */}
             <h1
               className="font-bold"
               style={{
                 fontFamily: "var(--font-merriweather)",
-                fontSize: "1.75rem",
+                fontSize: adaptiveStyles.headingSize,
                 fontWeight: 700,
               }}
             >
@@ -50,14 +54,22 @@ export default function TemplateClassic() {
 
             {/* City */}
             {resume.personalDetails.location && (
-              <div style={{ fontFamily: "var(--font-open-sans)", color: "#374151" }}>
+              <div style={{
+                fontFamily: "var(--font-open-sans)",
+                color: "#374151",
+                fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`
+              }}>
                 {resume.personalDetails.location}
               </div>
             )}
 
             {/* Email, Phone */}
             {(resume.personalDetails.email || resume.personalDetails.phone) && (
-              <div style={{ fontFamily: "var(--font-open-sans)", color: "#374151" }}>
+              <div style={{
+                fontFamily: "var(--font-open-sans)",
+                color: "#374151",
+                fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`
+              }}>
                 {[resume.personalDetails.email, resume.personalDetails.phone]
                   .filter(Boolean)
                   .join(" | ")}
@@ -66,28 +78,36 @@ export default function TemplateClassic() {
 
             {/* LinkedIn */}
             {resume.personalDetails.linkedin && (
-              <div style={{ fontFamily: "var(--font-open-sans)", color: "#374151" }}>
+              <div style={{
+                fontFamily: "var(--font-open-sans)",
+                color: "#374151",
+                fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`
+              }}>
                 {cleanUrl(resume.personalDetails.linkedin)}
               </div>
             )}
 
             {/* GitHub */}
             {resume.personalDetails.github && (
-              <div style={{ fontFamily: "var(--font-open-sans)", color: "#374151" }}>
+              <div style={{
+                fontFamily: "var(--font-open-sans)",
+                color: "#374151",
+                fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`
+              }}>
                 {cleanUrl(resume.personalDetails.github)}
               </div>
             )}
 
             {/* Professional Summary */}
-            <div className="mt-2">
+            <div style={{ marginTop: `calc(0.5rem * ${adaptiveStyles.spacingScale})` }}>
               <h2
                 className="mb-1 uppercase"
                 style={{
                   fontFamily: "var(--font-merriweather)",
-                  fontSize: "0.75rem",
+                  fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`,
                   fontWeight: 700,
                   borderBottom: "1px solid #000000",
-                  paddingBottom: "2px",
+                  paddingBottom: `calc(2px * ${adaptiveStyles.spacingScale})`,
                 }}
               >
                 Professional Summary
@@ -96,9 +116,9 @@ export default function TemplateClassic() {
                 className={!resume.personalDetails.summary ? placeholderOpacity : ""}
                 style={{
                   fontFamily: "var(--font-open-sans)",
-                  fontSize: "0.75rem",
+                  fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`,
                   lineHeight: "1.5",
-                  marginTop: "4px",
+                  marginTop: `calc(4px * ${adaptiveStyles.spacingScale})`,
                 }}
               >
                 {resume.personalDetails.summary ||
@@ -109,13 +129,26 @@ export default function TemplateClassic() {
         </header>
 
         {/* Skills Section */}
-        <SkillsSection skills={resume.skills} />
+        <SkillsSection
+          skills={resume.skills}
+          spacingScale={adaptiveStyles.spacingScale}
+          fontScale={adaptiveStyles.fontScale}
+        />
 
         {/* Experience Section */}
-        <ExperienceSection experiences={resume.experience} />
+        <ExperienceSection
+          experiences={resume.experience}
+          spacingScale={adaptiveStyles.spacingScale}
+          fontScale={adaptiveStyles.fontScale}
+        />
 
         {/* Education Section */}
-        <EducationSection education={resume.education} certifications={resume.certifications} />
+        <EducationSection
+          education={resume.education}
+          certifications={resume.certifications}
+          spacingScale={adaptiveStyles.spacingScale}
+          fontScale={adaptiveStyles.fontScale}
+        />
 
         {/* Print styles */}
         <style jsx>{`
