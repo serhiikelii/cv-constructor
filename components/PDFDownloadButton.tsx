@@ -36,10 +36,6 @@ const PDFDownloadButton: React.FC<PDFDownloadButtonProps> = ({ resume, className
         case 'classic':
           PDFComponent = TemplateClassicPDF;
           break;
-        // TODO: Add other templates when ready
-        // case 'modern':
-        //   PDFComponent = TemplateModernPDF;
-        //   break;
         default:
           PDFComponent = TemplateMinimalPDF;
       }

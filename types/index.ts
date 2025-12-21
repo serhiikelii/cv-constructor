@@ -79,7 +79,7 @@ export interface Resume {
   skills: Skills;
   certifications?: Certification[];
   projects?: Project[];
-  template: "classic" | "modern" | "minimal" | "creative" | "sidebar";
+  template: "classic" | "minimal" | "sidebar";
   createdAt: string;
   updatedAt: string;
 }
@@ -88,6 +88,6 @@ export interface Resume {
 export interface ResumeMetadata {
   id: string;
   name: string;
-  template: "classic" | "modern" | "minimal" | "creative" | "sidebar";
+  template: "classic" | "minimal" | "sidebar";
   lastModified: string;
 }

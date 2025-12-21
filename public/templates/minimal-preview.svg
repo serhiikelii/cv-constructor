@@ -1,0 +1,90 @@
+<svg width="210" height="297" viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="210" height="297" fill="#ffffff"/>
+
+  <!-- Left vertical line -->
+  <line x1="15" y1="35" x2="15" y2="270" stroke="#1e40af" stroke-width="1.5"/>
+
+  <!-- Circle markers on the line -->
+  <circle cx="15" cy="52" r="4" fill="#1e40af"/>
+  <circle cx="15" cy="110" r="4" fill="#1e40af"/>
+  <circle cx="15" cy="160" r="4" fill="#1e40af"/>
+  <circle cx="15" cy="220" r="4" fill="#1e40af"/>
+
+  <!-- Header: YOUR NAME -->
+  <text x="25" y="40" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af">YOUR NAME</text>
+
+  <!-- Subheader: Address line -->
+  <text x="25" y="48" font-family="Arial, sans-serif" font-size="5" fill="#6b7280">
+    <tspan x="25" dy="0">Enter your city, country, ZIP Code and professional email address. If you work</tspan>
+    <tspan x="25" dy="6">remotely, specify that here.</tspan>
+  </text>
+
+  <!-- PROFESSIONAL SUMMARY -->
+  <text x="25" y="68" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="#1e40af">PROFESSIONAL SUMMARY</text>
+  <text x="25" y="76" font-family="Arial, sans-serif" font-size="4.5" fill="#374151">
+    <tspan x="25" dy="0">Use this section to give recruiters a quick glimpse of your professional profile. In just 3-4</tspan>
+    <tspan x="25" dy="5">lines, highlight your background, education and main skills.</tspan>
+  </text>
+
+  <!-- SKILLS -->
+  <text x="25" y="95" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="#1e40af">SKILLS</text>
+  <text x="25" y="102" font-family="Arial, sans-serif" font-size="4.5" fill="#374151">
+    <tspan x="25" dy="0">List your professional skills in bullet points so they're easy for recruiters to read.</tspan>
+  </text>
+  <!-- Skills columns -->
+  <text x="25" y="112" font-family="Arial, sans-serif" font-size="5" fill="#1f2937">Skill 1</text>
+  <text x="115" y="112" font-family="Arial, sans-serif" font-size="5" fill="#1f2937">Skill 2</text>
+  <text x="25" y="118" font-family="Arial, sans-serif" font-size="5" fill="#1f2937">Skill 3</text>
+
+  <!-- PROFESSIONAL EXPERIENCE -->
+  <text x="25" y="135" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="#1e40af">PROFESSIONAL EXPERIENCE</text>
+  <text x="25" y="142" font-family="Arial, sans-serif" font-size="4.5" fill="#374151">
+    <tspan x="25" dy="0">Showcase your relevant experience by listing each job and your responsibilities in 2-3</tspan>
+    <tspan x="25" dy="5">lines. Start with your most recent job and work backwards using the format below.</tspan>
+  </text>
+
+  <!-- Experience Item 1 -->
+  <text x="25" y="158" font-family="Arial, sans-serif" font-size="5.5" font-weight="bold" fill="#1f2937">Job Title 1 | Company Name</text>
+  <text x="155" y="158" font-family="Arial, sans-serif" font-size="5" fill="#6b7280">Time employed (Month/year - Month/year)</text>
+  <circle cx="27" cy="164" r="1" fill="#1f2937"/>
+  <text x="31" y="166" font-family="Arial, sans-serif" font-size="4.5" fill="#374151">Responsibilities</text>
+  <circle cx="27" cy="170" r="1" fill="#1f2937"/>
+  <text x="31" y="172" font-family="Arial, sans-serif" font-size="4.5" fill="#374151">Responsibilities</text>
+  <circle cx="27" cy="176" r="1" fill="#1f2937"/>
+  <text x="31" y="178" font-family="Arial, sans-serif" font-size="4.5" fill="#374151">Responsibilities</text>
+
+  <!-- Experience Item 2 -->
+  <text x="25" y="190" font-family="Arial, sans-serif" font-size="5.5" font-weight="bold" fill="#1f2937">Job Title 2 | Company Name</text>
+  <text x="155" y="190" font-family="Arial, sans-serif" font-size="5" fill="#6b7280">Time employed (Month/year - Month/year)</text>
+  <circle cx="27" cy="196" r="1" fill="#1f2937"/>
+  <text x="31" y="198" font-family="Arial, sans-serif" font-size="4.5" fill="#374151">Responsibilities</text>
+  <circle cx="27" cy="202" r="1" fill="#1f2937"/>
+  <text x="31" y="204" font-family="Arial, sans-serif" font-size="4.5" fill="#374151">Responsibilities</text>
+  <circle cx="27" cy="208" r="1" fill="#1f2937"/>
+  <text x="31" y="210" font-family="Arial, sans-serif" font-size="4.5" fill="#374151">Responsibilities</text>
+
+  <!-- EDUCATION -->
+  <text x="25" y="228" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="#1e40af">EDUCATION</text>
+  <text x="25" y="235" font-family="Arial, sans-serif" font-size="4.5" fill="#374151">
+    <tspan x="25" dy="0">Include your degree, school name and the year you graduated. If you don't have a</tspan>
+    <tspan x="25" dy="5">degree, list coursework or training that's relevant to the job you're applying for.</tspan>
+  </text>
+
+  <!-- Education entries -->
+  <text x="25" y="250" font-family="Arial, sans-serif" font-size="5" fill="#1f2937">
+    <tspan font-weight="bold">Institution - City - Mention (if applicable)</tspan>
+  </text>
+  <text x="160" y="250" font-family="Arial, sans-serif" font-size="5" fill="#6b7280">09/2017 - 07/2020</text>
+  <text x="25" y="256" font-family="Arial, sans-serif" font-size="5" fill="#1f2937">
+    <tspan font-weight="bold">Degree:</tspan> Field of study
+  </text>
+
+  <text x="25" y="266" font-family="Arial, sans-serif" font-size="5" fill="#1f2937">
+    <tspan font-weight="bold">Institution - City - Mention (if applicable)</tspan>
+  </text>
+  <text x="160" y="266" font-family="Arial, sans-serif" font-size="5" fill="#6b7280">09/2015 - 07/2017</text>
+  <text x="25" y="272" font-family="Arial, sans-serif" font-size="5" fill="#1f2937">
+    <tspan font-weight="bold">Degree:</tspan> Field of study
+  </text>
+</svg>
