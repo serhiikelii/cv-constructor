@@ -26,7 +26,7 @@ export default function EducationSection({
   // Scaled style values
   const styles = {
     sectionTitle: {
-      fontFamily: "var(--font-merriweather)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       fontWeight: 700,
       borderBottom: "1px solid #000000",
@@ -35,7 +35,7 @@ export default function EducationSection({
       marginBottom: `calc(8px * ${spacingScale})`,
     },
     placeholderText: {
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       marginTop: `calc(8px * ${spacingScale})`,
       marginBottom: `calc(12px * ${spacingScale})`,
@@ -58,25 +58,25 @@ export default function EducationSection({
       marginBottom: `calc(4px * ${spacingScale})`,
     },
     degree: {
-      fontFamily: "var(--font-merriweather)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       fontWeight: 700,
       flex: 1,
     },
     date: {
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       whiteSpace: "nowrap" as const,
       flexShrink: 0,
     },
     institution: {
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       fontStyle: "italic",
       flex: 1,
     },
     location: {
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       flexShrink: 0,
     },
@@ -85,7 +85,7 @@ export default function EducationSection({
       listStylePosition: "outside" as const,
       paddingLeft: `calc(1.5em * ${spacingScale})`,
       margin: 0,
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       lineHeight: "1.6",
     },
@@ -112,7 +112,7 @@ export default function EducationSection({
       <div>
         {hasEducation ? (
           education.map((edu) => (
-            <article key={edu.id} style={styles.article}>
+            <article key={edu.id} className="education-item" style={styles.article}>
               {/* Row 1: Degree (left, bold) and Dates (right, nowrap) */}
               <div style={styles.row}>
                 <h3 style={styles.degree}>
@@ -147,7 +147,7 @@ export default function EducationSection({
         {/* Certifications Items */}
         {hasCertifications &&
           certifications.map((cert) => (
-            <article key={cert.id} style={styles.article}>
+            <article key={cert.id} className="education-item" style={styles.article}>
               {/* Row 1: Course Name (left, bold) and Date (right) */}
               <div style={styles.row}>
                 <h3 style={styles.degree}>{cert.name}</h3>
@@ -194,11 +194,18 @@ export default function EducationSection({
         )}
       </div>
 
-      {/* Print styles for page breaks */}
+      {/* Print and pagination styles */}
       <style jsx>{`
+        /* Prevent breaking inside education items */
+        :global(.education-item) {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
         @media print {
-          article {
+          :global(.education-item) {
             break-inside: avoid;
+            page-break-inside: avoid;
           }
         }
       `}</style>

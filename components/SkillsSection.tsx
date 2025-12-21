@@ -22,7 +22,7 @@ export default function SkillsSection({
   // Scaled style values
   const styles = {
     sectionTitle: {
-      fontFamily: "var(--font-merriweather)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       fontWeight: 700,
       borderBottom: "1px solid #000000",
@@ -31,13 +31,13 @@ export default function SkillsSection({
       marginBottom: `calc(8px * ${spacingScale})`,
     },
     placeholderText: {
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       marginTop: `calc(8px * ${spacingScale})`,
       marginBottom: `calc(12px * ${spacingScale})`,
     },
     skillText: {
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       lineHeight: "1.6",
     },
@@ -45,7 +45,7 @@ export default function SkillsSection({
       marginBottom: `calc(8px * ${spacingScale})`,
     },
     subheading: {
-      fontFamily: "var(--font-merriweather)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       fontWeight: 700,
       marginBottom: `calc(2px * ${spacingScale})`,
@@ -53,7 +53,7 @@ export default function SkillsSection({
   };
 
   return (
-    <section>
+    <section className="skill-item">
       {/* Section Header */}
       <h2 className="uppercase" style={styles.sectionTitle}>
         Skills
@@ -98,6 +98,22 @@ export default function SkillsSection({
           </p>
         </div>
       )}
+
+      {/* Print and pagination styles */}
+      <style jsx>{`
+        /* Prevent breaking inside skills section */
+        :global(.skill-item) {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        @media print {
+          :global(.skill-item) {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+        }
+      `}</style>
     </section>
   );
 }

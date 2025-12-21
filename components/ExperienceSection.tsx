@@ -24,7 +24,7 @@ export default function ExperienceSection({
   // Scaled style values
   const styles = {
     sectionTitle: {
-      fontFamily: "var(--font-merriweather)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       fontWeight: 700,
       borderBottom: "1px solid #000000",
@@ -33,7 +33,7 @@ export default function ExperienceSection({
       marginBottom: `calc(8px * ${spacingScale})`,
     },
     placeholderText: {
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       marginTop: `calc(8px * ${spacingScale})`,
       marginBottom: `calc(12px * ${spacingScale})`,
@@ -56,25 +56,25 @@ export default function ExperienceSection({
       marginBottom: `calc(4px * ${spacingScale})`,
     },
     position: {
-      fontFamily: "var(--font-merriweather)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       fontWeight: 700,
       flex: 1,
     },
     date: {
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       whiteSpace: "nowrap" as const,
       flexShrink: 0,
     },
     company: {
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       fontStyle: "italic",
       flex: 1,
     },
     location: {
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       flexShrink: 0,
     },
@@ -83,7 +83,7 @@ export default function ExperienceSection({
       listStylePosition: "outside" as const,
       paddingLeft: `calc(1.5em * ${spacingScale})`,
       margin: 0,
-      fontFamily: "var(--font-open-sans)",
+      fontFamily: "Helvetica, Arial, sans-serif",
       fontSize: `calc(0.875rem * ${fontScale})`,
       lineHeight: "1.6",
     },
@@ -110,7 +110,7 @@ export default function ExperienceSection({
       <div>
         {hasExperience ? (
           experiences.map((exp) => (
-            <article key={exp.id} style={styles.article}>
+            <article key={exp.id} className="experience-item" style={styles.article}>
               {/* Row 1: Position (left, bold) and Dates (right, nowrap) */}
               <div style={styles.row}>
                 <h3 style={styles.position}>{exp.position}</h3>
@@ -178,11 +178,18 @@ export default function ExperienceSection({
         )}
       </div>
 
-      {/* Print styles for page breaks */}
+      {/* Print and pagination styles */}
       <style jsx>{`
+        /* Prevent breaking inside experience items */
+        :global(.experience-item) {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
         @media print {
-          article {
+          :global(.experience-item) {
             break-inside: avoid;
+            page-break-inside: avoid;
           }
         }
       `}</style>

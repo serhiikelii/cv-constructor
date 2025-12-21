@@ -19,19 +19,29 @@ export default function TemplateClassic() {
 
   return (
     <div className="flex min-h-screen items-start justify-center bg-gray-100 p-8">
-      {/* A4 Container */}
+      {/* A4 Container - Vertical Pagination Support */}
       <div
-        className="relative bg-white text-gray-800 shadow-lg"
+        className="relative text-gray-800 shadow-lg"
         style={{
           width: "210mm",
-          height: "297mm",
+          minHeight: "297mm",
           paddingTop: adaptiveStyles.paddingTop,
           paddingRight: adaptiveStyles.paddingSide,
           paddingBottom: adaptiveStyles.paddingBottom,
           paddingLeft: adaptiveStyles.paddingSide,
-          fontFamily: "var(--font-merriweather)",
+          fontFamily: "Helvetica, Arial, sans-serif",
           fontSize: adaptiveStyles.fontSize,
           lineHeight: adaptiveStyles.lineHeight,
+          // Background: white with page separation gradient
+          background: `
+            repeating-linear-gradient(
+              transparent,
+              transparent 297mm,
+              #e5e7eb 297mm,
+              #e5e7eb calc(297mm + 56px)
+            ),
+            white
+          `,
         }}
       >
         {/* Header - Always centered, no photo support */}
@@ -42,7 +52,7 @@ export default function TemplateClassic() {
             <h1
               className="font-bold"
               style={{
-                fontFamily: "var(--font-merriweather)",
+                fontFamily: "Helvetica, Arial, sans-serif",
                 fontSize: adaptiveStyles.headingSize,
                 fontWeight: 700,
               }}
@@ -55,7 +65,7 @@ export default function TemplateClassic() {
             {/* City */}
             {resume.personalDetails.location && (
               <div style={{
-                fontFamily: "var(--font-open-sans)",
+                fontFamily: "Helvetica, Arial, sans-serif",
                 color: "#374151",
                 fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`
               }}>
@@ -66,7 +76,7 @@ export default function TemplateClassic() {
             {/* Email, Phone */}
             {(resume.personalDetails.email || resume.personalDetails.phone) && (
               <div style={{
-                fontFamily: "var(--font-open-sans)",
+                fontFamily: "Helvetica, Arial, sans-serif",
                 color: "#374151",
                 fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`
               }}>
@@ -79,7 +89,7 @@ export default function TemplateClassic() {
             {/* LinkedIn */}
             {resume.personalDetails.linkedin && (
               <div style={{
-                fontFamily: "var(--font-open-sans)",
+                fontFamily: "Helvetica, Arial, sans-serif",
                 color: "#374151",
                 fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`
               }}>
@@ -90,7 +100,7 @@ export default function TemplateClassic() {
             {/* GitHub */}
             {resume.personalDetails.github && (
               <div style={{
-                fontFamily: "var(--font-open-sans)",
+                fontFamily: "Helvetica, Arial, sans-serif",
                 color: "#374151",
                 fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`
               }}>
@@ -103,7 +113,7 @@ export default function TemplateClassic() {
               <h2
                 className="mb-1 uppercase"
                 style={{
-                  fontFamily: "var(--font-merriweather)",
+                  fontFamily: "Helvetica, Arial, sans-serif",
                   fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`,
                   fontWeight: 700,
                   borderBottom: "1px solid #000000",
@@ -115,7 +125,7 @@ export default function TemplateClassic() {
               <p
                 className={!resume.personalDetails.summary ? placeholderOpacity : ""}
                 style={{
-                  fontFamily: "var(--font-open-sans)",
+                  fontFamily: "Helvetica, Arial, sans-serif",
                   fontSize: `calc(0.75rem * ${adaptiveStyles.fontScale})`,
                   lineHeight: "1.5",
                   marginTop: `calc(4px * ${adaptiveStyles.spacingScale})`,
@@ -150,13 +160,30 @@ export default function TemplateClassic() {
           fontScale={adaptiveStyles.fontScale}
         />
 
-        {/* Print styles */}
+        {/* Pagination and Print styles */}
         <style jsx>{`
+          /* Prevent breaking inside important elements */
+          :global(header),
+          :global(section),
+          :global(.experience-item),
+          :global(.education-item),
+          :global(.skill-item) {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+
+          /* Ensure section titles stay with content */
+          :global(h2) {
+            break-after: avoid;
+            page-break-after: avoid;
+          }
+
           @media print {
-            /* Reset container margins for print */
+            /* Reset container for print */
             div[style*="210mm"] {
               box-shadow: none;
               margin: 0;
+              background: white !important; /* Remove visual page breaks in print */
             }
 
             /* Set text color to pure black for print */
@@ -172,9 +199,18 @@ export default function TemplateClassic() {
               color: #000000;
             }
 
-            /* Page break management */
+            /* Page break management for print */
             h2 {
               break-after: avoid;
+              page-break-after: avoid;
+            }
+
+            /* Prevent breaking inside items */
+            :global(.experience-item),
+            :global(.education-item),
+            :global(.skill-item) {
+              break-inside: avoid;
+              page-break-inside: avoid;
             }
 
             /* Link styles for print */
@@ -186,6 +222,12 @@ export default function TemplateClassic() {
             /* Hide placeholders in print */
             .opacity-50 {
               display: none;
+            }
+
+            /* Ensure proper page sizing */
+            @page {
+              size: A4;
+              margin: 0;
             }
           }
         `}</style>

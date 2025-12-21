@@ -15,7 +15,7 @@ export const SCALING_CONFIG = {
   baseHeadingFontSize: 14,
 
   // Spacing scale limits (percentage)
-  minSpacingScale: 0.6, // 60% of original spacing
+  minSpacingScale: 0.8, // 80% of original spacing (increased for page boundaries)
   maxSpacingScale: 1.0, // 100% original spacing
 
   // Font scale limits (percentage)
@@ -166,25 +166,26 @@ export function remToPt(rem: number): number {
 export function getAdaptiveHTMLStyles(resume: Resume) {
   const { spacingScale, fontScale, compressionLevel } = calculateScaleFactors(resume);
 
-  // Base values - matching PDF (42pt = ~15mm, 71pt = ~25mm)
+  // Base values - EXACT MATCH with PDF using pt -> px conversion
+  // PDF uses pt, HTML uses px: 1pt = 1.33333px (at 96 DPI)
   const baseFontSize = 0.875; // rem (14px ≈ 10.5pt)
   const baseHeadingSize = 1.75; // rem (28px ≈ 21pt)
   const baseLineHeight = 1.6;
 
-  // Convert from pt to mm for HTML (1pt ≈ 0.3527mm)
-  // PDF uses: paddingTop=42pt, paddingHorizontal=71pt
-  const basePaddingTopMm = 15; // mm (≈42pt in PDF)
-  const basePaddingSideMm = 25; // mm (≈71pt in PDF)
-  const basePaddingBottomMm = 25; // mm
-  const baseSectionMarginTopPx = 24; // px (≈18pt in PDF)
+  // Convert PDF pt values to px for HTML (1pt = 1.33333px)
+  // PDF: paddingTop=42pt, paddingHorizontal=71pt, sectionMargin=18pt
+  const basePaddingTopPx = 42 * 1.33333; // 56px (42pt in PDF)
+  const basePaddingSidePx = 71 * 1.33333; // 94.67px (71pt in PDF)
+  const basePaddingBottomPx = 71 * 1.33333; // 94.67px (71pt in PDF)
+  const baseSectionMarginTopPx = 18 * 1.33333; // 24px (18pt in PDF)
 
   return {
     fontSize: `${scaleFontSize(baseFontSize, fontScale)}rem`,
     headingSize: `${scaleFontSize(baseHeadingSize, fontScale)}rem`,
     lineHeight: baseLineHeight,
-    paddingTop: `${scaleSpacing(basePaddingTopMm, spacingScale)}mm`,
-    paddingSide: `${scaleSpacing(basePaddingSideMm, spacingScale)}mm`,
-    paddingBottom: `${scaleSpacing(basePaddingBottomMm, spacingScale)}mm`,
+    paddingTop: `${scaleSpacing(basePaddingTopPx, spacingScale)}px`,
+    paddingSide: `${scaleSpacing(basePaddingSidePx, spacingScale)}px`,
+    paddingBottom: `${scaleSpacing(basePaddingBottomPx, spacingScale)}px`,
     sectionMarginTop: `${scaleSpacing(baseSectionMarginTopPx, spacingScale)}px`,
     spacingScale,
     fontScale,

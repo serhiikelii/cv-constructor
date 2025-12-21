@@ -1,44 +1,87 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useReactToPrint } from "react-to-print";
+import { pdf } from "@react-pdf/renderer";
 import { Button } from "@/components/ui/button";
-import { ZoomIn, ZoomOut, Maximize2, Printer } from "lucide-react";
+import { ZoomIn, ZoomOut, Maximize2, Loader2 } from "lucide-react";
 import { useResumeStore } from "@/store/resumeStore";
-import TemplateClassic from "../TemplateClassic";
-import TemplateModern from "../TemplateModern";
-import TemplateMinimal from "../TemplateMinimal";
-import TemplateCreative from "../TemplateCreative";
-import TemplateSidebar from "../TemplateSidebar";
+import { TemplateMinimalPDF } from "../pdf/templates/TemplateMinimalPDF";
+import { TemplateSidebarPDF } from "../pdf/templates/TemplateSidebarPDF";
+import { TemplateClassicPDF } from "../pdf/templates/TemplateClassicPDF";
 import PDFDownloadButton from "../PDFDownloadButton";
 
 export default function PreviewPanel() {
   const [zoom, setZoom] = useState(1);
   const [autoZoom, setAutoZoom] = useState(true);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const a4Ref = useRef<HTMLDivElement>(null);
-  const printRef = useRef<HTMLDivElement>(null);
 
   const resume = useResumeStore((state) => state.resume);
 
-  // Generate filename from resume data
-  const getFileName = () => {
-    const fullName = resume.personalDetails.fullName || "Resume";
-    const sanitizedName = fullName.replace(/[^a-zA-Z0-9]/g, "_");
-    return `${sanitizedName}_Resume.pdf`;
+  // Generate PDF Preview
+  const generatePdfPreview = async () => {
+    try {
+      setIsGenerating(true);
+      setError(null);
+
+      // Select PDF template based on resume.template
+      let PDFComponent;
+      switch (resume.template) {
+        case "minimal":
+          PDFComponent = TemplateMinimalPDF;
+          break;
+        case "sidebar":
+          PDFComponent = TemplateSidebarPDF;
+          break;
+        case "classic":
+          PDFComponent = TemplateClassicPDF;
+          break;
+        default:
+          PDFComponent = TemplateClassicPDF;
+      }
+
+      // Generate PDF blob
+      const blob = await pdf(<PDFComponent resume={resume} />).toBlob();
+
+      // Revoke previous URL to avoid memory leaks
+      if (pdfUrl) {
+        URL.revokeObjectURL(pdfUrl);
+      }
+
+      // Create new blob URL
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);
+    } catch (err) {
+      console.error("PDF generation error:", err);
+      setError("Failed to generate PDF preview. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
-  // Configure react-to-print
-  const handlePrint = useReactToPrint({
-    contentRef: printRef,
-    documentTitle: getFileName(),
-    onBeforePrint: async () => {
-      console.log("Preparing to print...");
-    },
-    onAfterPrint: async () => {
-      console.log("Print completed");
-    },
-  });
+  // Regenerate PDF when resume or template changes (with debounce)
+  useEffect(() => {
+    // Debounce: wait 500ms after last change before regenerating
+    const timeoutId = setTimeout(() => {
+      generatePdfPreview();
+    }, 500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [resume, resume.template]);
+
+  // Cleanup PDF URL on unmount
+  useEffect(() => {
+    return () => {
+      if (pdfUrl) {
+        URL.revokeObjectURL(pdfUrl);
+      }
+    };
+  }, [pdfUrl]);
 
 
   // Calculate auto-fit zoom based on container width
@@ -129,50 +172,66 @@ export default function PreviewPanel() {
 
             <div className="mx-2 h-6 w-px bg-gray-300" />
 
-            <Button
-              size="sm"
-              onClick={handlePrint}
-              className="gap-2"
-              variant="outline"
-            >
-              <Printer className="h-4 w-4" />
-              Print
-            </Button>
-
             <PDFDownloadButton resume={resume} />
           </div>
         </div>
       </div>
 
-      {/* Preview Area */}
+      {/* Preview Area - PDF iframe */}
       <div
         ref={containerRef}
         className="flex-1 overflow-auto bg-gray-100 p-4"
       >
-        <div className="flex min-h-full items-start justify-center">
-          <div
-            ref={a4Ref}
-            style={{
-              transform: `scale(${zoom})`,
-              transformOrigin: "top center",
-              transition: autoZoom ? "transform 0.2s ease-out" : "none",
-            }}
-          >
-            <div ref={printRef}>
-              {resume.template === "modern" ? (
-                <TemplateModern />
-              ) : resume.template === "minimal" ? (
-                <TemplateMinimal />
-              ) : resume.template === "creative" ? (
-                <TemplateCreative />
-              ) : resume.template === "sidebar" ? (
-                <TemplateSidebar />
-              ) : (
-                <TemplateClassic />
-              )}
+        {isGenerating ? (
+          /* Loading State */
+          <div className="flex h-full items-center justify-center">
+            <div className="text-center">
+              <Loader2 className="mx-auto h-12 w-12 animate-spin text-gray-400" />
+              <p className="mt-4 text-sm text-gray-600">
+                Generating PDF preview...
+              </p>
             </div>
           </div>
-        </div>
+        ) : error ? (
+          /* Error State */
+          <div className="flex h-full items-center justify-center">
+            <div className="text-center">
+              <p className="text-sm text-red-600">{error}</p>
+              <Button
+                size="sm"
+                onClick={generatePdfPreview}
+                className="mt-4"
+              >
+                Retry
+              </Button>
+            </div>
+          </div>
+        ) : pdfUrl ? (
+          /* PDF iframe */
+          <div className="flex min-h-full items-start justify-center">
+            <div
+              ref={a4Ref}
+              style={{
+                transform: `scale(${zoom})`,
+                transformOrigin: "top center",
+                transition: autoZoom ? "transform 0.2s ease-out" : "none",
+                width: "210mm",
+                height: "297mm",
+              }}
+            >
+              <iframe
+                src={pdfUrl}
+                width="100%"
+                height="100%"
+                style={{
+                  border: "none",
+                  boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                }}
+                title="Resume PDF Preview"
+              />
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );
