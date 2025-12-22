@@ -3,40 +3,45 @@ import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/render
 import { Resume } from '@/types';
 import { cleanPDFUrl, getInitials } from '@/lib/pdf/pdfHelpers';
 import { COLORS, FONT_SIZES, SPACING } from '@/lib/pdf/pdfStyles';
+import { getAdaptivePDFStyles } from '@/lib/adaptiveScaling';
 
-const styles = StyleSheet.create({
+// Function to create adaptive styles based on resume content
+const createAdaptiveStyles = (resume: Resume) => {
+  const adaptive = getAdaptivePDFStyles(resume);
+
+  return StyleSheet.create({
   page: {
     backgroundColor: COLORS.white,
     fontFamily: 'Helvetica',
-    fontSize: FONT_SIZES.body,
+    fontSize: adaptive.bodyFontSize,
     flexDirection: 'row',
   },
   // Left sidebar (30%)
   sidebar: {
     width: '30%',
     backgroundColor: '#DBEAFE', // Light blue to match HTML
-    padding: 24, // HTML: p-8 (2rem = 32px → 24pt)
-    paddingTop: 36, // HTML: pt-12 (3rem = 48px → 36pt)
+    padding: 24 * adaptive.spacingScale, // HTML: p-8 (2rem = 32px → 24pt)
+    paddingTop: 36 * adaptive.spacingScale, // HTML: pt-12 (3rem = 48px → 36pt)
     borderRight: '1pt solid #E5E7EB', // Gray-200 border to match HTML
   },
   // Right main content (70%)
   mainContent: {
     width: '70%',
     backgroundColor: COLORS.white,
-    padding: 30, // HTML: p-10 (2.5rem = 40px → 30pt)
-    paddingTop: 36, // HTML: pt-12 (3rem = 48px → 36pt)
-    paddingLeft: 30,
+    padding: 30 * adaptive.spacingScale, // HTML: p-10 (2.5rem = 40px → 30pt)
+    paddingTop: 36 * adaptive.spacingScale, // HTML: pt-12 (3rem = 48px → 36pt)
+    paddingLeft: 30 * adaptive.spacingScale,
   },
 
   // ===== SIDEBAR STYLES =====
 
   // Photo
   photoContainer: {
-    width: 100, // HTML: w-2/3 of sidebar content (≈ 66.67% of ~150pt = 100pt)
-    height: 100,
+    width: 100 * adaptive.spacingScale, // HTML: w-2/3 of sidebar content (≈ 66.67% of ~150pt = 100pt)
+    height: 100 * adaptive.spacingScale,
     borderRadius: 4,
     overflow: 'hidden',
-    marginBottom: 36, // HTML: gap-10 (40px) + mb-2 (8px) = 48px → 36pt
+    marginBottom: 36 * adaptive.spacingScale, // HTML: gap-10 (40px) + mb-2 (8px) = 48px → 36pt
     alignSelf: 'flex-start', // Left-aligned to match HTML preview
     backgroundColor: COLORS.white,
   },
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
   },
   photoInitials: {
-    fontSize: 40, // Reduced proportionally (48 * 100/120 = 40)
+    fontSize: 40 * adaptive.fontScale, // Reduced proportionally (48 * 100/120 = 40)
     fontFamily: 'Helvetica', // Light font to match HTML
     color: COLORS.white,
     letterSpacing: 2, // tracking-wider equivalent
@@ -64,31 +69,31 @@ const styles = StyleSheet.create({
 
   // Sidebar sections
   sidebarSection: {
-    marginBottom: 30, // HTML: gap-10 (2.5rem = 40px → 30pt)
+    marginBottom: 30 * adaptive.spacingScale, // HTML: gap-10 (2.5rem = 40px → 30pt)
   },
   sidebarTitle: {
-    fontSize: FONT_SIZES.h3,
+    fontSize: 12 * adaptive.fontScale,
     fontFamily: 'Helvetica-Bold',
     color: '#374151', // Gray-800 to match HTML
     textTransform: 'uppercase',
-    marginBottom: 12, // HTML: mb-4 (1rem = 16px → 12pt)
+    marginBottom: 12 * adaptive.spacingScale, // HTML: mb-4 (1rem = 16px → 12pt)
     letterSpacing: 0.5,
     borderBottom: '2pt solid #D1D5DB', // Gray-300 border to match HTML
-    paddingBottom: 6, // HTML: pb-2 (0.5rem = 8px → 6pt)
+    paddingBottom: 6 * adaptive.spacingScale, // HTML: pb-2 (0.5rem = 8px → 6pt)
   },
 
   // Contact info
   contactItem: {
-    marginBottom: 6, // Reduced from SPACING.md (16) to 6pt for compactness (gap-2 = 8px → 6pt)
+    marginBottom: 6 * adaptive.spacingScale, // Reduced from SPACING.md (16) to 6pt for compactness (gap-2 = 8px → 6pt)
   },
   contactLabel: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     fontFamily: 'Helvetica-Bold',
     color: '#111827', // Gray-900 to match HTML
-    marginBottom: 2,
+    marginBottom: 2 * adaptive.spacingScale,
   },
   contactValue: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: '#374151', // Gray-700 to match HTML
     lineHeight: 1.4,
   },
@@ -97,16 +102,16 @@ const styles = StyleSheet.create({
   skillItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 6,
+    marginBottom: 6 * adaptive.spacingScale,
   },
   skillBullet: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalAccent,
-    marginRight: 6,
-    marginTop: 1,
+    marginRight: 6 * adaptive.spacingScale,
+    marginTop: 1 * adaptive.spacingScale,
   },
   skillText: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalText,
     flex: 1,
     lineHeight: 1.4,
@@ -116,18 +121,18 @@ const styles = StyleSheet.create({
 
   // Header with name
   mainHeader: {
-    marginBottom: SPACING.xl,
+    marginBottom: 24 * adaptive.spacingScale,
   },
   name: {
-    fontSize: 48, // 3rem to match HTML
+    fontSize: 48 * adaptive.fontScale, // 3rem to match HTML
     fontFamily: 'Helvetica-Bold',
     color: '#1E3A8A', // Dark blue to match HTML
     letterSpacing: 0.5, // tracking-wide equivalent
-    marginBottom: SPACING.lg,
+    marginBottom: 18 * adaptive.spacingScale,
     lineHeight: 1.2,
   },
   tagline: {
-    fontSize: 12,
+    fontSize: 12 * adaptive.fontScale,
     color: COLORS.minimalText,
     fontStyle: 'italic',
     lineHeight: 1.5,
@@ -135,109 +140,112 @@ const styles = StyleSheet.create({
 
   // Main sections
   mainSection: {
-    marginBottom: SPACING.xl,
+    marginBottom: 24 * adaptive.spacingScale,
   },
   mainSectionTitle: {
-    fontSize: FONT_SIZES.h2,
+    fontSize: 14 * adaptive.fontScale,
     fontFamily: 'Helvetica-Bold',
     color: '#374151', // Gray-800 to match HTML
-    marginBottom: 18, // HTML: mb-6 (1.5rem = 24px → 18pt)
-    paddingBottom: 6, // HTML: pb-2 (0.5rem = 8px → 6pt)
+    marginBottom: 18 * adaptive.spacingScale, // HTML: mb-6 (1.5rem = 24px → 18pt)
+    paddingBottom: 6 * adaptive.spacingScale, // HTML: pb-2 (0.5rem = 8px → 6pt)
     borderBottom: '2pt solid #E5E7EB', // Gray-200 border to match HTML
   },
 
   // Experience/Education items
   itemContainer: {
-    marginBottom: SPACING.md,
+    marginBottom: 16 * adaptive.spacingScale,
   },
   itemHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 4,
+    marginBottom: 4 * adaptive.spacingScale,
     alignItems: 'flex-start',
   },
   itemTitle: {
-    fontSize: 11,
+    fontSize: 11 * adaptive.fontScale,
     fontFamily: 'Helvetica-Bold',
     color: COLORS.minimalText,
     flex: 1,
-    paddingRight: SPACING.sm,
+    paddingRight: 8 * adaptive.spacingScale,
   },
   itemDate: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalText,
     fontStyle: 'italic',
   },
   itemSubtitle: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalText,
-    marginBottom: 4,
+    marginBottom: 4 * adaptive.spacingScale,
   },
 
   // Description bullets
   descriptionList: {
-    marginTop: 6,
-    paddingLeft: SPACING.md,
+    marginTop: 6 * adaptive.spacingScale,
+    paddingLeft: 16 * adaptive.spacingScale,
   },
   descriptionItem: {
     flexDirection: 'row',
-    marginBottom: 4,
+    marginBottom: 4 * adaptive.spacingScale,
     alignItems: 'flex-start',
   },
   descriptionBullet: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalAccent,
-    marginRight: 6,
-    marginTop: 1,
+    marginRight: 6 * adaptive.spacingScale,
+    marginTop: 1 * adaptive.spacingScale,
   },
   descriptionText: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalText,
     flex: 1,
     lineHeight: 1.5,
   },
   // Achievements list (for education)
   achievementsList: {
-    marginTop: 6,
-    paddingLeft: SPACING.md,
+    marginTop: 6 * adaptive.spacingScale,
+    paddingLeft: 16 * adaptive.spacingScale,
   },
   achievementItem: {
     flexDirection: 'row',
-    marginBottom: 4,
+    marginBottom: 4 * adaptive.spacingScale,
     alignItems: 'flex-start',
   },
   achievementBullet: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalAccent,
-    marginRight: 6,
-    marginTop: 1,
+    marginRight: 6 * adaptive.spacingScale,
+    marginTop: 1 * adaptive.spacingScale,
   },
   achievementText: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalText,
     flex: 1,
     lineHeight: 1.4,
   },
   // Item location (for education)
   itemLocation: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalText,
-    marginBottom: 4,
+    marginBottom: 4 * adaptive.spacingScale,
   },
   // Placeholder styles
   placeholderText: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: '#9ca3af',
     fontFamily: 'Helvetica-Oblique',
     lineHeight: 1.5,
   },
-});
+  });
+};
 
 interface TemplateSidebarPDFProps {
   resume: Resume;
 }
 
 export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }) => {
+  const styles = createAdaptiveStyles(resume);
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>

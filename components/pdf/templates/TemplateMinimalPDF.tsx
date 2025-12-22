@@ -3,51 +3,56 @@ import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/render
 import { Resume } from '@/types';
 import { cleanPDFUrl } from '@/lib/pdf/pdfHelpers';
 import { COLORS, FONT_SIZES } from '@/lib/pdf/pdfStyles';
+import { getAdaptivePDFStyles } from '@/lib/adaptiveScaling';
 
-const styles = StyleSheet.create({
+// Function to create adaptive styles based on resume content
+const createAdaptiveStyles = (resume: Resume) => {
+  const adaptive = getAdaptivePDFStyles(resume);
+
+  return StyleSheet.create({
   page: {
     backgroundColor: COLORS.white,
     fontFamily: 'Helvetica',
-    fontSize: FONT_SIZES.body,
+    fontSize: adaptive.bodyFontSize,
     lineHeight: 1.6,
     padding: 0,
   },
   // Header section
   header: {
-    paddingTop: 48,
-    paddingBottom: 24,
-    paddingLeft: 64,
-    paddingRight: 64,
+    paddingTop: 48 * adaptive.spacingScale,
+    paddingBottom: 24 * adaptive.spacingScale,
+    paddingLeft: 64 * adaptive.spacingScale,
+    paddingRight: 64 * adaptive.spacingScale,
   },
   headerContent: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 24,
+    gap: 24 * adaptive.spacingScale,
   },
   headerText: {
     flex: 1,
   },
   name: {
-    fontSize: FONT_SIZES.h1,
+    fontSize: 28 * adaptive.fontScale,
     fontFamily: 'Helvetica-Bold',
     color: COLORS.minimalAccent,
     letterSpacing: -0.5,
     lineHeight: 1.2,
-    marginBottom: 12,
+    marginBottom: 12 * adaptive.spacingScale,
   },
   contactInfo: {
-    fontSize: 11,
+    fontSize: 11 * adaptive.fontScale,
     color: COLORS.minimalText,
     lineHeight: 1.6,
   },
   contactLine: {
-    marginBottom: 4,
+    marginBottom: 4 * adaptive.spacingScale,
   },
   // Photo (circular)
   photoContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 100 * adaptive.spacingScale,
+    height: 100 * adaptive.spacingScale,
+    borderRadius: 50 * adaptive.spacingScale,
     borderWidth: 3,
     borderColor: COLORS.minimalAccent,
     overflow: 'hidden',
@@ -60,161 +65,164 @@ const styles = StyleSheet.create({
   },
   // Main content with timeline
   content: {
-    paddingLeft: 64,
-    paddingRight: 64,
-    paddingBottom: 48,
+    paddingLeft: 64 * adaptive.spacingScale,
+    paddingRight: 64 * adaptive.spacingScale,
+    paddingBottom: 48 * adaptive.spacingScale,
   },
   timelineContainer: {
     position: 'relative',
-    paddingLeft: 40,
+    paddingLeft: 40 * adaptive.spacingScale,
   },
   // Timeline vertical line - symmetric padding top and bottom
   timelineLine: {
     position: 'absolute',
-    left: 14,
-    top: 7,
-    bottom: 7, // Same as top for symmetry
+    left: 14 * adaptive.spacingScale,
+    top: 7 * adaptive.spacingScale,
+    bottom: 7 * adaptive.spacingScale, // Same as top for symmetry
     width: 4,
     backgroundColor: COLORS.minimalAccent,
   },
   // Section with timeline dot
   section: {
     position: 'relative',
-    marginBottom: 24,
+    marginBottom: 24 * adaptive.spacingScale,
   },
   timelineDot: {
     position: 'absolute',
-    left: -32,
+    left: -32 * adaptive.spacingScale,
     top: 0,
-    width: 16,
-    height: 16,
-    borderRadius: 8,
+    width: 16 * adaptive.spacingScale,
+    height: 16 * adaptive.spacingScale,
+    borderRadius: 8 * adaptive.spacingScale,
     backgroundColor: COLORS.white,
     borderWidth: 3,
     borderColor: COLORS.minimalAccent,
   },
   sectionTitle: {
-    fontSize: FONT_SIZES.h2,
+    fontSize: 14 * adaptive.fontScale,
     fontFamily: 'Helvetica-Bold',
     color: COLORS.minimalAccent,
     textTransform: 'uppercase',
     letterSpacing: 1,
-    marginBottom: 8,
+    marginBottom: 8 * adaptive.spacingScale,
   },
   summaryText: {
-    fontSize: 11,
+    fontSize: 11 * adaptive.fontScale,
     color: COLORS.minimalText,
     lineHeight: 1.6,
   },
   // Skills - 3 columns
   skillsGrid: {
     flexDirection: 'row',
-    gap: 24,
+    gap: 24 * adaptive.spacingScale,
   },
   skillColumn: {
     flex: 1,
   },
   skillsList: {
-    marginTop: 8,
+    marginTop: 8 * adaptive.spacingScale,
   },
   skillItem: {
     flexDirection: 'row',
-    fontSize: 11,
+    fontSize: 11 * adaptive.fontScale,
     color: COLORS.minimalText,
-    marginBottom: 4,
+    marginBottom: 4 * adaptive.spacingScale,
   },
   bullet: {
-    marginRight: 8,
+    marginRight: 8 * adaptive.spacingScale,
   },
   // Experience/Education items
   itemContainer: {
-    marginBottom: 16,
+    marginBottom: 16 * adaptive.spacingScale,
   },
   itemHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 4,
+    marginBottom: 4 * adaptive.spacingScale,
   },
   itemTitle: {
-    fontSize: 11,
+    fontSize: 11 * adaptive.fontScale,
     fontFamily: 'Helvetica-Bold',
     color: COLORS.minimalText,
     flex: 1,
   },
   itemDate: {
-    fontSize: 11,
+    fontSize: 11 * adaptive.fontScale,
     color: COLORS.minimalText,
   },
   itemDescription: {
-    marginTop: 8,
-    marginLeft: 16,
+    marginTop: 8 * adaptive.spacingScale,
+    marginLeft: 16 * adaptive.spacingScale,
   },
   descriptionItem: {
     flexDirection: 'row',
-    fontSize: 11,
+    fontSize: 11 * adaptive.fontScale,
     color: COLORS.minimalText,
     lineHeight: 1.5,
-    marginBottom: 4,
+    marginBottom: 4 * adaptive.spacingScale,
   },
   descriptionBullet: {
-    marginRight: 8,
+    marginRight: 8 * adaptive.spacingScale,
   },
   descriptionText: {
     flex: 1,
   },
   // Education specific
   eduInstitution: {
-    fontSize: 11,
+    fontSize: 11 * adaptive.fontScale,
     color: COLORS.minimalText,
-    marginBottom: 2,
+    marginBottom: 2 * adaptive.spacingScale,
   },
   eduDegree: {
-    fontSize: 11,
+    fontSize: 11 * adaptive.fontScale,
     fontFamily: 'Helvetica-Bold',
     color: COLORS.minimalText,
   },
   // Education location
   eduLocation: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalText,
-    marginTop: 2,
+    marginTop: 2 * adaptive.spacingScale,
   },
   // Achievements list (for education)
   achievementsList: {
-    marginTop: 6,
-    paddingLeft: 16,
+    marginTop: 6 * adaptive.spacingScale,
+    paddingLeft: 16 * adaptive.spacingScale,
   },
   achievementItem: {
     flexDirection: 'row',
-    marginBottom: 4,
+    marginBottom: 4 * adaptive.spacingScale,
     alignItems: 'flex-start',
   },
   achievementBullet: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalAccent,
-    marginRight: 6,
-    marginTop: 1,
+    marginRight: 6 * adaptive.spacingScale,
+    marginTop: 1 * adaptive.spacingScale,
   },
   achievementText: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: COLORS.minimalText,
     flex: 1,
     lineHeight: 1.4,
   },
   // Placeholder styles
   placeholderText: {
-    fontSize: 10,
+    fontSize: 10 * adaptive.fontScale,
     color: '#9ca3af',
     fontFamily: 'Helvetica-Oblique',
     lineHeight: 1.5,
   },
-});
+  });
+};
 
 interface TemplateMinimalPDFProps {
   resume: Resume;
 }
 
 export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }) => {
+  const styles = createAdaptiveStyles(resume);
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>

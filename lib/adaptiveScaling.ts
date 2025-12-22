@@ -112,7 +112,7 @@ export function calculateScaleFactors(resume: Resume): ScaleFactors {
   } else {
     // Very high density - heavy compression
     compressionLevel = 'heavy';
-    // Spacing at minimum (60%)
+    // Spacing at minimum (80%)
     const excessDensity = density - config.highDensityThreshold;
     const spacingReduction = Math.min(0.2, excessDensity / 1000); // Max 20% additional reduction
     spacingScale = Math.max(config.minSpacingScale, 0.8 - spacingReduction);
