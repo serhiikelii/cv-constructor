@@ -241,9 +241,10 @@ const createAdaptiveStyles = (resume: Resume) => {
 
 interface TemplateSidebarPDFProps {
   resume: Resume;
+  showPlaceholders?: boolean;
 }
 
-export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }) => {
+export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume, showPlaceholders = false }) => {
   const styles = createAdaptiveStyles(resume);
 
   return (
@@ -313,11 +314,11 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
                   </View>
                 )}
               </>
-            ) : (
+            ) : showPlaceholders ? (
               <Text style={styles.placeholderText}>
                 Add your contact information: address, phone, email, and social profiles
               </Text>
-            )}
+            ) : null}
           </View>
 
           {/* Skills Section */}
@@ -330,11 +331,11 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
                   <Text style={styles.skillText}>{skill}</Text>
                 </View>
               ))
-            ) : (
+            ) : showPlaceholders ? (
               <Text style={styles.placeholderText}>
                 List your professional skills
               </Text>
-            )}
+            ) : null}
           </View>
 
           {/* Tools Section */}
@@ -347,11 +348,11 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
                   <Text style={styles.skillText}>{tool}</Text>
                 </View>
               ))
-            ) : (
+            ) : showPlaceholders ? (
               <Text style={styles.placeholderText}>
                 List tools you use (Git, Docker, etc.)
               </Text>
-            )}
+            ) : null}
           </View>
 
           {/* Languages Section */}
@@ -366,11 +367,11 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
                   </Text>
                 </View>
               ))
-            ) : (
+            ) : showPlaceholders ? (
               <Text style={styles.placeholderText}>
                 Add languages with proficiency
               </Text>
-            )}
+            ) : null}
           </View>
         </View>
 
@@ -385,11 +386,11 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
             </Text>
             {resume.personalDetails.summary ? (
               <Text style={styles.tagline}>{resume.personalDetails.summary}</Text>
-            ) : (
+            ) : showPlaceholders ? (
               <Text style={styles.placeholderText}>
                 Write a brief professional summary highlighting your background and main skills (3-4 lines)
               </Text>
-            )}
+            ) : null}
           </View>
 
           {/* Work History / Professional Experience */}
@@ -418,11 +419,11 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
                   )}
                 </View>
               ))
-            ) : (
+            ) : showPlaceholders ? (
               <Text style={styles.placeholderText}>
                 Showcase your relevant experience by listing each job and your responsibilities. Start with your most recent job and work backwards. Add bullet points for key responsibilities and achievements.
               </Text>
-            )}
+            ) : null}
           </View>
 
           {/* Education */}
@@ -477,11 +478,11 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
                   </View>
                 ))}
               </>
-            ) : (
+            ) : showPlaceholders ? (
               <Text style={styles.placeholderText}>
                 Include your degree, school name and the year you graduated. If you don't have a degree, list coursework or training that's relevant to the job you're applying for. You can also add certifications here.
               </Text>
-            )}
+            ) : null}
           </View>
         </View>
       </Page>

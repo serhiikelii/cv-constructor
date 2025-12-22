@@ -177,9 +177,10 @@ const createAdaptiveStyles = (resume: Resume) => {
 
 interface TemplateClassicPDFProps {
   resume: Resume;
+  showPlaceholders?: boolean;
 }
 
-export const TemplateClassicPDF: React.FC<TemplateClassicPDFProps> = ({ resume }) => {
+export const TemplateClassicPDF: React.FC<TemplateClassicPDFProps> = ({ resume, showPlaceholders = false }) => {
   const styles = createAdaptiveStyles(resume);
 
   return (
@@ -227,11 +228,11 @@ export const TemplateClassicPDF: React.FC<TemplateClassicPDFProps> = ({ resume }
             <Text style={styles.summaryTitle}>Professional Summary</Text>
             {resume.personalDetails.summary ? (
               <Text style={styles.summaryText}>{resume.personalDetails.summary}</Text>
-            ) : (
+            ) : showPlaceholders ? (
               <Text style={styles.placeholderText}>
                 Use this section to give recruiters a quick glimpse of your professional profile. In just 3-4 lines, highlight your background, education and main skills.
               </Text>
-            )}
+            ) : null}
           </View>
         </View>
 
@@ -270,11 +271,11 @@ export const TemplateClassicPDF: React.FC<TemplateClassicPDFProps> = ({ resume }
                   </View>
                 )}
               </>
-            ) : (
+            ) : showPlaceholders ? (
               <Text style={styles.placeholderText}>
                 List your professional skills, tools you use (Git, Docker, Figma, etc.), and languages with proficiency levels. Skills help recruiters quickly assess your technical capabilities.
               </Text>
-            )}
+            ) : null}
           </View>
         </View>
 
@@ -311,11 +312,11 @@ export const TemplateClassicPDF: React.FC<TemplateClassicPDFProps> = ({ resume }
                 )}
               </View>
             ))
-          ) : (
+          ) : showPlaceholders ? (
             <Text style={styles.placeholderText}>
               Showcase your relevant experience by listing each job and your responsibilities in 2-3 lines. Start with your most recent job and work backwards using the format: Job Title | Company Name (dates). Add bullet points for key responsibilities and achievements.
             </Text>
-          )}
+          ) : null}
         </View>
 
         {/* Education */}
@@ -374,11 +375,11 @@ export const TemplateClassicPDF: React.FC<TemplateClassicPDFProps> = ({ resume }
                 </View>
               ))}
             </>
-          ) : (
+          ) : showPlaceholders ? (
             <Text style={styles.placeholderText}>
               Include your degree, school name and the year you graduated. If you don't have a degree, list coursework or training that's relevant to the job you're applying for. You can also add certifications here.
             </Text>
-          )}
+          ) : null}
         </View>
       </Page>
     </Document>

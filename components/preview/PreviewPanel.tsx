@@ -43,8 +43,8 @@ export default function PreviewPanel() {
           PDFComponent = TemplateClassicPDF;
       }
 
-      // Generate PDF blob
-      const blob = await pdf(<PDFComponent resume={resume} />).toBlob();
+      // Generate PDF blob (with placeholders for preview)
+      const blob = await pdf(<PDFComponent resume={resume} showPlaceholders={true} />).toBlob();
 
       // Revoke previous URL to avoid memory leaks
       if (pdfUrl) {

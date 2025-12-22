@@ -53,15 +53,31 @@ const createAdaptiveStyles = (resume: Resume) => {
     width: 100 * adaptive.spacingScale,
     height: 100 * adaptive.spacingScale,
     borderRadius: 50 * adaptive.spacingScale,
-    borderWidth: 3,
-    borderColor: COLORS.minimalAccent,
     overflow: 'hidden',
     flexShrink: 0,
+  },
+  photoContainerWithBorder: {
+    borderWidth: 3,
+    borderColor: COLORS.minimalAccent,
   },
   photo: {
     width: '100%',
     height: '100%',
     objectFit: 'cover',
+  },
+  photoPlaceholder: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#D1D5DB', // Light gray
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  photoPlaceholderText: {
+    fontSize: 12 * adaptive.fontScale,
+    fontFamily: 'Helvetica',
+    color: '#9CA3AF',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   // Main content with timeline
   content: {
@@ -73,12 +89,12 @@ const createAdaptiveStyles = (resume: Resume) => {
     position: 'relative',
     paddingLeft: 40 * adaptive.spacingScale,
   },
-  // Timeline vertical line - symmetric padding top and bottom
+  // Timeline vertical line - grows with content
   timelineLine: {
     position: 'absolute',
     left: 14 * adaptive.spacingScale,
     top: 7 * adaptive.spacingScale,
-    bottom: 7 * adaptive.spacingScale, // Same as top for symmetry
+    height: '100%',
     width: 4,
     backgroundColor: COLORS.minimalAccent,
   },
@@ -218,9 +234,10 @@ const createAdaptiveStyles = (resume: Resume) => {
 
 interface TemplateMinimalPDFProps {
   resume: Resume;
+  showPlaceholders?: boolean;
 }
 
-export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }) => {
+export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume, showPlaceholders = false }) => {
   const styles = createAdaptiveStyles(resume);
 
   return (
@@ -261,11 +278,17 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
             </View>
 
             {/* Photo - Circular */}
-            {resume.personalDetails.photo && (
-              <View style={styles.photoContainer}>
+            {resume.personalDetails.photo ? (
+              <View style={[styles.photoContainer, styles.photoContainerWithBorder]}>
                 <Image src={resume.personalDetails.photo} style={styles.photo} />
               </View>
-            )}
+            ) : showPlaceholders ? (
+              <View style={styles.photoContainer}>
+                <View style={styles.photoPlaceholder}>
+                  <Text style={styles.photoPlaceholderText}>PHOTO</Text>
+                </View>
+              </View>
+            ) : null}
           </View>
         </View>
 
@@ -281,11 +304,11 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
               <Text style={styles.sectionTitle}>Professional Summary</Text>
               {resume.personalDetails.summary ? (
                 <Text style={styles.summaryText}>{resume.personalDetails.summary}</Text>
-              ) : (
+              ) : showPlaceholders ? (
                 <Text style={styles.placeholderText}>
                   Use this section to give recruiters a quick glimpse of your professional profile. In just 3-4 lines, highlight your background, education and main skills.
                 </Text>
-              )}
+              ) : null}
             </View>
 
             {/* Skills - 3 columns */}
@@ -303,11 +326,11 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
                           <Text>{skill}</Text>
                         </View>
                       ))
-                    ) : (
+                    ) : showPlaceholders ? (
                       <Text style={styles.placeholderText}>
                         List your professional skills (React, Python, etc.)
                       </Text>
-                    )}
+                    ) : null}
                   </View>
                 </View>
 
@@ -322,11 +345,11 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
                           <Text>{tool}</Text>
                         </View>
                       ))
-                    ) : (
+                    ) : showPlaceholders ? (
                       <Text style={styles.placeholderText}>
                         List tools you use (Git, Docker, Figma, etc.)
                       </Text>
-                    )}
+                    ) : null}
                   </View>
                 </View>
 
@@ -343,11 +366,11 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
                           </Text>
                         </View>
                       ))
-                    ) : (
+                    ) : showPlaceholders ? (
                       <Text style={styles.placeholderText}>
                         Add languages with proficiency level
                       </Text>
-                    )}
+                    ) : null}
                   </View>
                 </View>
               </View>
@@ -359,7 +382,7 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
               <Text style={styles.sectionTitle}>Professional Experience</Text>
               {resume.experience.length > 0 ? (
                 resume.experience.map((exp) => (
-                  <View key={exp.id} style={styles.itemContainer}>
+                  <View key={exp.id} style={styles.itemContainer} wrap={false}>
                     <View style={styles.itemHeader}>
                       <Text style={styles.itemTitle}>
                         {exp.position} | {exp.company}
@@ -380,11 +403,11 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
                     )}
                   </View>
                 ))
-              ) : (
+              ) : showPlaceholders ? (
                 <Text style={styles.placeholderText}>
                   Showcase your relevant experience by listing each job and your responsibilities in 2-3 lines. Start with your most recent job and work backwards using the format: Job Title | Company Name (dates). Add bullet points for key responsibilities and achievements.
                 </Text>
-              )}
+              ) : null}
             </View>
 
             {/* Education */}
@@ -396,7 +419,7 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
                 <>
                   {/* Education Items */}
                   {resume.education.map((edu) => (
-                    <View key={edu.id} style={styles.itemContainer}>
+                    <View key={edu.id} style={styles.itemContainer} wrap={false}>
                       <View style={styles.itemHeader}>
                         <View style={{ flex: 1 }}>
                           <Text style={styles.eduInstitution}>{edu.institution}</Text>
@@ -428,7 +451,7 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
 
                   {/* Certifications Items */}
                   {resume.certifications && resume.certifications.map((cert) => (
-                    <View key={cert.id} style={styles.itemContainer}>
+                    <View key={cert.id} style={styles.itemContainer} wrap={false}>
                       <View style={styles.itemHeader}>
                         <Text style={styles.itemTitle}>
                           {cert.name} | {cert.issuer}
@@ -441,11 +464,11 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume }
                     </View>
                   ))}
                 </>
-              ) : (
+              ) : showPlaceholders ? (
                 <Text style={styles.placeholderText}>
                   Include your degree, school name and the year you graduated. If you don't have a degree, list coursework or training that's relevant to the job you're applying for. You can also add certifications here.
                 </Text>
-              )}
+              ) : null}
             </View>
           </View>
         </View>
