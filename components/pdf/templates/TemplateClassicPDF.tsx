@@ -165,6 +165,13 @@ const createAdaptiveStyles = (resume: Resume) => {
     achievementText: {
       flex: 1,
     },
+    // Placeholder styles
+    placeholderText: {
+      fontSize: 9 * adaptive.fontScale,
+      color: '#9ca3af',
+      fontFamily: 'Helvetica-Oblique',
+      lineHeight: 1.5,
+    },
   });
 };
 
@@ -216,56 +223,66 @@ export const TemplateClassicPDF: React.FC<TemplateClassicPDFProps> = ({ resume }
           )}
 
           {/* Professional Summary */}
-          {resume.personalDetails.summary && (
-            <View>
-              <Text style={styles.summaryTitle}>Professional Summary</Text>
+          <View>
+            <Text style={styles.summaryTitle}>Professional Summary</Text>
+            {resume.personalDetails.summary ? (
               <Text style={styles.summaryText}>{resume.personalDetails.summary}</Text>
-            </View>
-          )}
+            ) : (
+              <Text style={styles.placeholderText}>
+                Use this section to give recruiters a quick glimpse of your professional profile. In just 3-4 lines, highlight your background, education and main skills.
+              </Text>
+            )}
+          </View>
         </View>
 
         {/* Skills Section */}
-        {(resume.skills.skills.length > 0 ||
-          resume.skills.tools.length > 0 ||
-          resume.skills.languages.length > 0) && (
-          <View wrap={false}>
-            <Text style={styles.sectionTitle}>Skills</Text>
-            <View style={styles.skillsContainer}>
-              {/* Skills - joined with bullets */}
-              {resume.skills.skills.length > 0 && (
-                <Text style={styles.skillItem}>
-                  {resume.skills.skills.join(' • ')}
-                </Text>
-              )}
-              {/* Tools - with label and joined with bullets */}
-              {resume.skills.tools.length > 0 && (
-                <View style={{ marginBottom: 6 }}>
-                  <Text style={styles.skillSubtitle}>TOOLS</Text>
+        <View wrap={false}>
+          <Text style={styles.sectionTitle}>Skills</Text>
+          <View style={styles.skillsContainer}>
+            {resume.skills.skills.length > 0 ||
+            resume.skills.tools.length > 0 ||
+            resume.skills.languages.length > 0 ? (
+              <>
+                {/* Skills - joined with bullets */}
+                {resume.skills.skills.length > 0 && (
                   <Text style={styles.skillItem}>
-                    {resume.skills.tools.join(' • ')}
+                    {resume.skills.skills.join(' • ')}
                   </Text>
-                </View>
-              )}
-              {/* Languages - with label and joined with bullets */}
-              {resume.skills.languages.length > 0 && (
-                <View>
-                  <Text style={styles.skillSubtitle}>LANGUAGES</Text>
-                  <Text style={styles.skillItem}>
-                    {resume.skills.languages
-                      .map((lang) => `${lang.language} (${lang.proficiency})`)
-                      .join(' • ')}
-                  </Text>
-                </View>
-              )}
-            </View>
+                )}
+                {/* Tools - with label and joined with bullets */}
+                {resume.skills.tools.length > 0 && (
+                  <View style={{ marginBottom: 6 }}>
+                    <Text style={styles.skillSubtitle}>TOOLS</Text>
+                    <Text style={styles.skillItem}>
+                      {resume.skills.tools.join(' • ')}
+                    </Text>
+                  </View>
+                )}
+                {/* Languages - with label and joined with bullets */}
+                {resume.skills.languages.length > 0 && (
+                  <View>
+                    <Text style={styles.skillSubtitle}>LANGUAGES</Text>
+                    <Text style={styles.skillItem}>
+                      {resume.skills.languages
+                        .map((lang) => `${lang.language} (${lang.proficiency})`)
+                        .join(' • ')}
+                    </Text>
+                  </View>
+                )}
+              </>
+            ) : (
+              <Text style={styles.placeholderText}>
+                List your professional skills, tools you use (Git, Docker, Figma, etc.), and languages with proficiency levels. Skills help recruiters quickly assess your technical capabilities.
+              </Text>
+            )}
           </View>
-        )}
+        </View>
 
         {/* Professional Experience */}
-        {resume.experience.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Experience</Text>
-            {resume.experience.map((exp) => (
+        <View>
+          <Text style={styles.sectionTitle}>Experience</Text>
+          {resume.experience.length > 0 ? (
+            resume.experience.map((exp) => (
               <View key={exp.id} style={styles.itemContainer} wrap={false}>
                 {/* Row 1: Position (left, bold) + Dates (right, nowrap) */}
                 <View style={styles.itemRow}>
@@ -293,66 +310,76 @@ export const TemplateClassicPDF: React.FC<TemplateClassicPDFProps> = ({ resume }
                   </View>
                 )}
               </View>
-            ))}
-          </View>
-        )}
+            ))
+          ) : (
+            <Text style={styles.placeholderText}>
+              Showcase your relevant experience by listing each job and your responsibilities in 2-3 lines. Start with your most recent job and work backwards using the format: Job Title | Company Name (dates). Add bullet points for key responsibilities and achievements.
+            </Text>
+          )}
+        </View>
 
         {/* Education */}
-        {(resume.education.length > 0 || (resume.certifications && resume.certifications.length > 0)) && (
-          <View>
-            <Text style={styles.sectionTitle}>Education</Text>
+        <View>
+          <Text style={styles.sectionTitle}>Education</Text>
 
-            {/* Education Items */}
-            {resume.education.map((edu) => (
-              <View key={edu.id} style={styles.itemContainer} wrap={false}>
-                {/* Row 1: Degree (left, bold) + Dates (right, nowrap) */}
-                <View style={styles.itemRow}>
-                  <Text style={styles.itemPosition}>
-                    {edu.degree} in {edu.field}
-                  </Text>
-                  <Text style={styles.itemDate}>
-                    {formatPDFDateRange(edu.startDate, edu.current ? 'Present' : edu.endDate)}
-                  </Text>
-                </View>
-
-                {/* Row 2: Institution (italic) + Location (right) */}
-                <View style={[styles.itemRow, styles.itemRowLast]}>
-                  <Text style={styles.itemCompany}>{edu.institution}</Text>
-                  {edu.location && <Text style={styles.itemLocation}>{edu.location}</Text>}
-                </View>
-
-                {/* Achievements: Bulleted List */}
-                {edu.achievements && edu.achievements.length > 0 && (
-                  <View style={styles.achievementsList}>
-                    {edu.achievements.map((achievement, index) => (
-                      <View key={index} style={styles.achievementItem}>
-                        <Text style={styles.achievementBullet}>•</Text>
-                        <Text style={styles.achievementText}>{achievement}</Text>
-                      </View>
-                    ))}
+          {resume.education.length > 0 || (resume.certifications && resume.certifications.length > 0) ? (
+            <>
+              {/* Education Items */}
+              {resume.education.map((edu) => (
+                <View key={edu.id} style={styles.itemContainer} wrap={false}>
+                  {/* Row 1: Degree (left, bold) + Dates (right, nowrap) */}
+                  <View style={styles.itemRow}>
+                    <Text style={styles.itemPosition}>
+                      {edu.degree} in {edu.field}
+                    </Text>
+                    <Text style={styles.itemDate}>
+                      {formatPDFDateRange(edu.startDate, edu.current ? 'Present' : edu.endDate)}
+                    </Text>
                   </View>
-                )}
-              </View>
-            ))}
 
-            {/* Certifications Items */}
-            {resume.certifications && resume.certifications.map((cert) => (
-              <View key={cert.id} style={styles.itemContainer} wrap={false}>
-                {/* Row 1: Certification Name (left, bold) + Date (right) */}
-                <View style={styles.itemRow}>
-                  <Text style={styles.itemPosition}>{cert.name}</Text>
-                  <Text style={styles.itemDate}>{cert.date}</Text>
-                </View>
+                  {/* Row 2: Institution (italic) + Location (right) */}
+                  <View style={[styles.itemRow, styles.itemRowLast]}>
+                    <Text style={styles.itemCompany}>{edu.institution}</Text>
+                    {edu.location && <Text style={styles.itemLocation}>{edu.location}</Text>}
+                  </View>
 
-                {/* Row 2: Issuer (italic) + Credential ID (right) */}
-                <View style={[styles.itemRow, styles.itemRowLast]}>
-                  <Text style={styles.itemCompany}>{cert.issuer}</Text>
-                  {cert.credentialId && <Text style={styles.itemLocation}>ID: {cert.credentialId}</Text>}
+                  {/* Achievements: Bulleted List */}
+                  {edu.achievements && edu.achievements.length > 0 && (
+                    <View style={styles.achievementsList}>
+                      {edu.achievements.map((achievement, index) => (
+                        <View key={index} style={styles.achievementItem}>
+                          <Text style={styles.achievementBullet}>•</Text>
+                          <Text style={styles.achievementText}>{achievement}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  )}
                 </View>
-              </View>
-            ))}
-          </View>
-        )}
+              ))}
+
+              {/* Certifications Items */}
+              {resume.certifications && resume.certifications.map((cert) => (
+                <View key={cert.id} style={styles.itemContainer} wrap={false}>
+                  {/* Row 1: Certification Name (left, bold) + Date (right) */}
+                  <View style={styles.itemRow}>
+                    <Text style={styles.itemPosition}>{cert.name}</Text>
+                    <Text style={styles.itemDate}>{cert.date}</Text>
+                  </View>
+
+                  {/* Row 2: Issuer (italic) + Credential ID (right) */}
+                  <View style={[styles.itemRow, styles.itemRowLast]}>
+                    <Text style={styles.itemCompany}>{cert.issuer}</Text>
+                    {cert.credentialId && <Text style={styles.itemLocation}>ID: {cert.credentialId}</Text>}
+                  </View>
+                </View>
+              ))}
+            </>
+          ) : (
+            <Text style={styles.placeholderText}>
+              Include your degree, school name and the year you graduated. If you don't have a degree, list coursework or training that's relevant to the job you're applying for. You can also add certifications here.
+            </Text>
+          )}
+        </View>
       </Page>
     </Document>
   );

@@ -224,6 +224,13 @@ const styles = StyleSheet.create({
     color: COLORS.minimalText,
     marginBottom: 4,
   },
+  // Placeholder styles
+  placeholderText: {
+    fontSize: 10,
+    color: '#9ca3af',
+    fontFamily: 'Helvetica-Oblique',
+    lineHeight: 1.5,
+  },
 });
 
 interface TemplateSidebarPDFProps {
@@ -253,86 +260,110 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
           <View style={styles.sidebarSection}>
             <Text style={styles.sidebarTitle}>Contact</Text>
 
-            {resume.personalDetails.location && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>Address</Text>
-                <Text style={styles.contactValue}>{resume.personalDetails.location}</Text>
-              </View>
-            )}
+            {resume.personalDetails.location ||
+            resume.personalDetails.phone ||
+            resume.personalDetails.email ||
+            resume.personalDetails.linkedin ||
+            resume.personalDetails.github ? (
+              <>
+                {resume.personalDetails.location && (
+                  <View style={styles.contactItem}>
+                    <Text style={styles.contactLabel}>Address</Text>
+                    <Text style={styles.contactValue}>{resume.personalDetails.location}</Text>
+                  </View>
+                )}
 
-            {resume.personalDetails.phone && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>Phone</Text>
-                <Text style={styles.contactValue}>{resume.personalDetails.phone}</Text>
-              </View>
-            )}
+                {resume.personalDetails.phone && (
+                  <View style={styles.contactItem}>
+                    <Text style={styles.contactLabel}>Phone</Text>
+                    <Text style={styles.contactValue}>{resume.personalDetails.phone}</Text>
+                  </View>
+                )}
 
-            {resume.personalDetails.email && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>E-mail</Text>
-                <Text style={styles.contactValue}>{resume.personalDetails.email}</Text>
-              </View>
-            )}
+                {resume.personalDetails.email && (
+                  <View style={styles.contactItem}>
+                    <Text style={styles.contactLabel}>E-mail</Text>
+                    <Text style={styles.contactValue}>{resume.personalDetails.email}</Text>
+                  </View>
+                )}
 
-            {resume.personalDetails.linkedin && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>LinkedIn</Text>
-                <Text style={styles.contactValue}>
-                  {cleanPDFUrl(resume.personalDetails.linkedin)}
-                </Text>
-              </View>
-            )}
+                {resume.personalDetails.linkedin && (
+                  <View style={styles.contactItem}>
+                    <Text style={styles.contactLabel}>LinkedIn</Text>
+                    <Text style={styles.contactValue}>
+                      {cleanPDFUrl(resume.personalDetails.linkedin)}
+                    </Text>
+                  </View>
+                )}
 
-            {resume.personalDetails.github && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>GitHub</Text>
-                <Text style={styles.contactValue}>
-                  {cleanPDFUrl(resume.personalDetails.github)}
-                </Text>
-              </View>
+                {resume.personalDetails.github && (
+                  <View style={styles.contactItem}>
+                    <Text style={styles.contactLabel}>GitHub</Text>
+                    <Text style={styles.contactValue}>
+                      {cleanPDFUrl(resume.personalDetails.github)}
+                    </Text>
+                  </View>
+                )}
+              </>
+            ) : (
+              <Text style={styles.placeholderText}>
+                Add your contact information: address, phone, email, and social profiles
+              </Text>
             )}
           </View>
 
           {/* Skills Section */}
-          {resume.skills.skills.length > 0 && (
-            <View style={styles.sidebarSection}>
-              <Text style={styles.sidebarTitle}>Skills</Text>
-              {resume.skills.skills.map((skill, index) => (
+          <View style={styles.sidebarSection}>
+            <Text style={styles.sidebarTitle}>Skills</Text>
+            {resume.skills.skills.length > 0 ? (
+              resume.skills.skills.map((skill, index) => (
                 <View key={index} style={styles.skillItem}>
                   <Text style={styles.skillBullet}>•</Text>
                   <Text style={styles.skillText}>{skill}</Text>
                 </View>
-              ))}
-            </View>
-          )}
+              ))
+            ) : (
+              <Text style={styles.placeholderText}>
+                List your professional skills
+              </Text>
+            )}
+          </View>
 
           {/* Tools Section */}
-          {resume.skills.tools.length > 0 && (
-            <View style={styles.sidebarSection}>
-              <Text style={styles.sidebarTitle}>Tools</Text>
-              {resume.skills.tools.map((tool, index) => (
+          <View style={styles.sidebarSection}>
+            <Text style={styles.sidebarTitle}>Tools</Text>
+            {resume.skills.tools.length > 0 ? (
+              resume.skills.tools.map((tool, index) => (
                 <View key={index} style={styles.skillItem}>
                   <Text style={styles.skillBullet}>•</Text>
                   <Text style={styles.skillText}>{tool}</Text>
                 </View>
-              ))}
-            </View>
-          )}
+              ))
+            ) : (
+              <Text style={styles.placeholderText}>
+                List tools you use (Git, Docker, etc.)
+              </Text>
+            )}
+          </View>
 
           {/* Languages Section */}
-          {resume.skills.languages.length > 0 && (
-            <View style={styles.sidebarSection}>
-              <Text style={styles.sidebarTitle}>Languages</Text>
-              {resume.skills.languages.map((lang, index) => (
+          <View style={styles.sidebarSection}>
+            <Text style={styles.sidebarTitle}>Languages</Text>
+            {resume.skills.languages.length > 0 ? (
+              resume.skills.languages.map((lang, index) => (
                 <View key={index} style={styles.skillItem}>
                   <Text style={styles.skillBullet}>•</Text>
                   <Text style={styles.skillText}>
                     {lang.language} ({lang.proficiency})
                   </Text>
                 </View>
-              ))}
-            </View>
-          )}
+              ))
+            ) : (
+              <Text style={styles.placeholderText}>
+                Add languages with proficiency
+              </Text>
+            )}
+          </View>
         </View>
 
         {/* RIGHT MAIN CONTENT */}
@@ -344,16 +375,20 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
                 ? resume.personalDetails.fullName.split(' ').join('  ')
                 : 'Your  Name'}
             </Text>
-            {resume.personalDetails.summary && (
+            {resume.personalDetails.summary ? (
               <Text style={styles.tagline}>{resume.personalDetails.summary}</Text>
+            ) : (
+              <Text style={styles.placeholderText}>
+                Write a brief professional summary highlighting your background and main skills (3-4 lines)
+              </Text>
             )}
           </View>
 
           {/* Work History / Professional Experience */}
-          {resume.experience.length > 0 && (
-            <View style={styles.mainSection}>
-              <Text style={styles.mainSectionTitle}>Work History</Text>
-              {resume.experience.map((exp) => (
+          <View style={styles.mainSection}>
+            <Text style={styles.mainSectionTitle}>Work History</Text>
+            {resume.experience.length > 0 ? (
+              resume.experience.map((exp) => (
                 <View key={exp.id} style={styles.itemContainer}>
                   <View style={styles.itemHeader}>
                     <Text style={styles.itemTitle}>{exp.position}</Text>
@@ -374,62 +409,72 @@ export const TemplateSidebarPDF: React.FC<TemplateSidebarPDFProps> = ({ resume }
                     </View>
                   )}
                 </View>
-              ))}
-            </View>
-          )}
+              ))
+            ) : (
+              <Text style={styles.placeholderText}>
+                Showcase your relevant experience by listing each job and your responsibilities. Start with your most recent job and work backwards. Add bullet points for key responsibilities and achievements.
+              </Text>
+            )}
+          </View>
 
           {/* Education */}
-          {(resume.education.length > 0 || (resume.certifications && resume.certifications.length > 0)) && (
-            <View style={styles.mainSection}>
-              <Text style={styles.mainSectionTitle}>Education</Text>
+          <View style={styles.mainSection}>
+            <Text style={styles.mainSectionTitle}>Education</Text>
 
-              {/* Education Items */}
-              {resume.education.map((edu) => (
-                <View key={edu.id} style={styles.itemContainer}>
-                  <View style={styles.itemHeader}>
-                    <Text style={styles.itemTitle}>
-                      Degree: {edu.degree} in {edu.field}
-                    </Text>
-                    <Text style={styles.itemDate}>
-                      {edu.startDate} - {edu.current ? 'Present' : edu.endDate}
-                    </Text>
-                  </View>
-                  <Text style={styles.itemSubtitle}>
-                    {edu.institution}
-                  </Text>
-                  {edu.location && (
-                    <Text style={styles.itemLocation}>{edu.location}</Text>
-                  )}
-
-                  {/* Achievements: Bulleted List */}
-                  {edu.achievements && edu.achievements.length > 0 && (
-                    <View style={styles.achievementsList}>
-                      {edu.achievements.map((achievement, index) => (
-                        <View key={index} style={styles.achievementItem}>
-                          <Text style={styles.achievementBullet}>•</Text>
-                          <Text style={styles.achievementText}>{achievement}</Text>
-                        </View>
-                      ))}
+            {resume.education.length > 0 || (resume.certifications && resume.certifications.length > 0) ? (
+              <>
+                {/* Education Items */}
+                {resume.education.map((edu) => (
+                  <View key={edu.id} style={styles.itemContainer}>
+                    <View style={styles.itemHeader}>
+                      <Text style={styles.itemTitle}>
+                        Degree: {edu.degree} in {edu.field}
+                      </Text>
+                      <Text style={styles.itemDate}>
+                        {edu.startDate} - {edu.current ? 'Present' : edu.endDate}
+                      </Text>
                     </View>
-                  )}
-                </View>
-              ))}
+                    <Text style={styles.itemSubtitle}>
+                      {edu.institution}
+                    </Text>
+                    {edu.location && (
+                      <Text style={styles.itemLocation}>{edu.location}</Text>
+                    )}
 
-              {/* Certifications Items */}
-              {resume.certifications && resume.certifications.map((cert) => (
-                <View key={cert.id} style={styles.itemContainer}>
-                  <View style={styles.itemHeader}>
-                    <Text style={styles.itemTitle}>{cert.name}</Text>
-                    <Text style={styles.itemDate}>{cert.date}</Text>
+                    {/* Achievements: Bulleted List */}
+                    {edu.achievements && edu.achievements.length > 0 && (
+                      <View style={styles.achievementsList}>
+                        {edu.achievements.map((achievement, index) => (
+                          <View key={index} style={styles.achievementItem}>
+                            <Text style={styles.achievementBullet}>•</Text>
+                            <Text style={styles.achievementText}>{achievement}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
                   </View>
-                  <Text style={styles.itemSubtitle}>{cert.issuer}</Text>
-                  {cert.credentialId && (
-                    <Text style={styles.itemLocation}>ID: {cert.credentialId}</Text>
-                  )}
-                </View>
-              ))}
-            </View>
-          )}
+                ))}
+
+                {/* Certifications Items */}
+                {resume.certifications && resume.certifications.map((cert) => (
+                  <View key={cert.id} style={styles.itemContainer}>
+                    <View style={styles.itemHeader}>
+                      <Text style={styles.itemTitle}>{cert.name}</Text>
+                      <Text style={styles.itemDate}>{cert.date}</Text>
+                    </View>
+                    <Text style={styles.itemSubtitle}>{cert.issuer}</Text>
+                    {cert.credentialId && (
+                      <Text style={styles.itemLocation}>ID: {cert.credentialId}</Text>
+                    )}
+                  </View>
+                ))}
+              </>
+            ) : (
+              <Text style={styles.placeholderText}>
+                Include your degree, school name and the year you graduated. If you don't have a degree, list coursework or training that's relevant to the job you're applying for. You can also add certifications here.
+              </Text>
+            )}
+          </View>
         </View>
       </Page>
     </Document>
