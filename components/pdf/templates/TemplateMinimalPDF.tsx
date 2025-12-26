@@ -15,11 +15,13 @@ const createAdaptiveStyles = (resume: Resume) => {
     fontFamily: 'Helvetica',
     fontSize: adaptive.bodyFontSize,
     lineHeight: 1.6,
-    padding: 0,
+    paddingTop: 48 * adaptive.spacingScale,
+    paddingBottom: 48 * adaptive.spacingScale,
+    paddingLeft: 0,
+    paddingRight: 0,
   },
   // Header section
   header: {
-    paddingTop: 48 * adaptive.spacingScale,
     paddingBottom: 24 * adaptive.spacingScale,
     paddingLeft: 64 * adaptive.spacingScale,
     paddingRight: 64 * adaptive.spacingScale,
@@ -94,14 +96,14 @@ const createAdaptiveStyles = (resume: Resume) => {
     position: 'absolute',
     left: 14 * adaptive.spacingScale,
     top: 7 * adaptive.spacingScale,
-    height: '100%',
+    bottom: 40 * adaptive.spacingScale,
     width: 4,
     backgroundColor: COLORS.minimalAccent,
   },
   // Section with timeline dot
   section: {
     position: 'relative',
-    marginBottom: 24 * adaptive.spacingScale,
+    marginBottom: 16 * adaptive.spacingScale,
   },
   timelineDot: {
     position: 'absolute',
@@ -377,12 +379,12 @@ export const TemplateMinimalPDF: React.FC<TemplateMinimalPDFProps> = ({ resume, 
             </View>
 
             {/* Professional Experience */}
-            <View style={styles.section}>
+            <View style={styles.section} wrap={true}>
               <View style={styles.timelineDot} />
               <Text style={styles.sectionTitle}>Professional Experience</Text>
               {resume.experience.length > 0 ? (
                 resume.experience.map((exp) => (
-                  <View key={exp.id} style={styles.itemContainer} wrap={false}>
+                  <View key={exp.id} style={styles.itemContainer}>
                     <View style={styles.itemHeader}>
                       <Text style={styles.itemTitle}>
                         {exp.position} | {exp.company}
