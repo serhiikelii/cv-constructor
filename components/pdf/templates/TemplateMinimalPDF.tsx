@@ -95,7 +95,7 @@ const createAdaptiveStyles = (resume: Resume) => {
     position: 'absolute',
     left: 14 * adaptive.spacingScale,
     top: 7 * adaptive.spacingScale,
-    bottom: 40 * adaptive.spacingScale,
+    bottom: 32 * adaptive.spacingScale,
     width: 4,
     backgroundColor: COLORS.minimalAccent,
   },

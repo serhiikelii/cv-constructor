@@ -221,6 +221,7 @@ export default function PreviewPanel() {
               }}
             >
               <iframe
+                key={pdfUrl}
                 src={pdfUrl ? `${pdfUrl}#view=FitH` : ''}
                 width="100%"
                 height="100%"
