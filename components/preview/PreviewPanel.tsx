@@ -12,7 +12,7 @@ import PDFDownloadButton from "../PDFDownloadButton";
 
 export default function PreviewPanel() {
   const [zoom, setZoom] = useState(1);
-  const [autoZoom, setAutoZoom] = useState(true);
+  const [autoZoom, setAutoZoom] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +86,9 @@ export default function PreviewPanel() {
 
   // Calculate auto-fit zoom based on container width
   useEffect(() => {
-    if (!autoZoom || !containerRef.current || !a4Ref.current) return;
+    // ONLY run when autoZoom is explicitly enabled by user
+    if (!autoZoom) return;
+    if (!containerRef.current || !a4Ref.current) return;
 
     const calculateZoom = () => {
       const container = containerRef.current;
@@ -97,11 +99,12 @@ export default function PreviewPanel() {
       const padding = 32; // 16px padding on each side
       const availableWidth = containerWidth - padding;
 
-      // A4 width is 210mm = 793.7px at 96 DPI
-      const a4Width = 793.7;
+      // A4 width is 794px (210mm at 96 DPI)
+      const a4Width = 794;
       const calculatedZoom = Math.min(availableWidth / a4Width, 1);
 
-      setZoom(calculatedZoom);
+      // Set minimum zoom to 0.7 (70%) for better readability
+      setZoom(Math.max(calculatedZoom, 0.7));
     };
 
     calculateZoom();
@@ -119,7 +122,7 @@ export default function PreviewPanel() {
 
   const handleZoomOut = () => {
     setAutoZoom(false);
-    setZoom((prev) => Math.max(prev - 0.1, 0.3));
+    setZoom((prev) => Math.max(prev - 0.1, 0.5));
   };
 
   const handleFitToScreen = () => {
@@ -143,7 +146,7 @@ export default function PreviewPanel() {
               variant="outline"
               size="sm"
               onClick={handleZoomOut}
-              disabled={zoom <= 0.3}
+              disabled={zoom <= 0.5}
             >
               <ZoomOut className="h-4 w-4" />
             </Button>
@@ -212,15 +215,13 @@ export default function PreviewPanel() {
             <div
               ref={a4Ref}
               style={{
-                transform: `scale(${zoom})`,
-                transformOrigin: "top center",
-                transition: autoZoom ? "transform 0.2s ease-out" : "none",
-                width: "210mm",
-                height: "297mm",
+                width: `${794 * zoom}px`,
+                height: `${1123 * zoom}px`,
+                transition: autoZoom ? "all 0.2s ease-out" : "none",
               }}
             >
               <iframe
-                src={pdfUrl}
+                src={pdfUrl ? `${pdfUrl}#view=FitH` : ''}
                 width="100%"
                 height="100%"
                 style={{

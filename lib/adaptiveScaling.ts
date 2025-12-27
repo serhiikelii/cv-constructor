@@ -62,8 +62,8 @@ export function calculateContentDensity(resume: Resume): number {
   }
 
   // Skills contribution
-  score += resume.skills.skills.length * 1; // 1 point per skill
-  score += resume.skills.tools.length * 1; // 1 point per tool
+  score += resume.skills.skills.length * 4; // 4 points per skill
+  score += resume.skills.tools.length * 4; // 4 points per tool
   score += resume.skills.languages.length * 2; // 2 points per language
 
   return score;

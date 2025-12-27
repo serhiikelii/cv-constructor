@@ -20,8 +20,10 @@ const createAdaptiveStyles = (resume: Resume) => {
   sidebar: {
     width: '30%',
     backgroundColor: '#DBEAFE', // Light blue to match HTML
-    padding: 24 * adaptive.spacingScale, // HTML: p-8 (2rem = 32px → 24pt)
-    paddingTop: 36 * adaptive.spacingScale, // HTML: pt-12 (3rem = 48px → 36pt)
+    paddingLeft: 36 * adaptive.spacingScale, // 1.5x for better centering (24 * 1.5 = 36pt)
+    paddingRight: 24 * adaptive.spacingScale,
+    paddingTop: 36 * adaptive.spacingScale,
+    paddingBottom: 24 * adaptive.spacingScale,
     borderRight: '1pt solid #E5E7EB', // Gray-200 border to match HTML
   },
   // Right main content (70%)

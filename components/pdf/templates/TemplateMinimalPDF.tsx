@@ -15,8 +15,8 @@ const createAdaptiveStyles = (resume: Resume) => {
     fontFamily: 'Helvetica',
     fontSize: adaptive.bodyFontSize,
     lineHeight: 1.6,
-    paddingTop: 48 * adaptive.spacingScale,
-    paddingBottom: 48 * adaptive.spacingScale,
+    paddingTop: adaptive.paddingTop,
+    paddingBottom: adaptive.paddingTop, // Use same as top for symmetry
     paddingLeft: 0,
     paddingRight: 0,
   },
@@ -85,7 +85,6 @@ const createAdaptiveStyles = (resume: Resume) => {
   content: {
     paddingLeft: 64 * adaptive.spacingScale,
     paddingRight: 64 * adaptive.spacingScale,
-    paddingBottom: 48 * adaptive.spacingScale,
   },
   timelineContainer: {
     position: 'relative',
